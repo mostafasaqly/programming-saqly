@@ -80,17 +80,19 @@
 pre {
   margin: 0;
   padding: 20px;
-  font-family: var(--font-code);
-  font-size: 14px;
-  line-height: 1.7;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 13.5px;
+  line-height: 1.75;
   color: #e6edf3;
   tab-size: 2;
   direction: ltr;
   text-align: left;
+  font-variant-ligatures: contextual;
 
   code {
     font-family: inherit;
     font-size: inherit;
+    font-variant-ligatures: inherit;
   }
 }
 
