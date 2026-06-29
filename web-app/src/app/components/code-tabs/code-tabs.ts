@@ -84,6 +84,10 @@ export class CodeTabsComponent implements OnChanges {
     });
   }
 
+  openCompiler(url: string): void {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
   getHighlighted(code: string, language: string): string {
     const placeholders: string[] = [];
     const save = (html: string): string => {

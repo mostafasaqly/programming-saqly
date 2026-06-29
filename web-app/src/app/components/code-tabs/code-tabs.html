@@ -44,15 +44,13 @@
               <span>📋 {{ lang.isArabic() ? 'نسخ' : 'Copy' }}</span>
             }
           </button>
-          <a
+          <button
             class="action-btn run-btn"
-            [href]="tab.runUrl"
-            target="_blank"
-            rel="noopener noreferrer"
+            (click)="openCompiler(tab.runUrl)"
             [attr.aria-label]="(lang.isArabic() ? 'تشغيل مثال ' : 'Run example in ') + tab.label"
           >
             ▶ {{ lang.isArabic() ? 'تشغيل المثال' : 'Run Example' }} »
-          </a>
+          </button>
         </div>
       </div>
 
