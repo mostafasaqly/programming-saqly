@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /tmp/react-saqly-v19 -type f -name \"*.json\" -o -name \"*.html\" -o -name \"*.jsx\" -o -name \"*.js\" | head -50)",
+      "Read(//tmp/**)",
+      "Bash(ls -la /tmp/react-saqly-v19/ | head -30)",
+      "Bash(find /tmp/react-saqly-v19 -maxdepth 2 -type d -name \"*web*\" -o -name \"*app*\" -o -name \"*src*\" -o -name \"*build*\" -o -name \"*dist*\" 2>/dev/null)"
+    ]
+  }
+}
