@@ -36,13 +36,23 @@
       </div>
 
       <button
+        class="theme-toggle"
+        (click)="toggleTheme()"
+        [title]="theme.isDark() ? (lang.isArabic() ? 'الوضع الفاتح' : 'Light mode') : (lang.isArabic() ? 'الوضع الداكن' : 'Dark mode')"
+        [attr.aria-label]="theme.isDark() ? (lang.isArabic() ? 'التبديل إلى الوضع الفاتح' : 'Switch to light mode') : (lang.isArabic() ? 'التبديل إلى الوضع الداكن' : 'Switch to dark mode')"
+      >
+        {{ theme.isDark() ? '☀️' : '🌙' }}
+      </button>
+
+      <button
         class="lang-toggle"
         (click)="toggleLanguage()"
         [title]="lang.isArabic() ? 'Switch to English' : 'التبديل إلى العربية'"
         [attr.aria-label]="lang.isArabic() ? 'Switch to English' : 'التبديل إلى العربية'"
       >
-        <span class="lang-flag">{{ lang.isArabic() ? '🇬🇧' : '🇸🇦' }}</span>
-        <span class="lang-label">{{ lang.isArabic() ? 'EN' : 'AR' }}</span>
+        <span class="lang-current">{{ lang.isArabic() ? 'AR' : 'EN' }}</span>
+        <span class="lang-sep">/</span>
+        <span class="lang-other">{{ lang.isArabic() ? 'EN' : 'AR' }}</span>
       </button>
     </div>
   </header>

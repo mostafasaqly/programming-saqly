@@ -1,6 +1,6 @@
 .code-block {
-  background: #0d1117;
-  border: 1px solid var(--border-color);
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
   border-radius: var(--radius-md);
   overflow: hidden;
   margin-bottom: 16px;
@@ -11,8 +11,8 @@
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
-  background: #161b22;
-  border-bottom: 1px solid var(--border-color);
+  background: var(--code-bg-header);
+  border-bottom: 1px solid var(--code-border);
 }
 
 .lang-badge {

@@ -1,6 +1,6 @@
 .code-tabs-block {
-  background: #0d1117;
-  border: 1px solid var(--border-color);
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
   border-radius: var(--radius-md);
   overflow: hidden;
   margin-bottom: 24px;
@@ -9,8 +9,8 @@
 /* ── Tab Bar ──────────────────────────────────────────── */
 .tab-bar {
   display: flex;
-  background: #161b22;
-  border-bottom: 1px solid var(--border-color);
+  background: var(--code-bg-header);
+  border-bottom: 1px solid var(--code-border);
   overflow-x: auto;
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
@@ -24,13 +24,13 @@
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
-  color: var(--text-muted);
+  color: #8b949e; /* fixed: tab bar sits on the dark code header */
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-  font-family: var(--font-body);
+  font-family: var(--font-english);
   unicode-bidi: isolate;
 
   .tab-icon { font-size: 14px; }
@@ -42,20 +42,17 @@
   }
 
   &:hover {
-    color: var(--text-secondary);
+    color: #c9d1d9;
     background: rgba(255,255,255,0.04);
   }
 
   &.active {
-    color: var(--text-primary);
-    border-bottom-color: var(--accent-blue);
-    background: rgba(88,166,255,0.06);
+    color: #ffffff;
+    border-bottom-color: #58a6ff;
+    background: rgba(88,166,255,0.10);
   }
 
-  // Per-language accent when active
-  &.active:has(+ .tab-btn) {} // scoping hint
-
-  &[aria-selected="true"] { color: var(--text-primary); }
+  &[aria-selected="true"] { color: #ffffff; }
 }
 
 /* ── Panel Header ─────────────────────────────────────── */
@@ -64,8 +61,8 @@
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
-  background: #161b22;
-  border-bottom: 1px solid var(--border-color);
+  background: var(--code-bg-header);
+  border-bottom: 1px solid var(--code-border);
 }
 
 .panel-desc {
@@ -74,7 +71,7 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: var(--text-secondary);
+  color: #8b949e; /* fixed: code header is always dark */
   font-style: italic;
 }
 
