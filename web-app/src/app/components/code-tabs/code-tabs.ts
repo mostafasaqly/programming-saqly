@@ -88,89 +88,87 @@ export class CodeTabsComponent implements OnChanges {
     window.open(url, '_blank', 'noopener,noreferrer');
   }
 
+  // Keyword sets per language.
+  private static readonly KEYWORDS: Record<string, Set<string>> = {
+    javascript: new Set('function return let const var if else for while do break continue new class import export default true false null undefined typeof instanceof in of switch case this async await try catch finally throw void delete yield'.split(' ')),
+    python: new Set('def return if elif else for while break continue class import from as with try except finally raise pass True False None not and or in is lambda global nonlocal assert yield print'.split(' ')),
+    java: new Set('public private protected static final class interface extends implements new return if else for while do break continue switch case default try catch finally throw throws void int long double float boolean char byte short String System null true false this super import package abstract synchronized volatile transient instanceof enum'.split(' ')),
+    cpp: new Set('int long double float bool char void short unsigned signed return if else for while do break continue switch case default class struct new delete namespace using include public private protected virtual override const static auto nullptr true false this try catch throw template typename typedef enum'.split(' ')),
+  };
+
+  /**
+   * Single-pass tokenizer-based highlighter.
+   *
+   * Each token is classified exactly once by the first matching alternative,
+   * then emitted as escaped HTML. Because each character is consumed once and
+   * never re-scanned, there are no placeholders and no risk of a later regex
+   * corrupting an earlier match (the bug that produced "1(0)").
+   */
   getHighlighted(code: string, language: string): string {
-    // Use a lookup map keyed by a unique token that cannot appear in escaped HTML.
-    // Token format: \x00IDX\x00 — null bytes never appear in source code strings.
-    const slots = new Map<string, string>();
-    let slotIdx = 0;
+    const keywords =
+      CodeTabsComponent.KEYWORDS[language] ??
+      CodeTabsComponent.KEYWORDS['javascript'];
+    const isPython = language === 'python';
 
-    const save = (html: string): string => {
-      const token = `\x00${slotIdx++}\x00`;
-      slots.set(token, html);
-      return token;
-    };
+    // For Python, '#' begins a comment that runs to end of line.
+    // For C/C++, only the directive word (e.g. "#include") is coloured, so the
+    // rest of the line ("<iostream>") still tokenizes normally.
+    const hashRule = isPython
+      ? '(?<lineC>\\/\\/[^\\n]*|#[^\\n]*)'
+      : '(?<lineC>\\/\\/[^\\n]*)|(?<preproc>#\\w+)';
 
-    const restore = (s: string): string =>
-      s.replace(/\x00(\d+)\x00/g, (_, i) => slots.get(`\x00${i}\x00`) ?? '');
+    const tokenizer = new RegExp(
+      [
+        hashRule,                                   // comments / directives
+        '(?<blockC>\\/\\*[\\s\\S]*?\\*\\/)',        // /* … */
+        '(?<tmpl>`[^`]*`)',                         // `…`
+        '(?<dq>"(?:[^"\\\\]|\\\\.)*")',            // "…"
+        '(?<sq>\'(?:[^\'\\\\]|\\\\.)*\')',         // '…'
+        '(?<num>\\b\\d+\\.?\\d*\\b)',               // 123 / 3.14
+        '(?<ident>[A-Za-z_]\\w*)',                  // identifiers / keywords
+        '(?<other>[\\s\\S])',                       // any single other char
+      ].join('|'),
+      'g'
+    );
 
-    let result = code;
-
-    // 1. Comments — must come first so strings inside comments aren't re-highlighted
-    if (language === 'python') {
-      result = result.replace(/(#[^\n]*)/g, m =>
-        save(`<span class="cmt">${this.esc(m)}</span>`)
-      );
-    } else {
-      result = result.replace(/(\/\/[^\n]*)/g, m =>
-        save(`<span class="cmt">${this.esc(m)}</span>`)
-      );
-      result = result.replace(/(\/\*[\s\S]*?\*\/)/g, m =>
-        save(`<span class="cmt">${this.esc(m)}</span>`)
-      );
+    let out = '';
+    for (const m of code.matchAll(tokenizer)) {
+      const g = m.groups!;
+      if (g['lineC'] !== undefined) {
+        out += `<span class="cmt">${this.esc(g['lineC'])}</span>`;
+      } else if (g['preproc'] !== undefined) {
+        out += `<span class="pp">${this.esc(g['preproc'])}</span>`;
+      } else if (g['blockC'] !== undefined) {
+        out += `<span class="cmt">${this.esc(g['blockC'])}</span>`;
+      } else if (g['tmpl'] !== undefined) {
+        out += `<span class="str">${this.esc(g['tmpl'])}</span>`;
+      } else if (g['dq'] !== undefined) {
+        out += `<span class="str">${this.esc(g['dq'])}</span>`;
+      } else if (g['sq'] !== undefined) {
+        out += `<span class="str">${this.esc(g['sq'])}</span>`;
+      } else if (g['num'] !== undefined) {
+        out += `<span class="num">${g['num']}</span>`;
+      } else if (g['ident'] !== undefined) {
+        const word = g['ident'];
+        if (keywords.has(word)) {
+          out += `<span class="kw">${word}</span>`;
+        } else if (this.isFollowedByCall(code, m.index! + word.length)) {
+          out += `<span class="fn">${word}</span>`;
+        } else {
+          out += word;
+        }
+      } else {
+        out += this.esc(m[0]);
+      }
     }
+    return out;
+  }
 
-    // 2. Template literals (JS only)
-    if (language === 'javascript') {
-      result = result.replace(/(`[^`]*`)/g, m =>
-        save(`<span class="str">${this.esc(m)}</span>`)
-      );
-    }
-
-    // 3. Strings (double and single quoted)
-    result = result.replace(/"([^"\\]|\\.)*"/g, m =>
-      save(`<span class="str">${this.esc(m)}</span>`)
-    );
-    result = result.replace(/'([^'\\]|\\.)*'/g, m =>
-      save(`<span class="str">${this.esc(m)}</span>`)
-    );
-
-    // 4. Escape remaining plain text
-    result = this.esc(result);
-
-    // 5. Language-aware keywords
-    const jsKw   = /\b(function|return|let|const|var|if|else|for|while|do|break|continue|new|class|import|export|default|true|false|null|undefined|typeof|instanceof|in|of|switch|case|this|async|await|try|catch|finally|throw|void|delete|yield)\b/g;
-    const pyKw   = /\b(def|return|if|elif|else|for|while|break|continue|class|import|from|as|with|try|except|finally|raise|pass|True|False|None|not|and|or|in|is|lambda|global|nonlocal|assert|yield|print)\b/g;
-    const javaKw = /\b(public|private|protected|static|final|class|interface|extends|implements|new|return|if|else|for|while|do|break|continue|switch|case|default|try|catch|finally|throw|throws|void|int|long|double|float|boolean|char|byte|short|String|System|null|true|false|this|super|import|package|abstract|synchronized|volatile|transient|instanceof|enum)\b/g;
-    const cppKw  = /\b(int|long|double|float|bool|char|void|short|unsigned|signed|return|if|else|for|while|do|break|continue|switch|case|default|class|struct|new|delete|namespace|using|include|public|private|protected|virtual|override|const|static|auto|nullptr|true|false|this|try|catch|throw|template|typename|typedef|enum)\b/g;
-
-    const kwMap: Record<string, RegExp> = {
-      javascript: jsKw,
-      python:     pyKw,
-      java:       javaKw,
-      cpp:        cppKw,
-      c:          cppKw,
-    };
-    result = result.replace(kwMap[language] ?? jsKw, m =>
-      save(`<span class="kw">${m}</span>`)
-    );
-
-    // 6. C++ preprocessor (#include etc.) — after esc so # is still a plain #
-    if (language === 'cpp' || language === 'c') {
-      result = result.replace(/(#\w+)/g, m => save(`<span class="pp">${m}</span>`));
-    }
-
-    // 7. Function calls
-    result = result.replace(/\b([a-zA-Z_]\w*)(?=\s*\()/g, m =>
-      save(`<span class="fn">${m}</span>`)
-    );
-
-    // 8. Numbers
-    result = result.replace(/(?<![.\w])(\d+\.?\d*)(?![\w])/g, m =>
-      save(`<span class="num">${m}</span>`)
-    );
-
-    // 9. Restore all saved spans
-    return restore(result);
+  /** True if the next non-space char after `pos` is '(' (a function call). */
+  private isFollowedByCall(code: string, pos: number): boolean {
+    let i = pos;
+    while (i < code.length && (code[i] === ' ' || code[i] === '\t')) i++;
+    return code[i] === '(';
   }
 
   private esc(s: string): string {
