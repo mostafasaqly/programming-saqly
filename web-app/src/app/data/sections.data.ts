@@ -127,8 +127,8 @@ export const COURSE_SECTIONS: SectionContent[] = [
       },
     ],
     editorLinks: [
-      { label: 'Try JS Online', url: 'https://playcode.io/javascript', language: 'javascript' },
-      { label: 'Try Python Online', url: 'https://www.online-python.com/', language: 'python' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
+      { label: 'Programiz Python Editor', url: 'https://www.programiz.com/python-programming/online-compiler/', language: 'python' },
     ],
     keyPointsAr: [
       'يمكنك البدء بالبرمجة بدون تثبيت أي شيء — استخدم المحررات الإلكترونية',
@@ -174,7 +174,7 @@ console.log(name);`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'التعليقات لا يراها الحاسوب ولا تؤثر على تنفيذ البرنامج',
@@ -234,7 +234,7 @@ console.log(score); // 15`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'المتغير = اسم + قيمة (كالصندوق مع ملصق عليه)',
@@ -294,7 +294,7 @@ console.log(typeof notDefined);// "undefined"`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'Number: أي رقم صحيح أو عشري',
@@ -342,7 +342,7 @@ console.log(MAX_USERS);// 100
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'const تُعرّف ثابتًا لا يمكن إعادة تعيينه',
@@ -397,7 +397,7 @@ console.log(fullName.includes("Sara")); // true`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'النص يُكتب بين علامات اقتباس مفردة أو مزدوجة أو خلفية',
@@ -454,7 +454,7 @@ console.log(!true);         // false`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       '% هو باقي القسمة — مفيد جدًا في البرمجة',
@@ -514,7 +514,7 @@ console.log(Boolean("hi")); // true`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'Number("42") يحول النص "42" إلى رقم 42',
@@ -575,8 +575,8 @@ print("Hello,", name + "!")`,
       },
     ],
     editorLinks: [
-      { label: 'Try JS Online', url: 'https://playcode.io/javascript', language: 'javascript' },
-      { label: 'Try Python Online', url: 'https://www.online-python.com/', language: 'python' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
+      { label: 'Programiz Python Editor', url: 'https://www.programiz.com/python-programming/online-compiler/', language: 'python' },
     ],
     keyPointsAr: [
       'console.log() يطبع في وحدة التحكم (console)',
@@ -636,7 +636,7 @@ console.log(status); // Adult`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'if ينفّذ الكود فقط إذا كان الشرط صحيحًا (true)',
@@ -697,7 +697,7 @@ for (let fruit of fruits) {
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'المصفوفة تبدأ بالفهرس 0 وليس 1',
@@ -764,7 +764,7 @@ for (let i = 0; i < 10; i++) {
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'for مناسبة عندما تعرف عدد التكرارات مسبقًا',
@@ -829,7 +829,7 @@ console.log(square(7)); // 49`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'الدالة تُعرَّف مرة واحدة وتُستدعى عدة مرات',
@@ -881,7 +881,7 @@ console.log(globalVar); // works
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'المتغير العام يمكن الوصول إليه من أي مكان في البرنامج',
@@ -929,7 +929,7 @@ console.log(factorial(1)); // 1`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'كل دالة تكرارية يجب أن تحتوي على حالة أساسية تُوقف التكرار',
@@ -985,8 +985,7 @@ console.log(findMax(nums)); // 9`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
-      { label: 'Programiz Compiler', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'افهم المشكلة أولًا قبل أن تكتب أي كود',
@@ -1038,7 +1037,7 @@ console.log(~5);      // -6 (NOT)`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'البت هو أصغر وحدة للبيانات: 0 أو 1',
@@ -1091,7 +1090,7 @@ console.log(decimalToBinary(255));    // "11111111"`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'النظام الثنائي يستخدم رقمين فقط: 0 و 1',
@@ -1143,7 +1142,7 @@ console.log(\`Red: \${parseInt("FF",16)}, Green: 0, Blue: 0\`);`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'النظام السداسي عشري يستخدم 16 رمزًا: 0-9 و A-F',
@@ -1202,7 +1201,7 @@ console.log(xor(true, true));  // false`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'AND تُعطي true فقط إذا كلا الطرفين true',
@@ -1269,8 +1268,7 @@ printReport("Ali Hassan", [65, 72, 58, 70, 68]);`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
-      { label: 'Programiz Compiler', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'هذا المشروع يجمع: المصفوفات والحلقات والشروط والدوال',
@@ -1355,8 +1353,7 @@ printStatement(myAccount);`,
       },
     ],
     editorLinks: [
-      { label: 'Try it Online', url: 'https://playcode.io/javascript', language: 'javascript' },
-      { label: 'Programiz Compiler', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
+      { label: 'Programiz JS Editor', url: 'https://www.programiz.com/javascript/online-compiler/', language: 'javascript' },
     ],
     keyPointsAr: [
       'الكائنات (Objects) تُجمّع البيانات والدوال المرتبطة بها',
