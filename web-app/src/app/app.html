@@ -1,0 +1,51 @@
+<div class="app-shell" [class.rtl]="lang.isRTL()">
+
+  <!-- Top Header -->
+  <header class="app-header">
+    <button class="sidebar-toggle" (click)="toggleSidebar()" [class.open]="sidebarOpen">
+      <span></span><span></span><span></span>
+    </button>
+
+    <a routerLink="/" class="app-logo">
+      <span class="logo-icon">💻</span>
+      <span class="logo-text">
+        {{ lang.isArabic() ? 'مقدمة في البرمجة' : 'Intro to Programming' }}
+      </span>
+    </a>
+
+    <div class="header-right">
+      <div class="progress-pill">
+        <div class="progress-pill-bar">
+          <div class="progress-pill-fill" [style.width.%]="course.progressPercent()"></div>
+        </div>
+        <span class="progress-pill-text">{{ course.progressPercent() }}%</span>
+      </div>
+
+      <button class="lang-toggle" (click)="toggleLanguage()" [title]="lang.isArabic() ? 'Switch to English' : 'التبديل إلى العربية'">
+        <span class="lang-flag">{{ lang.isArabic() ? '🇬🇧' : '🇸🇦' }}</span>
+        <span class="lang-label">{{ lang.isArabic() ? 'EN' : 'AR' }}</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="app-body">
+
+    <!-- Content Area -->
+    <main class="app-content" (click)="sidebarOpen && toggleSidebar()">
+      <router-outlet />
+    </main>
+
+    <!-- Sidebar (right for LTR, left for RTL) -->
+    <aside class="app-sidebar" [class.open]="sidebarOpen">
+      <app-sidebar />
+    </aside>
+
+  </div>
+
+  <!-- Mobile overlay -->
+  @if (sidebarOpen) {
+    <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
+  }
+
+</div>

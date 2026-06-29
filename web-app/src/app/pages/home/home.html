@@ -1,0 +1,77 @@
+<div class="home fade-in">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge badge badge-blue">
+      {{ lang.isArabic() ? 'مقدمة في البرمجة' : 'Introduction to Programming' }}
+    </div>
+    <h1 class="hero-title">
+      @if (lang.isArabic()) {
+        <span>تعلّم البرمجة من</span>
+        <span class="highlight"> الصفر</span>
+      } @else {
+        <span>Learn Programming from</span>
+        <span class="highlight"> Scratch</span>
+      }
+    </h1>
+    <p class="hero-desc">
+      {{ lang.isArabic()
+        ? 'دورة شاملة تغطي أساسيات البرمجة بأسلوب بسيط وتدريجي مع أمثلة عملية وتمارين تفاعلية.'
+        : 'A comprehensive course covering programming fundamentals in a simple, step-by-step approach with practical examples and interactive exercises.' }}
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-value">25</span>
+        <span class="stat-label">{{ lang.isArabic() ? 'قسم' : 'Sections' }}</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-value">8</span>
+        <span class="stat-label">{{ lang.isArabic() ? 'أجزاء' : 'Parts' }}</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-value">{{ course.progressPercent() }}%</span>
+        <span class="stat-label">{{ lang.isArabic() ? 'مكتمل' : 'Done' }}</span>
+      </div>
+    </div>
+    <a class="cta-btn" [routerLink]="['/section', 1]">
+      {{ lang.isArabic() ? 'ابدأ التعلم ←' : 'Start Learning →' }}
+    </a>
+  </section>
+
+  <!-- Parts Overview -->
+  <section class="parts-overview">
+    <h2 class="section-heading">
+      {{ lang.isArabic() ? 'محتوى الدورة' : 'Course Content' }}
+    </h2>
+    <div class="parts-grid">
+      @for (part of parts; track part.part) {
+        <div class="part-card" [style.--color]="part.color">
+          <div class="part-card-header">
+            <span class="part-tag">{{ lang.isArabic() ? 'الجزء' : 'Part' }} {{ part.part }}</span>
+            <span class="section-count">
+              {{ getSectionsByPart(part.part).length }}
+              {{ lang.isArabic() ? 'أقسام' : 'sections' }}
+            </span>
+          </div>
+          <h3 class="part-card-title">
+            {{ lang.isArabic() ? part.titleAr : part.titleEn }}
+          </h3>
+          <ul class="part-sections-list">
+            @for (section of getSectionsByPart(part.part); track section.id) {
+              <li>
+                <a [routerLink]="['/section', section.id]" class="part-section-link">
+                  <span class="sec-icon">{{ section.icon }}</span>
+                  <span>{{ lang.isArabic() ? section.titleAr : section.titleEn }}</span>
+                  @if (course.isCompleted(section.id)) {
+                    <span class="done-dot">✓</span>
+                  }
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </section>
+</div>

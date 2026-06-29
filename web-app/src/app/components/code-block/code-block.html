@@ -1,0 +1,21 @@
+<div class="code-block">
+  <div class="code-header">
+    <div class="lang-badge">
+      <span class="lang-dot" [class]="example.language"></span>
+      <span class="lang-name">{{ example.language }}</span>
+    </div>
+    <div class="code-desc">
+      {{ lang.isArabic() ? example.descriptionAr : example.descriptionEn }}
+    </div>
+    <button class="copy-btn" (click)="copyCode()" [class.copied]="copied()">
+      @if (copied()) {
+        <span>✓ {{ lang.isArabic() ? 'تم النسخ' : 'Copied!' }}</span>
+      } @else {
+        <span>📋 {{ lang.isArabic() ? 'نسخ' : 'Copy' }}</span>
+      }
+    </button>
+  </div>
+  <div class="code-body">
+    <pre><code [innerHTML]="getHighlighted(example.code, example.language)"></code></pre>
+  </div>
+</div>

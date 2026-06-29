@@ -1,0 +1,54 @@
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="course-title">
+      <span class="course-icon">💻</span>
+      <div class="course-info">
+        <h2>{{ lang.isArabic() ? 'مقدمة في البرمجة' : 'Intro to Programming' }}</h2>
+        <span class="course-meta">25 {{ lang.isArabic() ? 'قسم' : 'sections' }}</span>
+      </div>
+    </div>
+    <div class="progress-area">
+      <div class="progress-label">
+        <span>{{ lang.isArabic() ? 'التقدم' : 'Progress' }}</span>
+        <span class="progress-value">{{ course.progressPercent() }}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="course.progressPercent()"></div>
+      </div>
+      <span class="progress-count">
+        {{ course.completedCount() }} / 25 {{ lang.isArabic() ? 'مكتمل' : 'completed' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="sidebar-body">
+    @for (part of parts; track part.part) {
+      <div class="part-group">
+        <div class="part-header" [style.--part-color]="part.color">
+          <span class="part-number">{{ lang.isArabic() ? 'الجزء' : 'Part' }} {{ part.part }}</span>
+          <span class="part-title">{{ lang.isArabic() ? part.titleAr : part.titleEn }}</span>
+        </div>
+        <ul class="section-list">
+          @for (section of getSectionsByPart(part.part); track section.id) {
+            <li class="section-item">
+              <a
+                class="section-link"
+                [routerLink]="['/section', section.id]"
+                routerLinkActive="active"
+                [class.completed]="course.isCompleted(section.id)"
+              >
+                <span class="section-num">{{ padId(section.id) }}</span>
+                <span class="section-name">
+                  {{ lang.isArabic() ? section.titleAr : section.titleEn }}
+                </span>
+                @if (course.isCompleted(section.id)) {
+                  <span class="check-icon">✓</span>
+                }
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</nav>

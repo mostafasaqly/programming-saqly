@@ -1,0 +1,452 @@
+@if (section(); as sec) {
+<article class="section-page fade-in">
+
+  <!-- Breadcrumb + Meta -->
+  <header class="section-header">
+    <div class="breadcrumb">
+      <a routerLink="/">{{ lang.isArabic() ? 'الرئيسية' : 'Home' }}</a>
+      <span class="sep">/</span>
+      <span>{{ lang.isArabic() ? sec.partTitleAr : sec.partTitleEn }}</span>
+      <span class="sep">/</span>
+      <span class="current">{{ lang.isArabic() ? sec.titleAr : sec.titleEn }}</span>
+    </div>
+
+    <div class="section-meta">
+      <span class="section-id">{{ padId(sec.id) }}</span>
+      <div class="meta-badges">
+        <span class="badge" [class]="sec.level === 'beginner' ? 'badge-green' : 'badge-orange'">
+          {{ getLevelLabel() }}
+        </span>
+        <span class="badge badge-blue">⏱ {{ sec.estimatedTime }}</span>
+      </div>
+      <button
+        class="complete-btn"
+        [class.done]="isCompleted()"
+        (click)="toggleComplete()"
+      >
+        @if (isCompleted()) {
+          ✓ {{ lang.isArabic() ? 'مكتمل' : 'Completed' }}
+        } @else {
+          {{ lang.isArabic() ? 'تحديد كمكتمل' : 'Mark Complete' }}
+        }
+      </button>
+    </div>
+
+    <h1 class="section-title">
+      <span class="sec-icon">{{ sec.icon }}</span>
+      {{ lang.isArabic() ? sec.titleAr : sec.titleEn }}
+    </h1>
+    <p class="section-desc">
+      {{ lang.isArabic() ? sec.descriptionAr : sec.descriptionEn }}
+    </p>
+  </header>
+
+  <!-- ===== DIAGRAMS ===== -->
+
+  <!-- Variable Box Diagram (Section 5) -->
+  @if (sec.diagramType === 'variable-box') {
+    <div class="diagram-card">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'تصور: المتغير كصندوق' : 'Visual: Variable as a Box' }}</h3>
+      <div class="var-demo">
+        <div class="var-box">
+          <div class="var-label">name</div>
+          <div class="var-value">"Sara"</div>
+        </div>
+        <div class="arrow-right">→</div>
+        <div class="var-box">
+          <div class="var-label">age</div>
+          <div class="var-value">25</div>
+        </div>
+        <div class="arrow-right">→</div>
+        <div class="var-box">
+          <div class="var-label">isStudent</div>
+          <div class="var-value">true</div>
+        </div>
+      </div>
+      <p class="diagram-note">{{ lang.isArabic() ? 'كل متغير له اسم وقيمة — مثل صندوق بملصق عليه' : 'Each variable has a name and value — like a labeled box' }}</p>
+    </div>
+  }
+
+  <!-- Data Types Diagram (Section 6) -->
+  @if (sec.diagramType === 'data-types') {
+    <div class="diagram-card">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'أنواع البيانات' : 'Data Types' }}</h3>
+      <div class="types-grid">
+        <div class="type-card type-number">
+          <span class="type-icon">🔢</span>
+          <span class="type-name">Number</span>
+          <span class="type-example">42, 3.14</span>
+        </div>
+        <div class="type-card type-string">
+          <span class="type-icon">📝</span>
+          <span class="type-name">String</span>
+          <span class="type-example">"Hello"</span>
+        </div>
+        <div class="type-card type-bool">
+          <span class="type-icon">✓/✗</span>
+          <span class="type-name">Boolean</span>
+          <span class="type-example">true / false</span>
+        </div>
+        <div class="type-card type-array">
+          <span class="type-icon">📋</span>
+          <span class="type-name">Array</span>
+          <span class="type-example">[1, 2, 3]</span>
+        </div>
+        <div class="type-card type-null">
+          <span class="type-icon">∅</span>
+          <span class="type-name">Null</span>
+          <span class="type-example">null</span>
+        </div>
+        <div class="type-card type-obj">
+          <span class="type-icon">📦</span>
+          <span class="type-name">Object</span>
+          <span class="type-example">&#123; key: val &#125;</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Flowchart (Section 12 — Conditions) -->
+  @if (sec.diagramType === 'flowchart') {
+    <div class="diagram-card">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'مخطط تدفق: if / else' : 'Flowchart: if / else' }}</h3>
+      <div class="flowchart">
+        <div class="fc-box fc-start">{{ lang.isArabic() ? 'البداية' : 'Start' }}</div>
+        <div class="fc-arrow">↓</div>
+        <div class="fc-diamond">
+          <span>score &gt;= 90?</span>
+        </div>
+        <div class="fc-branches">
+          <div class="fc-branch">
+            <span class="fc-label yes">{{ lang.isArabic() ? 'نعم' : 'Yes' }}</span>
+            <div class="fc-arrow">↓</div>
+            <div class="fc-box fc-action fc-true">Grade: A</div>
+          </div>
+          <div class="fc-branch">
+            <span class="fc-label no">{{ lang.isArabic() ? 'لا' : 'No' }}</span>
+            <div class="fc-arrow">↓</div>
+            <div class="fc-diamond-small">score &gt;= 80?</div>
+            <div class="fc-arrow">↓</div>
+            <div class="fc-box fc-action fc-false">Grade: B / C / F</div>
+          </div>
+        </div>
+        <div class="fc-arrow">↓</div>
+        <div class="fc-box fc-end">{{ lang.isArabic() ? 'النهاية' : 'End' }}</div>
+      </div>
+    </div>
+  }
+
+  <!-- Loop Diagram (Section 14) -->
+  @if (sec.diagramType === 'loop-diagram') {
+    <div class="diagram-card">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'تصور: حلقة for التكرارية' : 'Visual: for loop' }}</h3>
+      <div class="loop-demo">
+        <div class="loop-counter">
+          <span class="counter-label">i = </span>
+          <span class="counter-value" [class.pulse]="loopRunning()">{{ loopCount() }}</span>
+        </div>
+        <div class="loop-track">
+          @for (i of [1,2,3,4,5]; track i) {
+            <div class="loop-step" [class.active]="loopCount() >= i" [class.current]="loopCount() === i">
+              {{ i }}
+            </div>
+          }
+        </div>
+        <div class="loop-controls">
+          <button class="btn-demo" (click)="startLoop()" [disabled]="loopRunning()">
+            ▶ {{ lang.isArabic() ? 'تشغيل الحلقة' : 'Run Loop' }}
+          </button>
+          <button class="btn-demo btn-reset" (click)="stopLoop(); loopCount.set(0)">
+            ↺ {{ lang.isArabic() ? 'إعادة تعيين' : 'Reset' }}
+          </button>
+        </div>
+        <div class="loop-output" [class.visible]="loopCount() > 0">
+          @for (i of [1,2,3,4,5]; track i) {
+            @if (loopCount() >= i) {
+              <div class="output-line" style="animation: fadeIn 0.3s ease">
+                console.log("Count: {{ i }}")
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Function Box Diagram (Section 15) -->
+  @if (sec.diagramType === 'function-box') {
+    <div class="diagram-card">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'تصور: الدالة = مدخل → معالجة → مخرج' : 'Visual: Function = Input → Process → Output' }}</h3>
+      <div class="fn-diagram">
+        <div class="fn-input">
+          <div class="fn-io-label">{{ lang.isArabic() ? 'مدخل' : 'Input' }}</div>
+          <div class="fn-io-value">"Sara"</div>
+        </div>
+        <div class="fn-arrow">→</div>
+        <div class="fn-box">
+          <div class="fn-box-label">{{ lang.isArabic() ? 'الدالة' : 'Function' }}</div>
+          <div class="fn-box-name">greet(name)</div>
+          <div class="fn-box-body">return "Hello, " + name + "!"</div>
+        </div>
+        <div class="fn-arrow">→</div>
+        <div class="fn-output">
+          <div class="fn-io-label">{{ lang.isArabic() ? 'مخرج' : 'Output' }}</div>
+          <div class="fn-io-value">"Hello, Sara!"</div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Binary Converter (Section 20) -->
+  @if (sec.diagramType === 'binary-converter') {
+    <div class="diagram-card">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'محول ثنائي / عشري تفاعلي' : 'Interactive Binary / Decimal Converter' }}</h3>
+      <div class="binary-converter">
+        <div class="conv-group">
+          <label>{{ lang.isArabic() ? 'ثنائي → عشري' : 'Binary → Decimal' }}</label>
+          <input
+            type="text"
+            placeholder="e.g. 1010"
+            [value]="binaryInput()"
+            (input)="onBinaryInput($any($event.target).value)"
+            class="conv-input"
+            pattern="[01]*"
+          />
+          <div class="conv-result" [class.show]="binaryResult()">{{ binaryResult() }}</div>
+        </div>
+        <div class="conv-divider"></div>
+        <div class="conv-group">
+          <label>{{ lang.isArabic() ? 'عشري → ثنائي' : 'Decimal → Binary' }}</label>
+          <input
+            type="number"
+            placeholder="e.g. 42"
+            [value]="decimalInput()"
+            (input)="onDecimalInput($any($event.target).value)"
+            class="conv-input"
+            min="0"
+          />
+          <div class="conv-result" [class.show]="decimalResult()">{{ decimalResult() }}</div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Logic Gates (Section 22) -->
+  @if (sec.diagramType === 'logic-gates') {
+    <div class="diagram-card">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'جداول الحقيقة' : 'Truth Tables' }}</h3>
+      <div class="truth-tables">
+        <div class="truth-table">
+          <div class="tt-title">AND (&&)</div>
+          <table>
+            <tr><th>A</th><th>B</th><th>A && B</th></tr>
+            <tr><td>T</td><td>T</td><td class="t">T</td></tr>
+            <tr><td>T</td><td>F</td><td class="f">F</td></tr>
+            <tr><td>F</td><td>T</td><td class="f">F</td></tr>
+            <tr><td>F</td><td>F</td><td class="f">F</td></tr>
+          </table>
+        </div>
+        <div class="truth-table">
+          <div class="tt-title">OR (||)</div>
+          <table>
+            <tr><th>A</th><th>B</th><th>A || B</th></tr>
+            <tr><td>T</td><td>T</td><td class="t">T</td></tr>
+            <tr><td>T</td><td>F</td><td class="t">T</td></tr>
+            <tr><td>F</td><td>T</td><td class="t">T</td></tr>
+            <tr><td>F</td><td>F</td><td class="f">F</td></tr>
+          </table>
+        </div>
+        <div class="truth-table">
+          <div class="tt-title">NOT (!)</div>
+          <table>
+            <tr><th>A</th><th>!A</th></tr>
+            <tr><td>T</td><td class="f">F</td></tr>
+            <tr><td>F</td><td class="t">T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Array Visual (Section 13) -->
+  @if (sec.diagramType === 'array-visual') {
+    <div class="diagram-card">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'تصور: المصفوفة' : 'Visual: Array' }}</h3>
+      <div class="array-visual">
+        <div class="arr-label">fruits = </div>
+        <div class="arr-cells">
+          @for (item of ['Apple', 'Banana', 'Orange']; track item; let i = $index) {
+            <div class="arr-cell">
+              <div class="arr-value">{{ item }}</div>
+              <div class="arr-index">[{{ i }}]</div>
+            </div>
+          }
+        </div>
+      </div>
+      <p class="diagram-note">{{ lang.isArabic() ? 'الفهرسة تبدأ من 0' : 'Indexing starts at 0' }}</p>
+    </div>
+  }
+
+  <!-- Hex Colors (Section 21) -->
+  @if (sec.diagramType === 'hex-colors') {
+    <div class="diagram-card">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'الألوان بالنظام السداسي' : 'Colors in Hexadecimal' }}</h3>
+      <div class="hex-colors">
+        <div class="hex-color-card" style="background: #FF0000;">#FF0000 = Red</div>
+        <div class="hex-color-card" style="background: #00FF00; color: #000;">#00FF00 = Green</div>
+        <div class="hex-color-card" style="background: #0000FF;">#0000FF = Blue</div>
+        <div class="hex-color-card" style="background: #1f6feb;">#1F6FEB = Blue (accent)</div>
+        <div class="hex-color-card" style="background: #58a6ff; color: #000;">#58A6FF = Light Blue</div>
+        <div class="hex-color-card" style="background: #0d1117; border: 1px solid #30363d;">#0D1117 = Dark BG</div>
+      </div>
+    </div>
+  }
+
+  <!-- Roadmap (Section 25) -->
+  @if (sec.diagramType === 'roadmap') {
+    <div class="diagram-card">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'ما تعلمته في هذه الدورة' : 'What You Learned in This Course' }}</h3>
+      <div class="roadmap">
+        @for (item of [
+          { icon: '📦', label: lang.isArabic() ? 'المتغيرات والثوابت' : 'Variables & Constants' },
+          { icon: '🔢', label: lang.isArabic() ? 'أنواع البيانات' : 'Data Types' },
+          { icon: '➕', label: lang.isArabic() ? 'العمليات الحسابية' : 'Operators' },
+          { icon: '🔀', label: lang.isArabic() ? 'الشروط' : 'Conditions' },
+          { icon: '🔁', label: lang.isArabic() ? 'الحلقات' : 'Loops' },
+          { icon: '⚙️', label: lang.isArabic() ? 'الدوال' : 'Functions' },
+          { icon: '📋', label: lang.isArabic() ? 'المصفوفات' : 'Arrays' },
+          { icon: '🧩', label: lang.isArabic() ? 'حل المشكلات' : 'Problem Solving' },
+        ]; track item.label) {
+          <div class="road-item">
+            <span class="road-icon">{{ item.icon }}</span>
+            <span class="road-label">{{ item.label }}</span>
+            <span class="road-check">✓</span>
+          </div>
+        }
+      </div>
+      <div class="next-steps">
+        <h4>{{ lang.isArabic() ? 'الخطوات القادمة 🚀' : 'Next Steps 🚀' }}</h4>
+        <div class="next-steps-grid">
+          @for (step of [
+            { icon: '🟨', label: 'JavaScript' },
+            { icon: '🐍', label: 'Python' },
+            { icon: '🌐', label: lang.isArabic() ? 'تطوير الويب' : 'Web Dev' },
+            { icon: '📱', label: lang.isArabic() ? 'تطوير التطبيقات' : 'App Dev' },
+          ]; track step.label) {
+            <div class="next-step-card">{{ step.icon }} {{ step.label }}</div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Generic diagram for other sections -->
+  @if (!['variable-box','data-types','flowchart','loop-diagram','function-box','binary-converter','logic-gates','array-visual','hex-colors','roadmap','project'].includes(sec.diagramType)) {
+    <div class="diagram-card concept-overview">
+      <h3 class="diagram-title">{{ lang.isArabic() ? 'المفاهيم الرئيسية' : 'Key Concepts' }}</h3>
+      <div class="concepts-grid">
+        @for (concept of (lang.isArabic() ? sec.conceptsAr : sec.conceptsEn); track concept) {
+          <div class="concept-chip">{{ concept }}</div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Project diagram -->
+  @if (sec.diagramType === 'project') {
+    <div class="diagram-card project-banner" [style.--color]="sec.color">
+      <div class="project-icon">{{ sec.icon }}</div>
+      <div class="project-info">
+        <h3>{{ lang.isArabic() ? 'مشروع تطبيقي' : 'Hands-On Project' }}</h3>
+        <p>{{ lang.isArabic() ? sec.descriptionAr : sec.descriptionEn }}</p>
+      </div>
+    </div>
+  }
+
+  <!-- Concepts Section -->
+  <section class="content-section">
+    <h2 class="content-heading">{{ lang.isArabic() ? 'المفاهيم الأساسية' : 'Core Concepts' }}</h2>
+    <div class="concepts-list">
+      @for (concept of (lang.isArabic() ? sec.conceptsAr : sec.conceptsEn); track concept; let i = $index) {
+        <div class="concept-item" [style.animation-delay.ms]="i * 60">
+          <span class="concept-num">{{ i + 1 }}</span>
+          <span class="concept-text">{{ concept }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Code Examples -->
+  @if (sec.codeExamples.length > 0) {
+    <section class="content-section">
+      <h2 class="content-heading">{{ lang.isArabic() ? 'أمثلة برمجية' : 'Code Examples' }}</h2>
+      @for (example of sec.codeExamples; track example.code) {
+        <app-code-block [example]="example" />
+      }
+    </section>
+  }
+
+  <!-- Key Points -->
+  <section class="content-section">
+    <h2 class="content-heading">{{ lang.isArabic() ? 'النقاط المهمة' : 'Key Takeaways' }}</h2>
+    <ul class="key-points">
+      @for (point of (lang.isArabic() ? sec.keyPointsAr : sec.keyPointsEn); track point; let i = $index) {
+        <li class="key-point" [style.animation-delay.ms]="i * 80">
+          <span class="kp-bullet">💡</span>
+          <span>{{ point }}</span>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <!-- Online Editor Links -->
+  @if (sec.editorLinks.length > 0) {
+    <section class="content-section editor-section">
+      <h2 class="content-heading">{{ lang.isArabic() ? 'جرّب الكود الآن' : 'Try the Code Now' }}</h2>
+      <p class="editor-note">
+        {{ lang.isArabic()
+          ? 'افتح أحد المحررات الإلكترونية المجانية التالية وجرّب كتابة الكود بنفسك:'
+          : 'Open one of these free online editors and try writing the code yourself:' }}
+      </p>
+      <div class="editor-links">
+        @for (link of sec.editorLinks; track link.url) {
+          <a
+            class="editor-btn"
+            [href]="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="editor-icon">{{ link.language === 'javascript' ? '⚡' : link.language === 'python' ? '🐍' : '💻' }}</span>
+            <span>{{ link.label }}</span>
+            <span class="ext-icon">↗</span>
+          </a>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- Navigation -->
+  <nav class="section-nav">
+    <div class="nav-prev">
+      @if (prevSection) {
+        <a [routerLink]="['/section', prevSection.id]" class="nav-btn">
+          <span class="nav-direction">← {{ lang.isArabic() ? 'السابق' : 'Previous' }}</span>
+          <span class="nav-title">{{ lang.isArabic() ? prevSection.titleAr : prevSection.titleEn }}</span>
+        </a>
+      }
+    </div>
+    <a routerLink="/" class="nav-home-btn">
+      🏠 {{ lang.isArabic() ? 'الرئيسية' : 'Home' }}
+    </a>
+    <div class="nav-next">
+      @if (nextSection) {
+        <a [routerLink]="['/section', nextSection.id]" class="nav-btn nav-btn-next">
+          <span class="nav-direction">{{ lang.isArabic() ? 'التالي' : 'Next' }} →</span>
+          <span class="nav-title">{{ lang.isArabic() ? nextSection.titleAr : nextSection.titleEn }}</span>
+        </a>
+      }
+    </div>
+  </nav>
+
+</article>
+}

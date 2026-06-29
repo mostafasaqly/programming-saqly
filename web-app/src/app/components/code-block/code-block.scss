@@ -1,0 +1,104 @@
+.code-block {
+  background: #0d1117;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #161b22;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.lang-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.lang-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #8b949e;
+
+  &.javascript { background: #f1e05a; }
+  &.python     { background: #3572A5; }
+  &.typescript { background: #2b7489; }
+  &.css        { background: #563d7c; }
+  &.html       { background: #e34c26; }
+}
+
+.lang-name {
+  font-family: var(--font-code);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
+.code-desc {
+  flex: 1;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.copy-btn {
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.2);
+  color: var(--accent-blue);
+  font-size: 12px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba(88, 166, 255, 0.2);
+  }
+
+  &.copied {
+    background: rgba(63, 185, 80, 0.1);
+    border-color: rgba(63, 185, 80, 0.2);
+    color: var(--accent-green);
+  }
+}
+
+.code-body {
+  overflow-x: auto;
+  padding: 0;
+}
+
+pre {
+  margin: 0;
+  padding: 20px;
+  font-family: var(--font-code);
+  font-size: 14px;
+  line-height: 1.7;
+  color: #e6edf3;
+  tab-size: 2;
+  direction: ltr;
+  text-align: left;
+
+  code {
+    font-family: inherit;
+    font-size: inherit;
+  }
+}
+
+/* Syntax highlight classes */
+:host ::ng-deep {
+  .kw  { color: #ff7b72; font-weight: 600; }  /* keywords */
+  .str { color: #a5d6ff; }                     /* strings */
+  .num { color: #79c0ff; }                     /* numbers */
+  .cmt { color: #8b949e; font-style: italic; } /* comments */
+  .fn  { color: #d2a8ff; }                     /* function calls */
+}
