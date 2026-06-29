@@ -13,7 +13,7 @@
         (click)="selectTab(tab.id)"
       >
         <span class="tab-icon" aria-hidden="true">{{ tab.icon }}</span>
-        {{ tab.label }}
+        <span dir="ltr">{{ tab.label }}</span>
       </button>
     }
   </div>
@@ -27,7 +27,7 @@
     >
       <!-- Panel header: description + actions -->
       <div class="panel-header">
-        <div class="panel-desc">
+        <div class="panel-desc" dir="auto">
           <span class="lang-dot" [class]="tab.id" aria-hidden="true"></span>
           {{ lang.isArabic() ? tab.descriptionAr : tab.descriptionEn }}
         </div>

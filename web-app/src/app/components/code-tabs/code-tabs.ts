@@ -89,35 +89,55 @@ export class CodeTabsComponent implements OnChanges {
   }
 
   getHighlighted(code: string, language: string): string {
-    const placeholders: string[] = [];
+    // Use a lookup map keyed by a unique token that cannot appear in escaped HTML.
+    // Token format: \x00IDX\x00 — null bytes never appear in source code strings.
+    const slots = new Map<string, string>();
+    let slotIdx = 0;
+
     const save = (html: string): string => {
-      const key = `@@PH_${placeholders.length.toString(36).toUpperCase()}@@`;
-      placeholders.push(html);
-      return key;
+      const token = `\x00${slotIdx++}\x00`;
+      slots.set(token, html);
+      return token;
     };
+
+    const restore = (s: string): string =>
+      s.replace(/\x00(\d+)\x00/g, (_, i) => slots.get(`\x00${i}\x00`) ?? '');
 
     let result = code;
 
-    // Comments (// … and # …)
-    result = result.replace(/(\/\/[^\n]*|#[^\n]*)/g, m =>
-      save(`<span class="cmt">${this.esc(m)}</span>`)
-    );
-    // Template literals
-    result = result.replace(/(`[^`]*`)/g, m =>
-      save(`<span class="str">${this.esc(m)}</span>`)
-    );
-    // Double-quoted strings
+    // 1. Comments — must come first so strings inside comments aren't re-highlighted
+    if (language === 'python') {
+      result = result.replace(/(#[^\n]*)/g, m =>
+        save(`<span class="cmt">${this.esc(m)}</span>`)
+      );
+    } else {
+      result = result.replace(/(\/\/[^\n]*)/g, m =>
+        save(`<span class="cmt">${this.esc(m)}</span>`)
+      );
+      result = result.replace(/(\/\*[\s\S]*?\*\/)/g, m =>
+        save(`<span class="cmt">${this.esc(m)}</span>`)
+      );
+    }
+
+    // 2. Template literals (JS only)
+    if (language === 'javascript') {
+      result = result.replace(/(`[^`]*`)/g, m =>
+        save(`<span class="str">${this.esc(m)}</span>`)
+      );
+    }
+
+    // 3. Strings (double and single quoted)
     result = result.replace(/"([^"\\]|\\.)*"/g, m =>
       save(`<span class="str">${this.esc(m)}</span>`)
     );
-    // Single-quoted strings
     result = result.replace(/'([^'\\]|\\.)*'/g, m =>
       save(`<span class="str">${this.esc(m)}</span>`)
     );
 
+    // 4. Escape remaining plain text
     result = this.esc(result);
 
-    // Language-aware keywords
+    // 5. Language-aware keywords
     const jsKw   = /\b(function|return|let|const|var|if|else|for|while|do|break|continue|new|class|import|export|default|true|false|null|undefined|typeof|instanceof|in|of|switch|case|this|async|await|try|catch|finally|throw|void|delete|yield)\b/g;
     const pyKw   = /\b(def|return|if|elif|else|for|while|break|continue|class|import|from|as|with|try|except|finally|raise|pass|True|False|None|not|and|or|in|is|lambda|global|nonlocal|assert|yield|print)\b/g;
     const javaKw = /\b(public|private|protected|static|final|class|interface|extends|implements|new|return|if|else|for|while|do|break|continue|switch|case|default|try|catch|finally|throw|throws|void|int|long|double|float|boolean|char|byte|short|String|System|null|true|false|this|super|import|package|abstract|synchronized|volatile|transient|instanceof|enum)\b/g;
@@ -130,33 +150,27 @@ export class CodeTabsComponent implements OnChanges {
       cpp:        cppKw,
       c:          cppKw,
     };
-    const kw = kwMap[language] ?? jsKw;
+    result = result.replace(kwMap[language] ?? jsKw, m =>
+      save(`<span class="kw">${m}</span>`)
+    );
 
-    result = result.replace(kw, m => save(`<span class="kw">${m}</span>`));
-
-    // Annotations / preprocessor
-    if (language === 'java') {
-      result = result.replace(/(@[A-Za-z]+)/g, m => save(`<span class="ann">${m}</span>`));
-    }
+    // 6. C++ preprocessor (#include etc.) — after esc so # is still a plain #
     if (language === 'cpp' || language === 'c') {
       result = result.replace(/(#\w+)/g, m => save(`<span class="pp">${m}</span>`));
     }
 
-    // Function calls
+    // 7. Function calls
     result = result.replace(/\b([a-zA-Z_]\w*)(?=\s*\()/g, m =>
       save(`<span class="fn">${m}</span>`)
     );
-    // Numbers
+
+    // 8. Numbers
     result = result.replace(/(?<![.\w])(\d+\.?\d*)(?![\w])/g, m =>
       save(`<span class="num">${m}</span>`)
     );
 
-    result = result.replace(/@@PH_([A-Z0-9]+)@@/g, (_, key) => {
-      const index = parseInt(key, 36);
-      return placeholders[index] ?? '';
-    });
-
-    return result;
+    // 9. Restore all saved spans
+    return restore(result);
   }
 
   private esc(s: string): string {
