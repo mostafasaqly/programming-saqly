@@ -2,7 +2,14 @@
 
   <!-- Top Header -->
   <header class="app-header">
-    <button class="sidebar-toggle" (click)="toggleSidebar()" [class.open]="sidebarOpen">
+    <button
+      class="sidebar-toggle"
+      (click)="toggleSidebar()"
+      [class.open]="sidebarOpen"
+      [attr.aria-label]="lang.isArabic() ? 'فتح/إغلاق القائمة' : 'Toggle navigation menu'"
+      [attr.aria-expanded]="sidebarOpen"
+      aria-controls="course-sidebar"
+    >
       <span></span><span></span><span></span>
     </button>
 
@@ -14,14 +21,26 @@
     </a>
 
     <div class="header-right">
-      <div class="progress-pill">
+      <div
+        class="progress-pill"
+        role="progressbar"
+        [attr.aria-valuenow]="course.progressPercent()"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        [attr.aria-label]="lang.isArabic() ? 'تقدم الدورة' : 'Course progress'"
+      >
         <div class="progress-pill-bar">
           <div class="progress-pill-fill" [style.width.%]="course.progressPercent()"></div>
         </div>
         <span class="progress-pill-text">{{ course.progressPercent() }}%</span>
       </div>
 
-      <button class="lang-toggle" (click)="toggleLanguage()" [title]="lang.isArabic() ? 'Switch to English' : 'التبديل إلى العربية'">
+      <button
+        class="lang-toggle"
+        (click)="toggleLanguage()"
+        [title]="lang.isArabic() ? 'Switch to English' : 'التبديل إلى العربية'"
+        [attr.aria-label]="lang.isArabic() ? 'Switch to English' : 'التبديل إلى العربية'"
+      >
         <span class="lang-flag">{{ lang.isArabic() ? '🇬🇧' : '🇸🇦' }}</span>
         <span class="lang-label">{{ lang.isArabic() ? 'EN' : 'AR' }}</span>
       </button>
@@ -37,7 +56,7 @@
     </main>
 
     <!-- Sidebar (right for LTR, left for RTL) -->
-    <aside class="app-sidebar" [class.open]="sidebarOpen">
+    <aside id="course-sidebar" class="app-sidebar" [class.open]="sidebarOpen">
       <app-sidebar />
     </aside>
 

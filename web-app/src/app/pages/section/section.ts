@@ -1,5 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 import { CourseService } from '../../services/course.service';
 import { LanguageService } from '../../services/language.service';
 import { SectionContent, MULTI_LANG_EXAMPLES } from '../../data/sections.data';
@@ -12,11 +14,12 @@ import { CodeTabsComponent, LangTab } from '../../components/code-tabs/code-tabs
   templateUrl: './section.html',
   styleUrl: './section.scss',
 })
-export class SectionComponent implements OnInit {
+export class SectionComponent implements OnInit, OnDestroy {
   readonly course = inject(CourseService);
   readonly lang = inject(LanguageService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly titleService = inject(Title);
 
   section = signal<SectionContent | null>(null);
   multiLangTabs = signal<{ titleAr: string; titleEn: string; tabs: LangTab[] }[]>([]);
@@ -28,9 +31,10 @@ export class SectionComponent implements OnInit {
   loopCount = signal(0);
   loopRunning = signal(false);
   private loopTimer: ReturnType<typeof setInterval> | null = null;
+  private routeSub?: Subscription;
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.routeSub = this.route.params.subscribe(params => {
       const id = Number(params['id']);
       const found = this.course.getSectionById(id);
       if (!found) {
@@ -40,20 +44,43 @@ export class SectionComponent implements OnInit {
       this.section.set(found);
       this.course.setActive(id);
       this.buildMultiLangTabs(id);
+      this.updateTitle(found);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       this.resetDemoState();
     });
   }
 
+  ngOnDestroy() {
+    this.stopLoop();
+    this.routeSub?.unsubscribe();
+  }
+
+  private updateTitle(sec: SectionContent): void {
+    const name = this.lang.isArabic() ? sec.titleAr : sec.titleEn;
+    const suffix = this.lang.isArabic() ? 'مقدمة في البرمجة' : 'Intro to Programming';
+    this.titleService.setTitle(`${this.padId(sec.id)} · ${name} — ${suffix}`);
+  }
+
+  // Display order for language tabs — C++ is the primary (first) tab.
+  private static readonly LANG_ORDER = ['cpp', 'c', 'java', 'python', 'javascript'];
+
   private buildMultiLangTabs(id: number): void {
     const examples = MULTI_LANG_EXAMPLES[id] ?? [];
-    const built = examples.map(ex => ({
-      titleAr: ex.titleAr,
-      titleEn: ex.titleEn,
-      tabs: ex.tabs.map(t =>
-        CodeTabsComponent.buildTab(t.id, t.code, t.descriptionAr, t.descriptionEn)
-      ),
-    }));
+    const order = SectionComponent.LANG_ORDER;
+    const built = examples.map(ex => {
+      const sorted = [...ex.tabs].sort((a, b) => {
+        const ia = order.indexOf(a.id);
+        const ib = order.indexOf(b.id);
+        return (ia === -1 ? order.length : ia) - (ib === -1 ? order.length : ib);
+      });
+      return {
+        titleAr: ex.titleAr,
+        titleEn: ex.titleEn,
+        tabs: sorted.map(t =>
+          CodeTabsComponent.buildTab(t.id, t.code, t.descriptionAr, t.descriptionEn)
+        ),
+      };
+    });
     this.multiLangTabs.set(built);
   }
 

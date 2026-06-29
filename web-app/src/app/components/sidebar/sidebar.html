@@ -1,4 +1,4 @@
-<nav class="sidebar">
+<nav class="sidebar" [attr.aria-label]="lang.isArabic() ? 'فهرس الدورة' : 'Course navigation'">
   <div class="sidebar-header">
     <div class="course-title">
       <span class="course-icon">💻</span>
@@ -42,7 +42,8 @@
                   {{ lang.isArabic() ? section.titleAr : section.titleEn }}
                 </span>
                 @if (course.isCompleted(section.id)) {
-                  <span class="check-icon">✓</span>
+                  <span class="check-icon" role="img"
+                    [attr.aria-label]="lang.isArabic() ? 'مكتمل' : 'completed'">✓</span>
                 }
               </a>
             </li>
