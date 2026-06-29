@@ -1,0 +1,177 @@
+.code-tabs-block {
+  background: #0d1117;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+/* ── Tab Bar ──────────────────────────────────────────── */
+.tab-bar {
+  display: flex;
+  background: #161b22;
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  font-family: var(--font-body);
+
+  .tab-icon { font-size: 14px; }
+
+  &:hover {
+    color: var(--text-secondary);
+    background: rgba(255,255,255,0.04);
+  }
+
+  &.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent-blue);
+    background: rgba(88,166,255,0.06);
+  }
+
+  // Per-language accent when active
+  &.active:has(+ .tab-btn) {} // scoping hint
+
+  &[aria-selected="true"] { color: var(--text-primary); }
+}
+
+/* ── Panel Header ─────────────────────────────────────── */
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #161b22;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.panel-desc {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.lang-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #8b949e;
+
+  &.javascript { background: #f1e05a; }
+  &.python     { background: #3572a5; }
+  &.java       { background: #b07219; }
+  &.cpp        { background: #f34b7d; }
+  &.c          { background: #555555; }
+}
+
+/* ── Action Buttons ───────────────────────────────────── */
+.panel-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+  font-family: var(--font-body);
+}
+
+.copy-btn {
+  background: rgba(88,166,255,0.1);
+  border: 1px solid rgba(88,166,255,0.2);
+  color: var(--accent-blue);
+
+  &:hover   { background: rgba(88,166,255,0.2); }
+  &.copied  {
+    background: rgba(63,185,80,0.1);
+    border-color: rgba(63,185,80,0.2);
+    color: var(--accent-green);
+  }
+}
+
+.run-btn {
+  background: var(--accent-green);
+  border: 1px solid transparent;
+  color: #0d1117;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+
+  &:hover {
+    background: #4ccc5f;
+    color: #0d1117;
+    text-decoration: none;
+  }
+}
+
+/* ── Code Body ────────────────────────────────────────── */
+.code-body {
+  overflow-x: auto;
+}
+
+pre {
+  margin: 0;
+  padding: 20px;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: #e6edf3;
+  tab-size: 2;
+  direction: ltr;
+  text-align: left;
+  font-variant-ligatures: contextual;
+
+  code {
+    font-family: inherit;
+    font-size: inherit;
+    font-variant-ligatures: inherit;
+  }
+}
+
+/* ── Syntax highlight ─────────────────────────────────── */
+:host ::ng-deep {
+  .kw  { color: #ff7b72; font-weight: 600; }   /* keywords */
+  .str { color: #a5d6ff; }                      /* strings  */
+  .num { color: #79c0ff; }                      /* numbers  */
+  .cmt { color: #8b949e; font-style: italic; }  /* comments */
+  .fn  { color: #d2a8ff; }                      /* functions */
+  .ann { color: #ffa657; }                      /* Java annotations */
+  .pp  { color: #ff7b72; font-weight: 600; }    /* C/C++ preprocessor */
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 600px) {
+  .panel-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .panel-actions { width: 100%; }
+  .run-btn { flex: 1; justify-content: center; }
+}

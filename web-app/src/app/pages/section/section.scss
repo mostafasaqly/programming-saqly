@@ -796,6 +796,15 @@
   .ext-icon { font-size: 12px; opacity: 0.6; }
 }
 
+/* Multi-lang tabs group label */
+.tabs-group-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  margin-top: 4px;
+}
+
 /* Navigation */
 .section-nav {
   display: flex;

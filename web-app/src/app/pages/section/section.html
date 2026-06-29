@@ -376,8 +376,21 @@
     </div>
   </section>
 
-  <!-- Code Examples -->
-  @if (sec.codeExamples.length > 0) {
+  <!-- Multi-Language Code Examples (Python · JavaScript · Java · C++) -->
+  @if (multiLangTabs().length > 0) {
+    <section class="content-section">
+      <h2 class="content-heading">{{ lang.isArabic() ? 'أمثلة برمجية' : 'Code Examples' }}</h2>
+      @for (group of multiLangTabs(); track group.titleEn) {
+        @if (group.titleEn) {
+          <p class="tabs-group-title">
+            {{ lang.isArabic() ? group.titleAr : group.titleEn }}
+          </p>
+        }
+        <app-code-tabs [tabs]="group.tabs" />
+      }
+    </section>
+  } @else if (sec.codeExamples.length > 0) {
+    <!-- Fallback: legacy single-language code blocks -->
     <section class="content-section">
       <h2 class="content-heading">{{ lang.isArabic() ? 'أمثلة برمجية' : 'Code Examples' }}</h2>
       @for (example of sec.codeExamples; track example.code) {

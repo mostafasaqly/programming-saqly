@@ -1,0 +1,67 @@
+@if (tabs.length > 0) {
+<div class="code-tabs-block">
+
+  <!-- Tab Bar -->
+  <div class="tab-bar" role="tablist" [attr.aria-label]="lang.isArabic() ? 'لغات البرمجة' : 'Programming Languages'">
+    @for (tab of tabs; track tab.id) {
+      <button
+        class="tab-btn"
+        role="tab"
+        [class.active]="activeTab() === tab.id"
+        [attr.aria-selected]="activeTab() === tab.id"
+        [attr.aria-controls]="'panel-' + tab.id"
+        (click)="selectTab(tab.id)"
+      >
+        <span class="tab-icon" aria-hidden="true">{{ tab.icon }}</span>
+        {{ tab.label }}
+      </button>
+    }
+  </div>
+
+  <!-- Code Panel -->
+  @if (activeTabData(); as tab) {
+    <div
+      class="code-panel"
+      [id]="'panel-' + tab.id"
+      role="tabpanel"
+    >
+      <!-- Panel header: description + actions -->
+      <div class="panel-header">
+        <div class="panel-desc">
+          <span class="lang-dot" [class]="tab.id" aria-hidden="true"></span>
+          {{ lang.isArabic() ? tab.descriptionAr : tab.descriptionEn }}
+        </div>
+        <div class="panel-actions">
+          <button
+            class="action-btn copy-btn"
+            (click)="copyCode()"
+            [class.copied]="copied()"
+            [attr.aria-label]="lang.isArabic() ? 'نسخ الكود' : 'Copy code'"
+          >
+            @if (copied()) {
+              <span>✓ {{ lang.isArabic() ? 'تم النسخ' : 'Copied!' }}</span>
+            } @else {
+              <span>📋 {{ lang.isArabic() ? 'نسخ' : 'Copy' }}</span>
+            }
+          </button>
+          <a
+            class="action-btn run-btn"
+            [href]="tab.runUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="(lang.isArabic() ? 'تشغيل مثال ' : 'Run example in ') + tab.label"
+          >
+            ▶ {{ lang.isArabic() ? 'تشغيل المثال' : 'Run Example' }} »
+          </a>
+        </div>
+      </div>
+
+      <!-- Code body -->
+      <div class="code-body">
+        <pre><code [innerHTML]="getHighlighted(tab.code, tab.id)" dir="ltr"></code></pre>
+      </div>
+    </div>
+  }
+
+</div>
+}

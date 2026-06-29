@@ -1,13 +1,14 @@
-import { Component, inject, computed, OnInit, OnDestroy, signal, effect } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CourseService } from '../../services/course.service';
 import { LanguageService } from '../../services/language.service';
-import { SectionContent } from '../../data/sections.data';
+import { SectionContent, MULTI_LANG_EXAMPLES } from '../../data/sections.data';
 import { CodeBlockComponent } from '../../components/code-block/code-block';
+import { CodeTabsComponent, LangTab } from '../../components/code-tabs/code-tabs';
 
 @Component({
   selector: 'app-section',
-  imports: [RouterLink, CodeBlockComponent],
+  imports: [RouterLink, CodeBlockComponent, CodeTabsComponent],
   templateUrl: './section.html',
   styleUrl: './section.scss',
 })
@@ -18,6 +19,7 @@ export class SectionComponent implements OnInit {
   private readonly router = inject(Router);
 
   section = signal<SectionContent | null>(null);
+  multiLangTabs = signal<{ titleAr: string; titleEn: string; tabs: LangTab[] }[]>([]);
 
   binaryInput = signal('');
   binaryResult = signal('');
@@ -37,9 +39,22 @@ export class SectionComponent implements OnInit {
       }
       this.section.set(found);
       this.course.setActive(id);
+      this.buildMultiLangTabs(id);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       this.resetDemoState();
     });
+  }
+
+  private buildMultiLangTabs(id: number): void {
+    const examples = MULTI_LANG_EXAMPLES[id] ?? [];
+    const built = examples.map(ex => ({
+      titleAr: ex.titleAr,
+      titleEn: ex.titleEn,
+      tabs: ex.tabs.map(t =>
+        CodeTabsComponent.buildTab(t.id, t.code, t.descriptionAr, t.descriptionEn)
+      ),
+    }));
+    this.multiLangTabs.set(built);
   }
 
   resetDemoState() {
