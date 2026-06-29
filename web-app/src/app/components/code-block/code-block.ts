@@ -22,56 +22,66 @@ export class CodeBlockComponent {
     });
   }
 
-  getHighlighted(code: string, language: string): string {
-    // Step 1: extract literals into placeholders BEFORE any HTML escaping
-    const placeholders: string[] = [];
+ getHighlighted(code: string, language: string): string {
+  const placeholders: string[] = [];
 
-    // Extract comments first (// ... and # ...)
-    let result = code.replace(/(\/\/[^\n]*|#[^\n]*)/g, (m) => {
-      const idx = placeholders.length;
-      placeholders.push(`<span class="cmt">${this.esc(m)}</span>`);
-      return `\x00${idx}\x00`;
-    });
+  const save = (html: string): string => {
+    const key = `@@PH_${placeholders.length.toString(36).toUpperCase()}@@`;
+    placeholders.push(html);
+    return key;
+  };
 
-    // Extract template literals `...`
-    result = result.replace(/(`[^`]*`)/g, (m) => {
-      const idx = placeholders.length;
-      placeholders.push(`<span class="str">${this.esc(m)}</span>`);
-      return `\x00${idx}\x00`;
-    });
+  let result = code;
 
-    // Extract double-quoted strings
-    result = result.replace(/"([^"\\]|\\.)*"/g, (m) => {
-      const idx = placeholders.length;
-      placeholders.push(`<span class="str">${this.esc(m)}</span>`);
-      return `\x00${idx}\x00`;
-    });
+  // Comments
+  result = result.replace(/(\/\/[^\n]*|#[^\n]*)/g, (m) => {
+    return save(`<span class="cmt">${this.esc(m)}</span>`);
+  });
 
-    // Extract single-quoted strings
-    result = result.replace(/'([^'\\]|\\.)*'/g, (m) => {
-      const idx = placeholders.length;
-      placeholders.push(`<span class="str">${this.esc(m)}</span>`);
-      return `\x00${idx}\x00`;
-    });
+  // Template literals
+  result = result.replace(/(`[^`]*`)/g, (m) => {
+    return save(`<span class="str">${this.esc(m)}</span>`);
+  });
 
-    // Step 2: escape remaining HTML chars
-    result = this.esc(result);
+  // Double quoted strings
+  result = result.replace(/"([^"\\]|\\.)*"/g, (m) => {
+    return save(`<span class="str">${this.esc(m)}</span>`);
+  });
 
-    // Step 3: keywords (safe now — no quotes in remaining text)
-    const kw = /\b(function|return|let|const|var|if|else|for|while|do|break|continue|new|class|import|export|default|true|false|null|undefined|typeof|instanceof|in|of|switch|case|this|async|await|try|catch|finally|throw|void|delete|yield|print|def|and|or|not|pass|elif|lambda|from|as|with|assert|global|nonlocal|raise|int|str|bool|float|double|public|private|static|void|include|printf|scanf)\b/g;
-    result = result.replace(kw, '<span class="kw">$1</span>');
+  // Single quoted strings
+  result = result.replace(/'([^'\\]|\\.)*'/g, (m) => {
+    return save(`<span class="str">${this.esc(m)}</span>`);
+  });
 
-    // Step 4: numbers (not inside words)
-    result = result.replace(/(?<![.\w])(\d+\.?\d*)(?![\w])/g, '<span class="num">$1</span>');
+  // Escape remaining code
+  result = this.esc(result);
 
-    // Step 5: function calls — word followed by (
-    result = result.replace(/\b([a-zA-Z_]\w*)(?=\s*\()/g, '<span class="fn">$1</span>');
+  // Keywords
+  const kw =
+    /\b(function|return|let|const|var|if|else|for|while|do|break|continue|new|class|import|export|default|true|false|null|undefined|typeof|instanceof|in|of|switch|case|this|async|await|try|catch|finally|throw|void|delete|yield|print|def|and|or|not|pass|elif|lambda|from|as|with|assert|global|nonlocal|raise|int|str|bool|float|double|public|private|static|include|printf|scanf)\b/g;
 
-    // Step 6: restore placeholders
-    result = result.replace(/\x00(\d+)\x00/g, (_, i) => placeholders[+i]);
+  result = result.replace(kw, (m) => {
+    return save(`<span class="kw">${m}</span>`);
+  });
 
-    return result;
-  }
+  // Function calls
+  result = result.replace(/\b([a-zA-Z_]\w*)(?=\s*\()/g, (m) => {
+    return save(`<span class="fn">${m}</span>`);
+  });
+
+  // Numbers
+  result = result.replace(/(?<![.\w])(\d+\.?\d*)(?![\w])/g, (m) => {
+    return save(`<span class="num">${m}</span>`);
+  });
+
+  // Restore all placeholders
+  result = result.replace(/@@PH_([A-Z0-9]+)@@/g, (_, key) => {
+    const index = parseInt(key, 36);
+    return placeholders[index] ?? '';
+  });
+
+  return result;
+}
 
   private esc(s: string): string {
     return s
