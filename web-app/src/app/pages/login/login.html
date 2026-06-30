@@ -1,0 +1,51 @@
+<div class="login-wrap" [class.rtl]="lang.isRTL()">
+  <div class="login-card" [class.shake]="shake()">
+
+    <div class="login-logo">
+      <span class="logo-icon">💻</span>
+      <span class="logo-text">
+        {{ lang.isArabic() ? 'مقدمة في البرمجة' : 'Intro to Programming' }}
+      </span>
+    </div>
+
+    <h1 class="login-title">
+      {{ lang.isArabic() ? 'أدخل كود الدخول' : 'Enter Access Code' }}
+    </h1>
+    <p class="login-sub">
+      {{ lang.isArabic()
+        ? 'هذه الدورة متاحة للمسجلين فقط. أدخل الكود الخاص بك للمتابعة.'
+        : 'This course is for enrolled students only. Enter your code to continue.' }}
+    </p>
+
+    <form (ngSubmit)="submit()" #f="ngForm">
+      <div class="input-group" [class.has-error]="error()">
+        <input
+          type="text"
+          [(ngModel)]="code"
+          name="code"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          [placeholder]="lang.isArabic() ? 'كود الدخول...' : 'Access code...'"
+          (input)="error.set(false)"
+          required
+        />
+        @if (error()) {
+          <span class="error-msg">
+            {{ lang.isArabic() ? 'الكود غير صحيح، حاول مجددًا.' : 'Incorrect code. Please try again.' }}
+          </span>
+        }
+      </div>
+
+      <button type="submit" class="login-btn" [disabled]="!code.trim()">
+        {{ lang.isArabic() ? 'دخول' : 'Enter' }}
+      </button>
+    </form>
+
+    <button class="lang-switch" (click)="lang.toggle()">
+      {{ lang.isArabic() ? 'English' : 'العربية' }}
+    </button>
+
+  </div>
+</div>

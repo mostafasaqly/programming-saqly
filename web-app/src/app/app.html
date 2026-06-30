@@ -1,3 +1,6 @@
+@if (!auth.isAuthed()) {
+  <app-login />
+} @else {
 <div class="app-shell" [class.rtl]="lang.isRTL()">
 
   <!-- Top Header -->
@@ -78,3 +81,4 @@
   }
 
 </div>
+}
