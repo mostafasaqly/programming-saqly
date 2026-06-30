@@ -45,7 +45,7 @@
 
   <!-- Variable Box Diagram (Section 5) -->
   @if (sec.diagramType === 'variable-box') {
-    <div class="diagram-card">
+    <div class="diagram-card reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'تصور: المتغير كصندوق' : 'Visual: Variable as a Box' }}</h3>
       <div class="var-demo">
         <div class="var-box">
@@ -69,35 +69,35 @@
 
   <!-- Data Types Diagram (Section 6) -->
   @if (sec.diagramType === 'data-types') {
-    <div class="diagram-card">
+    <div class="diagram-card reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'أنواع البيانات' : 'Data Types' }}</h3>
       <div class="types-grid">
-        <div class="type-card type-number">
+        <div class="type-card type-number stagger-item" style="--stagger:0">
           <span class="type-icon">🔢</span>
           <span class="type-name">Number</span>
           <span class="type-example">42, 3.14</span>
         </div>
-        <div class="type-card type-string">
+        <div class="type-card type-string stagger-item" style="--stagger:1">
           <span class="type-icon">📝</span>
           <span class="type-name">String</span>
           <span class="type-example">"Hello"</span>
         </div>
-        <div class="type-card type-bool">
+        <div class="type-card type-bool stagger-item" style="--stagger:2">
           <span class="type-icon">✓/✗</span>
           <span class="type-name">Boolean</span>
           <span class="type-example">true / false</span>
         </div>
-        <div class="type-card type-array">
+        <div class="type-card type-array stagger-item" style="--stagger:3">
           <span class="type-icon">📋</span>
           <span class="type-name">Array</span>
           <span class="type-example">[1, 2, 3]</span>
         </div>
-        <div class="type-card type-null">
+        <div class="type-card type-null stagger-item" style="--stagger:4">
           <span class="type-icon">∅</span>
           <span class="type-name">Null</span>
           <span class="type-example">null</span>
         </div>
-        <div class="type-card type-obj">
+        <div class="type-card type-obj stagger-item" style="--stagger:5">
           <span class="type-icon">📦</span>
           <span class="type-name">Object</span>
           <span class="type-example">&#123; key: val &#125;</span>
@@ -108,7 +108,7 @@
 
   <!-- Flowchart (Section 12 — Conditions) -->
   @if (sec.diagramType === 'flowchart') {
-    <div class="diagram-card">
+    <div class="diagram-card reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'مخطط تدفق: if / else' : 'Flowchart: if / else' }}</h3>
       <div class="flowchart">
         <div class="fc-box fc-start">{{ lang.isArabic() ? 'البداية' : 'Start' }}</div>
@@ -138,7 +138,7 @@
 
   <!-- Loop Diagram (Section 14) -->
   @if (sec.diagramType === 'loop-diagram') {
-    <div class="diagram-card">
+    <div class="diagram-card reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'تصور: حلقة for التكرارية' : 'Visual: for loop' }}</h3>
       <div class="loop-demo">
         <div class="loop-counter">
@@ -175,7 +175,7 @@
 
   <!-- Function Box Diagram (Section 15) -->
   @if (sec.diagramType === 'function-box') {
-    <div class="diagram-card">
+    <div class="diagram-card reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'تصور: الدالة = مدخل → معالجة → مخرج' : 'Visual: Function = Input → Process → Output' }}</h3>
       <div class="fn-diagram">
         <div class="fn-input">
@@ -199,7 +199,7 @@
 
   <!-- Binary Converter (Section 20) -->
   @if (sec.diagramType === 'binary-converter') {
-    <div class="diagram-card">
+    <div class="diagram-card reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'محول ثنائي / عشري تفاعلي' : 'Interactive Binary / Decimal Converter' }}</h3>
       <div class="binary-converter">
         <div class="conv-group">
@@ -233,7 +233,7 @@
 
   <!-- Logic Gates (Section 22) -->
   @if (sec.diagramType === 'logic-gates') {
-    <div class="diagram-card">
+    <div class="diagram-card reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'جداول الحقيقة' : 'Truth Tables' }}</h3>
       <div class="truth-tables">
         <div class="truth-table">
@@ -270,7 +270,7 @@
 
   <!-- Array Visual (Section 13) -->
   @if (sec.diagramType === 'array-visual') {
-    <div class="diagram-card">
+    <div class="diagram-card reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'تصور: المصفوفة' : 'Visual: Array' }}</h3>
       <div class="array-visual">
         <div class="arr-label">fruits = </div>
@@ -289,7 +289,7 @@
 
   <!-- Hex Colors (Section 21) -->
   @if (sec.diagramType === 'hex-colors') {
-    <div class="diagram-card">
+    <div class="diagram-card reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'الألوان بالنظام السداسي' : 'Colors in Hexadecimal' }}</h3>
       <div class="hex-colors">
         <div class="hex-color-card" style="background: #FF0000;">#FF0000 = Red</div>
@@ -304,7 +304,7 @@
 
   <!-- Roadmap (Section 25) -->
   @if (sec.diagramType === 'roadmap') {
-    <div class="diagram-card">
+    <div class="diagram-card reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'ما تعلمته في هذه الدورة' : 'What You Learned in This Course' }}</h3>
       <div class="roadmap">
         @for (item of [
@@ -342,7 +342,7 @@
 
   <!-- Generic diagram for other sections -->
   @if (!['variable-box','data-types','flowchart','loop-diagram','function-box','binary-converter','logic-gates','array-visual','hex-colors','roadmap','project'].includes(sec.diagramType)) {
-    <div class="diagram-card concept-overview">
+    <div class="diagram-card concept-overview reveal">
       <h3 class="diagram-title">{{ lang.isArabic() ? 'المفاهيم الرئيسية' : 'Key Concepts' }}</h3>
       <div class="concepts-grid">
         @for (concept of (lang.isArabic() ? sec.conceptsAr : sec.conceptsEn); track concept) {
@@ -354,7 +354,7 @@
 
   <!-- Project diagram -->
   @if (sec.diagramType === 'project') {
-    <div class="diagram-card project-banner" [style.--color]="sec.color">
+    <div class="diagram-card project-banner reveal" [style.--color]="sec.color">
       <div class="project-icon">{{ sec.icon }}</div>
       <div class="project-info">
         <h3>{{ lang.isArabic() ? 'مشروع تطبيقي' : 'Hands-On Project' }}</h3>
@@ -364,7 +364,7 @@
   }
 
   <!-- Concepts Section -->
-  <section class="content-section">
+  <section class="content-section reveal">
     <h2 class="content-heading">{{ lang.isArabic() ? 'المفاهيم الأساسية' : 'Core Concepts' }}</h2>
     <div class="concepts-list">
       @for (concept of (lang.isArabic() ? sec.conceptsAr : sec.conceptsEn); track concept; let i = $index) {
@@ -383,7 +383,7 @@
 
   <!-- Multi-Language Code Examples (Python · JavaScript · Java · C++) -->
   @if (multiLangTabs().length > 0) {
-    <section class="content-section">
+    <section class="content-section reveal">
       <h2 class="content-heading">{{ lang.isArabic() ? 'أمثلة برمجية' : 'Code Examples' }}</h2>
       @for (group of multiLangTabs(); track group.titleEn) {
         @if (group.titleEn) {
@@ -396,7 +396,7 @@
     </section>
   } @else if (sec.codeExamples.length > 0) {
     <!-- Fallback: legacy single-language code blocks -->
-    <section class="content-section">
+    <section class="content-section reveal">
       <h2 class="content-heading">{{ lang.isArabic() ? 'أمثلة برمجية' : 'Code Examples' }}</h2>
       @for (example of sec.codeExamples; track example.code) {
         <app-code-block [example]="example" />
@@ -405,7 +405,7 @@
   }
 
   <!-- Key Points -->
-  <section class="content-section">
+  <section class="content-section reveal">
     <h2 class="content-heading">{{ lang.isArabic() ? 'النقاط المهمة' : 'Key Takeaways' }}</h2>
     <ul class="key-points">
       @for (point of (lang.isArabic() ? sec.keyPointsAr : sec.keyPointsEn); track point; let i = $index) {
@@ -419,10 +419,10 @@
 
   <!-- Common Mistakes -->
   @if (sec.commonMistakes?.length) {
-    <section class="content-section mistakes-section">
+    <section class="content-section mistakes-section reveal">
       <h2 class="content-heading">{{ lang.isArabic() ? '⚠️ أخطاء شائعة' : '⚠️ Common Mistakes' }}</h2>
       @for (m of sec.commonMistakes!; track m.mistakeEn; let mi = $index) {
-        <div class="mistake-card">
+        <div class="mistake-card stagger-item" [style.--stagger]="mi">
           <div class="mistake-row">
             <span class="mistake-icon">❌</span>
             <div class="mistake-body">
@@ -444,10 +444,10 @@
 
   <!-- Challenge -->
   @if (sec.challenges?.length) {
-    <section class="content-section challenge-section">
+    <section class="content-section challenge-section reveal">
       <h2 class="content-heading">{{ lang.isArabic() ? '🏋️ تحدِّ نفسك' : '🏋️ Challenge Yourself' }}</h2>
       @for (ch of sec.challenges!; track ch.titleEn; let ci = $index) {
-        <div class="challenge-card">
+        <div class="challenge-card stagger-item" [style.--stagger]="ci">
           <div class="challenge-header">
             <span class="challenge-num">{{ ci + 1 }}</span>
             <h3 class="challenge-title">{{ lang.isArabic() ? ch.titleAr : ch.titleEn }}</h3>
@@ -483,10 +483,10 @@
 
   <!-- Quiz -->
   @if (sec.quiz?.length) {
-    <section class="content-section quiz-section">
+    <section class="content-section quiz-section reveal">
       <h2 class="content-heading">{{ lang.isArabic() ? '🧠 اختبر فهمك' : '🧠 Test Your Understanding' }}</h2>
       @for (q of sec.quiz!; track q.questionEn; let qi = $index) {
-        <div class="quiz-card" [class.answered]="quizAnswered(qi)">
+        <div class="quiz-card stagger-item" [class.answered]="quizAnswered(qi)" [style.--stagger]="qi">
           <p class="quiz-question">
             <span class="quiz-num">{{ qi + 1 }}.</span>
             {{ lang.isArabic() ? q.questionAr : q.questionEn }}

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal, AfterViewInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
@@ -14,12 +14,14 @@ import { CodeTabsComponent, LangTab } from '../../components/code-tabs/code-tabs
   templateUrl: './section.html',
   styleUrl: './section.scss',
 })
-export class SectionComponent implements OnInit, OnDestroy {
+export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly course = inject(CourseService);
   readonly lang = inject(LanguageService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly titleService = inject(Title);
+  private readonly el = inject(ElementRef);
+  private revealObserver?: IntersectionObserver;
 
   section = signal<SectionContent | null>(null);
   multiLangTabs = signal<{ titleAr: string; titleEn: string; tabs: LangTab[] }[]>([]);
@@ -85,12 +87,37 @@ export class SectionComponent implements OnInit, OnDestroy {
       this.updateTitle(found);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       this.resetDemoState();
+      // Re-run reveal after route change (DOM re-renders)
+      setTimeout(() => this.initReveal(), 120);
     });
+  }
+
+  ngAfterViewInit() {
+    this.initReveal();
+  }
+
+  private initReveal() {
+    this.revealObserver?.disconnect();
+    this.revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            (e.target as HTMLElement).classList.add('revealed');
+            this.revealObserver?.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+    const targets = (this.el.nativeElement as HTMLElement)
+      .querySelectorAll<HTMLElement>('.reveal');
+    targets.forEach(t => this.revealObserver!.observe(t));
   }
 
   ngOnDestroy() {
     this.stopLoop();
     this.routeSub?.unsubscribe();
+    this.revealObserver?.disconnect();
   }
 
   private updateTitle(sec: SectionContent): void {
