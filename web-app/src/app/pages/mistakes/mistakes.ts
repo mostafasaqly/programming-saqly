@@ -1,5 +1,6 @@
 import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { CourseService } from '../../services/course.service';
 import { LanguageService } from '../../services/language.service';
 import { QuizQuestion, SectionContent } from '../../data/sections.data';
@@ -13,7 +14,7 @@ interface WrongAnswer {
 
 @Component({
   selector: 'app-mistakes',
-  imports: [RouterLink],
+  imports: [RouterLink, DecimalPipe],
   templateUrl: './mistakes.html',
   styleUrl: './mistakes.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
