@@ -1,0 +1,102 @@
+﻿import type { SectionContent } from './sections.data';
+
+export const SECTIONS_PART8: SectionContent[] = [
+  {
+    id: 25,
+    part: 8,
+    partTitleAr: 'الخلاصة والخطوات القادمة',
+    partTitleEn: 'Wrap Up',
+    titleAr: 'المراجعة النهائية والخطوات القادمة',
+    titleEn: 'Final Review and Next Steps',
+    descriptionAr: 'راجع كل ما تعلمته واكتشف الخطوات التالية في مسيرتك البرمجية.',
+    descriptionEn: 'Review everything you\'ve learned and discover the next steps in your programming journey.',
+    estimatedTime: '30 min',
+    level: 'beginner',
+    icon: '🏆',
+    color: '#d29922',
+    conceptsAr: ['مراجعة المفاهيم', 'أين تذهب بعد ذلك', 'لغات البرمجة المختلفة', 'موارد التعلم'],
+    conceptsEn: ['Concepts review', 'Where to go next', 'Different programming languages', 'Learning resources'],
+    conceptDescriptionsAr: [
+      'تعلّمت المتغيرات والثوابت وأنواع البيانات والعمليات والشروط والحلقات والدوال والمصفوفات.',
+      'الخطوة القادمة هي التعمق في لغة واحدة كـ JavaScript أو Python وبناء مشاريع حقيقية.',
+      'كل لغة لها مجال قوة: Python للذكاء الاصطناعي، JavaScript للويب، Swift لـ iOS، Kotlin لـ Android.',
+      'موارد مجانية ممتازة: MDN Web Docs، freeCodeCamp، CS50 Harvard، وYouTube.',
+    ],
+    conceptDescriptionsEn: [
+      'You\'ve learned variables, constants, data types, operators, conditions, loops, functions, and arrays.',
+      'The next step is to go deeper into one language like JavaScript or Python and build real projects.',
+      'Each language has a strength area: Python for AI, JavaScript for the web, Swift for iOS, Kotlin for Android.',
+      'Excellent free resources: MDN Web Docs, freeCodeCamp, CS50 Harvard, and YouTube.',
+    ],
+    diagramType: 'roadmap',
+    codeExamples: [],
+    editorLinks: [],
+    keyPointsAr: [
+      'لقد تعلمت المتغيرات، أنواع البيانات، الشروط، الحلقات، والدوال',
+      'الخطوة القادمة: تعلّم لغة كـ JavaScript أو Python بشكل أعمق',
+      'ابنِ مشاريع شخصية — هذا أفضل طريقة للتعلم',
+      'انضم لمجتمعات البرمجة وتواصل مع مبرمجين آخرين',
+    ],
+    keyPointsEn: [
+      'You\'ve learned variables, data types, conditions, loops, and functions',
+      'Next step: dive deeper into JavaScript or Python',
+      'Build personal projects — that\'s the best way to learn',
+      'Join programming communities and connect with other developers',
+    ],
+    quiz: [
+      {
+        questionAr: 'ما أفضل طريقة لتعلم البرمجة بعد هذه الدورة؟',
+        questionEn: 'What is the best way to learn programming after this course?',
+        options: [
+          'قراءة المزيد من الكتب / Reading more books',
+          'بناء مشاريع شخصية / Building personal projects',
+          'حفظ القواعد / Memorizing rules',
+          'مشاهدة الفيديوهات فقط / Only watching videos',
+        ],
+        correctIndex: 1,
+        explanationAr: 'بناء المشاريع هو أفضل طريقة للتعلم — تواجه مشكلات حقيقية وتحلها.',
+        explanationEn: 'Building projects is the best way to learn — you face real problems and solve them.',
+      },
+      {
+        questionAr: 'أي لغة مناسبة للذكاء الاصطناعي؟',
+        questionEn: 'Which language is best suited for AI?',
+        options: ['JavaScript', 'Python', 'Swift', 'Kotlin'],
+        correctIndex: 1,
+        explanationAr: 'Python هي اللغة الأكثر استخداماً في مجال الذكاء الاصطناعي وتعلم الآلة.',
+        explanationEn: 'Python is the most widely used language in AI and machine learning.',
+      },
+    ],
+    challenges: [
+      {
+        titleAr: 'التحدي النهائي: مشروعك الخاص',
+        titleEn: 'Final Challenge: Your Own Project',
+        taskAr: 'استخدم كل ما تعلمته واكتب مشروعاً صغيراً من اختيارك: آلة حاسبة، لعبة تخمين رقم، أو قائمة مهام.',
+        taskEn: 'Use everything you learned and write a small project of your choice: a calculator, number guessing game, or task list.',
+        hintAr: 'مثال: لعبة تخمين — اختر رقماً بين 1-10 واطلب من المستخدم التخمين',
+        hintEn: 'Example: guessing game — pick a number between 1-10 and ask user to guess',
+        solutionPython: `# لعبة تخمين الرقم\nimport random\n\nsecret = random.randint(1, 10)\nguess = int(input("خمّن رقماً بين 1 و 10: "))\n\nif guess == secret:\n    print("صحيح! أنت رائع!")\nelif guess < secret:\n    print(f"الرقم أكبر. الرقم الصحيح هو {secret}")\nelse:\n    print(f"الرقم أصغر. الرقم الصحيح هو {secret}")`,
+        solutionJs: `// Number guessing game\nlet secret = Math.floor(Math.random() * 10) + 1;\nlet guess = Number(prompt("Guess a number between 1 and 10:"));\n\nif (guess === secret) {\n    console.log("Correct! Amazing!");\n} else if (guess < secret) {\n    console.log(\`Too low. The number was \${secret}\`);\n} else {\n    console.log(\`Too high. The number was \${secret}\`);\n}`,
+      },
+    ],
+    commonMistakes: [
+      {
+        mistakeAr: 'التوقف عن التعلم بعد إتمام الدورة',
+        mistakeEn: 'Stopping learning after completing the course',
+        fixAr: 'هذه الدورة هي البداية فقط — ابنِ مشاريع واستمر في تعلم لغة واحدة بعمق',
+        fixEn: 'This course is just the beginning — build projects and keep learning one language deeply',
+      },
+      {
+        mistakeAr: 'محاولة تعلم كل اللغات في نفس الوقت',
+        mistakeEn: 'Trying to learn all languages at the same time',
+        fixAr: 'اختر لغة واحدة (Python أو JavaScript) وأتقنها أولاً قبل الانتقال لأخرى',
+        fixEn: 'Pick one language (Python or JavaScript) and master it first before moving to another',
+      },
+      {
+        mistakeAr: 'الخوف من الأخطاء وعدم التجريب',
+        mistakeEn: 'Fear of errors and not experimenting',
+        fixAr: 'الأخطاء جزء طبيعي من البرمجة — كل مبرمج محترف يخطئ ويتعلم منها',
+        fixEn: 'Errors are a natural part of programming — every professional developer makes mistakes and learns from them',
+      },
+    ],
+  },
+];
