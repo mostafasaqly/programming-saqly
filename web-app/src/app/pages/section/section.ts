@@ -33,6 +33,44 @@ export class SectionComponent implements OnInit, OnDestroy {
   private loopTimer: ReturnType<typeof setInterval> | null = null;
   private routeSub?: Subscription;
 
+  // Challenge state
+  private _hintVisible = signal<Record<number, boolean>>({});
+  private _solutionVisible = signal<Record<number, boolean>>({});
+  private _solutionLang = signal<Record<number, 'python' | 'js'>>({});
+
+  hintVisible(i: number): boolean { return !!this._hintVisible()[i]; }
+  solutionVisible(i: number): boolean { return !!this._solutionVisible()[i]; }
+  solutionLang(i: number): 'python' | 'js' { return this._solutionLang()[i] ?? 'python'; }
+
+  toggleHint(i: number): void {
+    this._hintVisible.update(s => ({ ...s, [i]: !s[i] }));
+  }
+  toggleSolution(i: number): void {
+    this._solutionVisible.update(s => ({ ...s, [i]: !s[i] }));
+  }
+  setSolutionLang(i: number, lang: 'python' | 'js'): void {
+    this._solutionLang.update(s => ({ ...s, [i]: lang }));
+  }
+
+  // Quiz state
+  private _quizAnswers = signal<Record<number, number>>({});
+
+  quizAnswered(qi: number): boolean { return this._quizAnswers()[qi] !== undefined; }
+  quizSelected(qi: number): number { return this._quizAnswers()[qi] ?? -1; }
+  answerQuiz(qi: number, selected: number, _correct: number): void {
+    this._quizAnswers.update(s => ({ ...s, [qi]: selected }));
+  }
+  allQuizAnswered(): boolean {
+    const sec = this.section();
+    if (!sec?.quiz?.length) return false;
+    return sec.quiz.every((_, i) => this.quizAnswered(i));
+  }
+  quizScore(): number {
+    const sec = this.section();
+    if (!sec?.quiz) return 0;
+    return sec.quiz.filter((q, i) => this._quizAnswers()[i] === q.correctIndex).length;
+  }
+
   ngOnInit() {
     this.routeSub = this.route.params.subscribe(params => {
       const id = Number(params['id']);
@@ -61,8 +99,8 @@ export class SectionComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(`${this.padId(sec.id)} · ${name} — ${suffix}`);
   }
 
-  // Display order for language tabs — C++ is the primary (first) tab.
-  private static readonly LANG_ORDER = ['cpp', 'c', 'java', 'python', 'javascript'];
+  // Python first — least syntax noise for absolute beginners.
+  private static readonly LANG_ORDER = ['python', 'javascript', 'java', 'cpp', 'c'];
 
   private buildMultiLangTabs(id: number): void {
     const examples = MULTI_LANG_EXAMPLES[id] ?? [];
@@ -91,6 +129,10 @@ export class SectionComponent implements OnInit, OnDestroy {
     this.decimalResult.set('');
     this.stopLoop();
     this.loopCount.set(0);
+    this._hintVisible.set({});
+    this._solutionVisible.set({});
+    this._solutionLang.set({});
+    this._quizAnswers.set({});
   }
 
   get prevSection(): SectionContent | undefined {

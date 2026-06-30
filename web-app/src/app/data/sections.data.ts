@@ -22,6 +22,26 @@ export interface MultiLangExample {
   }[];
 }
 
+export interface QuizQuestion {
+  questionAr: string;
+  questionEn: string;
+  options: string[];
+  correctIndex: number;
+  explanationAr: string;
+  explanationEn: string;
+}
+
+export interface Challenge {
+  titleAr: string;
+  titleEn: string;
+  taskAr: string;
+  taskEn: string;
+  hintAr: string;
+  hintEn: string;
+  solutionPython: string;
+  solutionJs: string;
+}
+
 export interface SectionContent {
   id: number;
   part: number;
@@ -45,6 +65,8 @@ export interface SectionContent {
   keyPointsEn: string[];
   icon: string;
   color: string;
+  quiz?: QuizQuestion[];
+  challenges?: Challenge[];
 }
 
 export const COURSE_SECTIONS: SectionContent[] = [
@@ -321,6 +343,44 @@ console.log(score); // 15`,
       'let is used to create a changeable variable in JavaScript',
       'Variable names should be descriptive and start with a letter',
       'You can change the variable\'s value at any time',
+    ],
+    quiz: [
+      {
+        questionAr: 'ما الرمز الذي يُستخدم لتعيين قيمة لمتغير؟',
+        questionEn: 'Which symbol is used to assign a value to a variable?',
+        options: ['==', '=', ':=', '=>'],
+        correctIndex: 1,
+        explanationAr: 'الرمز = يُستخدم للتعيين، بينما == يُستخدم للمقارنة.',
+        explanationEn: '= is for assignment, while == is for comparison.',
+      },
+      {
+        questionAr: 'ما قيمة score بعد تنفيذ: score = 5; score = score + 3؟',
+        questionEn: 'What is the value of score after: score = 5; score = score + 3?',
+        options: ['5', '3', '8', '53'],
+        correctIndex: 2,
+        explanationAr: 'score = 5 ثم نضيف 3 فتصبح 8.',
+        explanationEn: 'score starts at 5, then 5 + 3 = 8.',
+      },
+      {
+        questionAr: 'أي من التالي اسم متغير صحيح؟',
+        questionEn: 'Which of the following is a valid variable name?',
+        options: ['2name', 'my-name', 'myName', 'my name'],
+        correctIndex: 2,
+        explanationAr: 'أسماء المتغيرات لا تبدأ برقم ولا تحتوي على مسافات أو شرطات.',
+        explanationEn: 'Variable names cannot start with a number or contain spaces or hyphens.',
+      },
+    ],
+    challenges: [
+      {
+        titleAr: 'تحدي: صف عن نفسك',
+        titleEn: 'Challenge: Describe Yourself',
+        taskAr: 'أنشئ 3 متغيرات: اسمك، عمرك، ومدينتك، ثم اطبعها.',
+        taskEn: 'Create 3 variables: your name, age, and city, then print them.',
+        hintAr: 'استخدم name = "..." و age = ... و city = "..."',
+        hintEn: 'Use name = "..." and age = ... and city = "..."',
+        solutionPython: `name = "Sara"\nage = 22\ncity = "Riyadh"\n\nprint(name)\nprint(age)\nprint(city)`,
+        solutionJs: `let name = "Sara";\nlet age = 22;\nlet city = "Riyadh";\n\nconsole.log(name);\nconsole.log(age);\nconsole.log(city);`,
+      },
     ],
   },
   {
@@ -820,6 +880,44 @@ console.log(status); // Adult`,
       'else if lets you check additional conditions',
       'The ternary operator ? : is useful for simple cases',
     ],
+    quiz: [
+      {
+        questionAr: 'ماذا يُنفّذ الكود داخل else؟',
+        questionEn: 'When does the code inside else execute?',
+        options: ['دائماً / Always', 'عندما يكون الشرط صحيحاً / When condition is true', 'عندما يكون الشرط خاطئاً / When condition is false', 'لا يُنفّذ أبداً / Never'],
+        correctIndex: 2,
+        explanationAr: 'else يعمل فقط عندما يكون شرط if خاطئاً (false).',
+        explanationEn: 'else runs only when the if condition is false.',
+      },
+      {
+        questionAr: 'ما ناتج: x = 15; "كبير" if x > 10 else "صغير"؟',
+        questionEn: 'What is the output of: x = 15; "big" if x > 10 else "small"?',
+        options: ['"صغير" / "small"', '"كبير" / "big"', 'خطأ / Error', '15'],
+        correctIndex: 1,
+        explanationAr: '15 > 10 صحيحة فيُرجع "كبير".',
+        explanationEn: '15 > 10 is true so it returns "big".',
+      },
+      {
+        questionAr: 'كم شرطاً يمكنك إضافة بـ else if؟',
+        questionEn: 'How many else if conditions can you add?',
+        options: ['واحد فقط / Only one', 'اثنان فقط / Only two', 'ثلاثة / Three', 'بلا حد / Unlimited'],
+        correctIndex: 3,
+        explanationAr: 'يمكنك إضافة أي عدد من else if حسب الحاجة.',
+        explanationEn: 'You can add as many else if blocks as needed.',
+      },
+    ],
+    challenges: [
+      {
+        titleAr: 'تحدي: فاحص العمر',
+        titleEn: 'Challenge: Age Checker',
+        taskAr: 'اكتب برنامجاً يحدد إذا كان الشخص طفلاً (أقل من 13)، مراهقاً (13-17)، أو بالغاً (18+).',
+        taskEn: 'Write a program that determines if a person is a child (under 13), teen (13-17), or adult (18+).',
+        hintAr: 'استخدم if / elif / else مع عمر محدد',
+        hintEn: 'Use if / elif / else with a specific age value',
+        solutionPython: `age = 16\n\nif age < 13:\n    print("طفل / Child")\nelif age < 18:\n    print("مراهق / Teen")\nelse:\n    print("بالغ / Adult")`,
+        solutionJs: `let age = 16;\n\nif (age < 13) {\n    console.log("Child");\n} else if (age < 18) {\n    console.log("Teen");\n} else {\n    console.log("Adult");\n}`,
+      },
+    ],
   },
   {
     id: 13,
@@ -976,6 +1074,44 @@ for (let i = 0; i < 10; i++) {
       'break stops the loop entirely',
       'continue skips the current iteration and moves to the next',
     ],
+    quiz: [
+      {
+        questionAr: 'كم مرة تتكرر: for i in range(3)?',
+        questionEn: 'How many times does: for i in range(3) repeat?',
+        options: ['2', '3', '4', '0'],
+        correctIndex: 1,
+        explanationAr: 'range(3) يُنتج 0, 1, 2 — أي 3 تكرارات.',
+        explanationEn: 'range(3) produces 0, 1, 2 — that is 3 iterations.',
+      },
+      {
+        questionAr: 'ما الفرق بين break وcontinue؟',
+        questionEn: 'What is the difference between break and continue?',
+        options: ['لا فرق / No difference', 'break يوقف الحلقة، continue يتخطى التكرار الحالي / break stops the loop, continue skips current', 'continue يوقف الحلقة / continue stops the loop', 'break يُكرر / break repeats'],
+        correctIndex: 1,
+        explanationAr: 'break يخرج من الحلقة كلياً، continue يتخطى فقط التكرار الحالي.',
+        explanationEn: 'break exits the entire loop; continue only skips the current iteration.',
+      },
+      {
+        questionAr: 'متى نستخدم while بدلاً من for؟',
+        questionEn: 'When do we use while instead of for?',
+        options: ['دائماً / Always', 'عندما لا نعرف عدد التكرارات مسبقاً / When we don\'t know the count in advance', 'عندما نعرف العدد / When we know the count', 'أبداً / Never'],
+        correctIndex: 1,
+        explanationAr: 'while مناسبة عندما تكون حالة التوقف غير معروفة مسبقاً.',
+        explanationEn: 'while is ideal when the stopping condition is not known in advance.',
+      },
+    ],
+    challenges: [
+      {
+        titleAr: 'تحدي: اطبع الأرقام الزوجية',
+        titleEn: 'Challenge: Print Even Numbers',
+        taskAr: 'اطبع جميع الأرقام الزوجية من 1 إلى 20.',
+        taskEn: 'Print all even numbers from 1 to 20.',
+        hintAr: 'استخدم for مع range(1, 21) وشرط if num % 2 == 0',
+        hintEn: 'Use for with range(1, 21) and check if num % 2 == 0',
+        solutionPython: `for num in range(1, 21):\n    if num % 2 == 0:\n        print(num)`,
+        solutionJs: `for (let num = 1; num <= 20; num++) {\n    if (num % 2 === 0) {\n        console.log(num);\n    }\n}`,
+      },
+    ],
   },
   {
     id: 15,
@@ -1054,6 +1190,44 @@ console.log(square(7)); // 49`,
       'Parameters are the inputs the function receives',
       'return stops the function and sends back a value',
       'Arrow functions (=>) are a newer, shorter way to write functions',
+    ],
+    quiz: [
+      {
+        questionAr: 'ما الكلمة المفتاحية لتعريف دالة في Python؟',
+        questionEn: 'What keyword defines a function in Python?',
+        options: ['function', 'def', 'fn', 'func'],
+        correctIndex: 1,
+        explanationAr: 'في Python نستخدم def متبوعة باسم الدالة.',
+        explanationEn: 'In Python we use def followed by the function name.',
+      },
+      {
+        questionAr: 'ما قيمة: add(3, 4) إذا كانت: def add(a, b): return a + b؟',
+        questionEn: 'What is the value of add(3, 4) if: def add(a, b): return a + b?',
+        options: ['34', '7', 'خطأ / Error', '12'],
+        correctIndex: 1,
+        explanationAr: '3 + 4 = 7',
+        explanationEn: '3 + 4 = 7',
+      },
+      {
+        questionAr: 'ماذا تفعل return داخل دالة؟',
+        questionEn: 'What does return do inside a function?',
+        options: ['تُكرر الدالة / Repeats the function', 'تُوقف الدالة وتُرجع قيمة / Stops the function and returns a value', 'تطبع على الشاشة / Prints to screen', 'تحذف الدالة / Deletes the function'],
+        correctIndex: 1,
+        explanationAr: 'return توقف تنفيذ الدالة وترسل القيمة إلى مكان الاستدعاء.',
+        explanationEn: 'return stops the function and sends the value back to the caller.',
+      },
+    ],
+    challenges: [
+      {
+        titleAr: 'تحدي: دالة الحساب',
+        titleEn: 'Challenge: Calculator Function',
+        taskAr: 'اكتب دالة تحسب مساحة المستطيل (الطول × العرض) وتعيد النتيجة.',
+        taskEn: 'Write a function that calculates the area of a rectangle (length × width) and returns the result.',
+        hintAr: 'def area(length, width): return ...',
+        hintEn: 'def area(length, width): return ...',
+        solutionPython: `def area(length, width):\n    return length * width\n\nprint(area(5, 3))   # 15\nprint(area(10, 4))  # 40`,
+        solutionJs: `function area(length, width) {\n    return length * width;\n}\n\nconsole.log(area(5, 3));   // 15\nconsole.log(area(10, 4));  // 40`,
+      },
     ],
   },
   {
@@ -1763,7 +1937,9 @@ export const MULTI_LANG_EXAMPLES: Record<number, MultiLangExample[]> = {
     tabs: [
       {
         id: 'python',
-        code: `print("Hello, World!")`,
+        code: `# هذا هو أول برنامج — نطبع جملة على الشاشة
+print("Hello, World!")
+# الناتج: Hello, World!`,
         descriptionAr: 'الإخراج في Python',
         descriptionEn: 'Output in Python',
       },
@@ -1871,18 +2047,20 @@ int main() {
     tabs: [
       {
         id: 'python',
-        code: `name = "Sara"
-age = 25
-is_student = True
+        code: `# نُنشئ متغيرات تحمل قيماً مختلفة
+name = "Sara"       # نص (String)
+age = 25            # رقم صحيح (Integer)
+is_student = True   # قيمة منطقية (Boolean)
 
+# نطبع قيمة كل متغير
 print(name)       # Sara
 print(age)        # 25
 print(is_student) # True
 
-# Changing a variable
-score = 0
-score = 10
-score = score + 5
+# يمكن تغيير قيمة المتغير في أي وقت
+score = 0         # نبدأ بالصفر
+score = 10        # نغيّر القيمة
+score = score + 5 # نضيف 5 على القيمة الحالية
 print(score)      # 15`,
         descriptionAr: 'إنشاء المتغيرات وتغيير قيمها في Python',
         descriptionEn: 'Creating and changing variables in Python',
@@ -2538,19 +2716,21 @@ int main() {
     tabs: [
       {
         id: 'python',
-        code: `score = 85
+        code: `score = 85  # درجة الطالب
 
+# نفحص الشرط الأول: هل الدرجة 90 أو أكثر؟
 if score >= 90:
     print("Grade: A")
+# إذا لا، نفحص الشرط الثاني
 elif score >= 80:
-    print("Grade: B")
+    print("Grade: B")   # ← هذا سيُطبع لأن 85 >= 80
 elif score >= 70:
     print("Grade: C")
 else:
+    # إذا لم ينطبق أي شرط، ننفذ هذا
     print("Grade: F")
-# Output: Grade: B
 
-# Short ternary
+# طريقة مختصرة في سطر واحد (Ternary)
 age = 20
 status = "Adult" if age >= 18 else "Minor"
 print(status)  # Adult`,
@@ -2759,23 +2939,23 @@ int main() {
     tabs: [
       {
         id: 'python',
-        code: `# for loop
+        code: `# حلقة for — تتكرر من 1 إلى 5
 for i in range(1, 6):
-    print("Count:", i)
-# Count: 1 … Count: 5
+    print("Count:", i)  # تطبع العدد الحالي
+# الناتج: Count: 1 … Count: 5
 
-# while loop
+# حلقة while — تستمر ما دام الشرط صحيحاً
 count = 0
 while count < 3:
     print("Repeat #" + str(count))
-    count += 1
+    count += 1  # نزيد المتغير لتجنّب الحلقة اللانهائية
 
-# break and continue
+# break يوقف الحلقة — continue يتخطى التكرار الحالي
 for i in range(10):
-    if i == 3: continue  # skip 3
-    if i == 6: break     # stop at 6
+    if i == 3: continue  # تخطّ الرقم 3
+    if i == 6: break     # أوقف عند الرقم 6
     print(i)
-# 0 1 2 4 5`,
+# الناتج: 0 1 2 4 5`,
         descriptionAr: 'الحلقات في Python',
         descriptionEn: 'Loops in Python',
       },
@@ -2872,25 +3052,28 @@ int main() {
     tabs: [
       {
         id: 'python',
-        code: `def greet(name):
+        code: `# تعريف دالة: def اسم_الدالة(المدخلات):
+def greet(name):
+    # نُرجع نصاً يحتوي على الاسم
     return "Hello, " + name + "!"
 
+# استدعاء الدالة مرتين بمدخلات مختلفة
 print(greet("Sara"))   # Hello, Sara!
 print(greet("Ahmed"))  # Hello, Ahmed!
 
-# Multiple parameters
+# دوال بمعاملات متعددة
 def add(a, b):
-    return a + b
+    return a + b       # تُرجع مجموع العددين
 
 def multiply(a, b):
-    return a * b
+    return a * b       # تُرجع حاصل الضرب
 
 print(add(3, 5))       # 8
 print(multiply(4, 6))  # 24
 
-# Lambda (arrow function equivalent)
-square = lambda n: n * n
-print(square(7))       # 49`,
+# دالة سهمية مختصرة (Lambda)
+square = lambda n: n * n   # تُرجع مربّع العدد
+print(square(7))            # 49`,
         descriptionAr: 'الدوال في Python',
         descriptionEn: 'Functions in Python',
       },

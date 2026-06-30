@@ -58,6 +58,24 @@
       <div class="code-body">
         <pre><code [innerHTML]="getHighlighted(tab.code, tab.id)" dir="ltr"></code></pre>
       </div>
+
+      <!-- Inline JS runner (JavaScript tab only) -->
+      @if (tab.id === 'javascript') {
+        <div class="inline-runner">
+          <button class="run-inline-btn" (click)="runJs(tab.code)" [disabled]="jsRunning()">
+            ▶ {{ lang.isArabic() ? 'تشغيل هنا' : 'Run here' }}
+          </button>
+          @if (jsOutput().length > 0) {
+            <div class="js-output" dir="ltr">
+              <div class="js-output-label">{{ lang.isArabic() ? 'الناتج:' : 'Output:' }}</div>
+              @for (line of jsOutput(); track $index) {
+                <div class="js-output-line" [class.error-line]="line.startsWith('❌')">{{ line }}</div>
+              }
+              <button class="clear-btn" (click)="clearOutput()">✕</button>
+            </div>
+          }
+        </div>
+      }
     </div>
   }
 

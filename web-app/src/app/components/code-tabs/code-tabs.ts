@@ -41,6 +41,8 @@ export class CodeTabsComponent implements OnChanges {
   readonly lang = inject(LanguageService);
   activeTab = signal<string>('');
   copied = signal(false);
+  jsOutput = signal<string[]>([]);
+  jsRunning = signal(false);
 
   static buildTab(
     id: string,
@@ -86,6 +88,40 @@ export class CodeTabsComponent implements OnChanges {
 
   openCompiler(url: string): void {
     window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  runJs(code: string): void {
+    this.jsRunning.set(true);
+    const lines: string[] = [];
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    try {
+      const win = iframe.contentWindow as Window & { console: Console };
+      const origLog = win.console.log.bind(win.console);
+      win.console.log = (...args: unknown[]) => {
+        lines.push(args.map(a => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' '));
+        origLog(...args);
+      };
+      win.console.error = (...args: unknown[]) => {
+        lines.push('❌ ' + args.map(a => String(a)).join(' '));
+      };
+      // block alert/prompt/confirm
+      (win as unknown as Record<string, unknown>)['alert'] = () => {};
+      (win as unknown as Record<string, unknown>)['prompt'] = () => null;
+      (win as unknown as Record<string, unknown>)['confirm'] = () => false;
+      (iframe.contentWindow as unknown as Record<string, (c: string) => void>)['eval'](code);
+      this.jsOutput.set(lines.length ? lines : ['(no output)']);
+    } catch (e) {
+      this.jsOutput.set(['❌ ' + (e instanceof Error ? e.message : String(e))]);
+    } finally {
+      document.body.removeChild(iframe);
+      this.jsRunning.set(false);
+    }
+  }
+
+  clearOutput(): void {
+    this.jsOutput.set([]);
   }
 
   // Keyword sets per language.

@@ -173,6 +173,72 @@ pre {
   .pp  { color: #ff7b72; font-weight: 600; }    /* C/C++ preprocessor */
 }
 
+/* ── Inline JS Runner ─────────────────────────────────── */
+.inline-runner {
+  border-top: 1px solid var(--code-border);
+  padding: 10px 16px 12px;
+  background: var(--code-bg);
+}
+
+.run-inline-btn {
+  padding: 5px 16px;
+  border-radius: 6px;
+  border: 1px solid #3fb950;
+  background: color-mix(in srgb, #3fb950 12%, transparent);
+  color: #3fb950;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) { background: color-mix(in srgb, #3fb950 22%, transparent); }
+  &:disabled { opacity: 0.5; cursor: default; }
+}
+
+.js-output {
+  position: relative;
+  margin-top: 8px;
+  background: #0d1117;
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  padding: 10px 36px 10px 14px;
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+}
+
+.js-output-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #3fb950;
+  margin-bottom: 6px;
+}
+
+.js-output-line {
+  color: #e6edf3;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+
+  &.error-line { color: #f85149; }
+}
+
+.clear-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+
+  &:hover { color: var(--text-primary); }
+}
+
 /* ── Responsive ───────────────────────────────────────── */
 @media (max-width: 600px) {
   .panel-header { flex-direction: column; align-items: flex-start; gap: 8px; }

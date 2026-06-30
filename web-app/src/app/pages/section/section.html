@@ -417,6 +417,88 @@
     </ul>
   </section>
 
+  <!-- Challenge -->
+  @if (sec.challenges?.length) {
+    <section class="content-section challenge-section">
+      <h2 class="content-heading">{{ lang.isArabic() ? '🏋️ تحدِّ نفسك' : '🏋️ Challenge Yourself' }}</h2>
+      @for (ch of sec.challenges!; track ch.titleEn; let ci = $index) {
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-num">{{ ci + 1 }}</span>
+            <h3 class="challenge-title">{{ lang.isArabic() ? ch.titleAr : ch.titleEn }}</h3>
+          </div>
+          <p class="challenge-task">{{ lang.isArabic() ? ch.taskAr : ch.taskEn }}</p>
+          <div class="challenge-actions">
+            <button class="hint-btn" (click)="toggleHint(ci)">
+              {{ hintVisible(ci) ? (lang.isArabic() ? '▲ إخفاء التلميح' : '▲ Hide hint') : (lang.isArabic() ? '💡 إظهار التلميح' : '💡 Show hint') }}
+            </button>
+            <button class="solution-btn" (click)="toggleSolution(ci)">
+              {{ solutionVisible(ci) ? (lang.isArabic() ? '▲ إخفاء الحل' : '▲ Hide solution') : (lang.isArabic() ? '✅ إظهار الحل' : '✅ Show solution') }}
+            </button>
+          </div>
+          @if (hintVisible(ci)) {
+            <div class="hint-box">
+              <span class="hint-label">{{ lang.isArabic() ? 'تلميح:' : 'Hint:' }}</span>
+              {{ lang.isArabic() ? ch.hintAr : ch.hintEn }}
+            </div>
+          }
+          @if (solutionVisible(ci)) {
+            <div class="solution-box">
+              <div class="solution-tabs">
+                <button class="sol-tab" [class.active]="solutionLang(ci) === 'python'" (click)="setSolutionLang(ci, 'python')">Python</button>
+                <button class="sol-tab" [class.active]="solutionLang(ci) === 'js'" (click)="setSolutionLang(ci, 'js')">JavaScript</button>
+              </div>
+              <pre class="solution-code"><code>{{ solutionLang(ci) === 'python' ? ch.solutionPython : ch.solutionJs }}</code></pre>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  }
+
+  <!-- Quiz -->
+  @if (sec.quiz?.length) {
+    <section class="content-section quiz-section">
+      <h2 class="content-heading">{{ lang.isArabic() ? '🧠 اختبر فهمك' : '🧠 Test Your Understanding' }}</h2>
+      @for (q of sec.quiz!; track q.questionEn; let qi = $index) {
+        <div class="quiz-card" [class.answered]="quizAnswered(qi)">
+          <p class="quiz-question">
+            <span class="quiz-num">{{ qi + 1 }}.</span>
+            {{ lang.isArabic() ? q.questionAr : q.questionEn }}
+          </p>
+          <div class="quiz-options">
+            @for (opt of q.options; track opt; let oi = $index) {
+              <button
+                class="quiz-option"
+                [class.correct]="quizAnswered(qi) && oi === q.correctIndex"
+                [class.wrong]="quizAnswered(qi) && quizSelected(qi) === oi && oi !== q.correctIndex"
+                [class.selected]="quizSelected(qi) === oi"
+                [disabled]="quizAnswered(qi)"
+                (click)="answerQuiz(qi, oi, q.correctIndex)"
+              >
+                {{ opt }}
+              </button>
+            }
+          </div>
+          @if (quizAnswered(qi)) {
+            <div class="quiz-explanation" [class.correct-bg]="quizSelected(qi) === q.correctIndex" [class.wrong-bg]="quizSelected(qi) !== q.correctIndex">
+              {{ quizSelected(qi) === q.correctIndex ? '✅ ' : '❌ ' }}
+              {{ lang.isArabic() ? q.explanationAr : q.explanationEn }}
+            </div>
+          }
+        </div>
+      }
+      @if (allQuizAnswered()) {
+        <div class="quiz-score">
+          {{ lang.isArabic() ? 'نتيجتك:' : 'Your score:' }}
+          <strong>{{ quizScore() }} / {{ sec.quiz!.length }}</strong>
+          @if (quizScore() === sec.quiz!.length) {
+            <span class="score-perfect">{{ lang.isArabic() ? ' 🎉 ممتاز!' : ' 🎉 Perfect!' }}</span>
+          }
+        </div>
+      }
+    </section>
+  }
 
   <!-- Navigation -->
   <nav class="section-nav">
