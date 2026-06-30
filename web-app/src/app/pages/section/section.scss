@@ -1318,3 +1318,194 @@
 }
 
 .fix-row .mistake-text { color: #3fb950; }
+
+/* ── Challenge done badge ────────────────────────────────── */
+.challenge-done-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: color-mix(in srgb, #3fb950 12%, transparent);
+  border: 1px solid color-mix(in srgb, #3fb950 30%, transparent);
+  color: #3fb950;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* ── Try-it / Auto-grade box ─────────────────────────────── */
+.try-it-box {
+  margin-top: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg-primary);
+}
+
+.try-it-label {
+  display: block;
+  padding: 10px 14px 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.try-it-editor {
+  width: 100%;
+  padding: 10px 14px;
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  border: none;
+  border-top: 1px solid var(--border);
+  resize: vertical;
+  box-sizing: border-box;
+  outline: none;
+
+  &:focus {
+    border-color: var(--accent-blue);
+    outline: 2px solid var(--accent-blue);
+    outline-offset: -2px;
+  }
+}
+
+.try-it-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+}
+
+.verify-btn {
+  padding: 6px 18px;
+  border-radius: 6px;
+  border: 1px solid var(--accent-blue);
+  background: color-mix(in srgb, var(--accent-blue) 12%, transparent);
+  color: var(--accent-blue);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) { background: color-mix(in srgb, var(--accent-blue) 22%, transparent); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.expected-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-secondary);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: #a5d6ff;
+    margin-inline-start: 4px;
+  }
+}
+
+/* ── Cheat Sheet ─────────────────────────────────── */
+.cheat-sheet {
+  border: 1.5px dashed var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  background: var(--bg-secondary);
+}
+
+.cheat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  .content-heading { margin: 0; }
+}
+
+.print-btn {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+}
+
+.cheat-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 600px) { grid-template-columns: 1fr; }
+}
+
+.cheat-title-row {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cheat-icon { font-size: 1.4rem; }
+
+.cheat-sub {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+
+.cheat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    padding-inline-start: 8px;
+    border-inline-start: 2px solid var(--border);
+  }
+
+  &.cheat-kp li { border-inline-start-color: var(--accent-blue); }
+  &.cheat-err li { border-inline-start-color: #f85149; color: #f85149; }
+}
+
+.grade-result {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  border-top: 1px solid var(--border);
+
+  &.correct {
+    color: #3fb950;
+    background: color-mix(in srgb, #3fb950 8%, transparent);
+  }
+  &.wrong {
+    color: #f85149;
+    background: color-mix(in srgb, #f85149 8%, transparent);
+  }
+}
+

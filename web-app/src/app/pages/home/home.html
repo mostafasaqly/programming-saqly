@@ -39,6 +39,36 @@
     </a>
   </section>
 
+  <!-- Completion Certificate -->
+  @if (course.progressPercent() === 100) {
+    <div class="completion-banner" role="status" aria-live="polite">
+      <div class="cert-glow"></div>
+      <div class="cert-content">
+        <div class="cert-trophy">🏆</div>
+        <div class="cert-text">
+          <h2 class="cert-title">
+            {{ lang.isArabic() ? 'تهانينا! أكملت الدورة كاملة! 🎉' : 'Congratulations! You\'ve completed the course! 🎉' }}
+          </h2>
+          <p class="cert-sub">
+            {{ lang.isArabic()
+              ? 'أتممت جميع الـ 25 قسم بنجاح. أنت الآن تمتلك أساسيات البرمجة. استمر في رحلتك!'
+              : 'You\'ve completed all 25 sections successfully. You now have programming fundamentals. Keep growing!' }}
+          </p>
+        </div>
+        <div class="cert-badge">
+          <span class="cert-badge-text">{{ lang.isArabic() ? 'مبرمج مبتدئ ✓' : 'Jr. Programmer ✓' }}</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Mistakes review link (show when there are answered quizzes) -->
+  <div class="quick-links">
+    <a routerLink="/mistakes" class="quick-link-btn">
+      🔁 {{ lang.isArabic() ? 'مراجعة أخطائي' : 'Review My Mistakes' }}
+    </a>
+  </div>
+
   <!-- Search -->
   <div class="search-bar-wrap">
     <div class="search-bar">

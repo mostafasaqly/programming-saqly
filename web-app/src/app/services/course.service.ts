@@ -2,6 +2,7 @@ import { Injectable, signal, computed } from '@angular/core';
 import { COURSE_SECTIONS, PARTS, SectionContent } from '../data/sections.data';
 
 const QUIZ_STORAGE_KEY = 'course-quiz-answers';
+const CHALLENGES_STORAGE_KEY = 'course-challenges-done';
 
 @Injectable({ providedIn: 'root' })
 export class CourseService {
@@ -11,6 +12,8 @@ export class CourseService {
   private _completedIds = signal<Set<number>>(this.loadCompleted());
   private _activeId = signal<number | null>(null);
   private _quizResults = signal<Record<number, Record<number, number>>>(this.loadQuizResults());
+  // key: `${sectionId}-${challengeIndex}` → true when solved
+  private _challengesDone = signal<Record<string, boolean>>(this.loadChallengesDone());
 
   readonly completedIds = this._completedIds.asReadonly();
   readonly activeId = this._activeId.asReadonly();
@@ -37,6 +40,32 @@ export class CourseService {
     try {
       const raw = localStorage.getItem(QUIZ_STORAGE_KEY);
       if (raw) return JSON.parse(raw) as Record<number, Record<number, number>>;
+    } catch {}
+    return {};
+  }
+
+  isChallengeCompleted(sectionId: number, challengeIndex: number): boolean {
+    return !!this._challengesDone()[`${sectionId}-${challengeIndex}`];
+  }
+
+  markChallengeCompleted(sectionId: number, challengeIndex: number): void {
+    this._challengesDone.update(all => {
+      const next = { ...all, [`${sectionId}-${challengeIndex}`]: true };
+      try { localStorage.setItem(CHALLENGES_STORAGE_KEY, JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }
+
+  getChallengesCompletedCount(sectionId: number): number {
+    const sec = this.getSectionById(sectionId);
+    if (!sec?.challenges) return 0;
+    return sec.challenges.filter((_, i) => this.isChallengeCompleted(sectionId, i)).length;
+  }
+
+  private loadChallengesDone(): Record<string, boolean> {
+    try {
+      const raw = localStorage.getItem(CHALLENGES_STORAGE_KEY);
+      if (raw) return JSON.parse(raw) as Record<string, boolean>;
     } catch {}
     return {};
   }

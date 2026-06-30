@@ -468,12 +468,63 @@
               {{ solutionVisible(ci) ? (lang.isArabic() ? '▲ إخفاء الحل' : '▲ Hide solution') : (lang.isArabic() ? '✅ إظهار الحل' : '✅ Show solution') }}
             </button>
           </div>
+          @if (isChallengeCompleted(ci)) {
+            <div class="challenge-done-badge" aria-label="تم حل هذا التحدي">
+              ✅ {{ lang.isArabic() ? 'أحسنت! حللت هذا التحدي' : 'Great job! Challenge solved' }}
+            </div>
+          }
+
           @if (hintVisible(ci)) {
             <div class="hint-box">
               <span class="hint-label">{{ lang.isArabic() ? 'تلميح:' : 'Hint:' }}</span>
               {{ lang.isArabic() ? ch.hintAr : ch.hintEn }}
             </div>
           }
+
+          @if (ch.expectedOutput) {
+            <div class="try-it-box">
+              <label class="try-it-label" [attr.for]="'code-input-' + ci">
+                {{ lang.isArabic() ? '✏️ اكتب حلّك بـ JavaScript:' : '✏️ Write your JavaScript solution:' }}
+              </label>
+              <textarea
+                [id]="'code-input-' + ci"
+                class="try-it-editor"
+                dir="ltr"
+                [value]="userCode(ci)"
+                (input)="setUserCode(ci, $any($event.target).value)"
+                [placeholder]="lang.isArabic() ? '// اكتب كودك هنا...' : '// Write your code here...'"
+                rows="5"
+                spellcheck="false"
+                autocorrect="off"
+                autocapitalize="off"
+              ></textarea>
+              <div class="try-it-actions">
+                <button
+                  class="verify-btn"
+                  (click)="runUserCodeJs(ci, ch.expectedOutput)"
+                  [disabled]="gradeRunning(ci) || !userCode(ci).trim()"
+                  [attr.aria-label]="lang.isArabic() ? 'تحقق من الحل' : 'Verify solution'"
+                >
+                  {{ gradeRunning(ci) ? (lang.isArabic() ? 'جارٍ التحقق...' : 'Checking...') : (lang.isArabic() ? '🔍 تحقق من حلّي' : '🔍 Verify my solution') }}
+                </button>
+                <span class="expected-hint">
+                  {{ lang.isArabic() ? 'الناتج المتوقع:' : 'Expected output:' }}
+                  <code dir="ltr">{{ ch.expectedOutput }}</code>
+                </span>
+              </div>
+              @if (gradeResult(ci) === 'correct') {
+                <div class="grade-result correct" role="status" aria-live="polite">
+                  🎉 {{ lang.isArabic() ? 'إجابة صحيحة! أحسنت!' : 'Correct! Well done!' }}
+                </div>
+              }
+              @if (gradeResult(ci) === 'wrong') {
+                <div class="grade-result wrong" role="status" aria-live="polite">
+                  ❌ {{ lang.isArabic() ? 'الناتج غير مطابق، راجع كودك وحاول مجدداً' : 'Output doesn\'t match, review your code and try again' }}
+                </div>
+              }
+            </div>
+          }
+
           @if (solutionVisible(ci)) {
             <div class="solution-box">
               <div class="solution-tabs">
@@ -531,6 +582,48 @@
       }
     </section>
   }
+
+  <!-- Cheat Sheet (printable summary) -->
+  <section class="content-section cheat-sheet reveal" aria-label="{{ lang.isArabic() ? 'بطاقة مراجعة سريعة' : 'Quick reference card' }}">
+    <div class="cheat-header">
+      <h2 class="content-heading">📋 {{ lang.isArabic() ? 'بطاقة مراجعة سريعة' : 'Quick Reference Card' }}</h2>
+      <button class="print-btn" (click)="printCheatSheet()" [attr.aria-label]="lang.isArabic() ? 'طباعة بطاقة المراجعة' : 'Print reference card'">
+        🖨 {{ lang.isArabic() ? 'طباعة' : 'Print' }}
+      </button>
+    </div>
+    <div class="cheat-body" id="cheat-print-area">
+      <div class="cheat-title-row">
+        <span class="cheat-icon">{{ sec.icon }}</span>
+        <span class="cheat-sec-title">{{ lang.isArabic() ? sec.titleAr : sec.titleEn }}</span>
+      </div>
+      <div class="cheat-concepts">
+        <h3 class="cheat-sub">{{ lang.isArabic() ? 'المفاهيم الأساسية:' : 'Core Concepts:' }}</h3>
+        <ul class="cheat-list">
+          @for (c of (lang.isArabic() ? sec.conceptsAr : sec.conceptsEn); track c) {
+            <li>{{ c }}</li>
+          }
+        </ul>
+      </div>
+      <div class="cheat-keypoints">
+        <h3 class="cheat-sub">{{ lang.isArabic() ? 'نقاط مهمة:' : 'Key Points:' }}</h3>
+        <ul class="cheat-list cheat-kp">
+          @for (k of (lang.isArabic() ? sec.keyPointsAr : sec.keyPointsEn); track k) {
+            <li>💡 {{ k }}</li>
+          }
+        </ul>
+      </div>
+      @if (sec.commonMistakes?.length) {
+        <div class="cheat-mistakes">
+          <h3 class="cheat-sub">{{ lang.isArabic() ? '⚠️ تجنّب:' : '⚠️ Avoid:' }}</h3>
+          <ul class="cheat-list cheat-err">
+            @for (m of sec.commonMistakes!; track m.mistakeEn) {
+              <li>{{ lang.isArabic() ? m.mistakeAr : m.mistakeEn }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </section>
 
   <!-- Navigation -->
   <nav class="section-nav">

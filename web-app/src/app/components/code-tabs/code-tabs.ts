@@ -1,5 +1,4 @@
-import { Component, Input, OnChanges, signal, ChangeDetectionStrategy } from '@angular/core';
-import { inject } from '@angular/core';
+import { Component, Input, OnChanges, signal, ChangeDetectionStrategy, inject } from '@angular/core';
 import { LanguageService } from '../../services/language.service';
 
 export interface LangTab {
@@ -45,6 +44,74 @@ export class CodeTabsComponent implements OnChanges {
   jsOutput = signal<string[]>([]);
   jsRunning = signal(false);
 
+  // Python runner (Pyodide)
+  pyOutput = signal<string[]>([]);
+  pyRunning = signal(false);
+  pyReady = signal(false);
+  pyLoading = signal(false);
+  private pyodide: unknown = null;
+
+  async loadPyodide(): Promise<void> {
+    if (this.pyodide || this.pyLoading()) return;
+    this.pyLoading.set(true);
+    try {
+      // Lazy-load Pyodide from CDN only when user clicks Run
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js';
+      script.crossOrigin = 'anonymous';
+      await new Promise<void>((resolve, reject) => {
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('Failed to load Pyodide'));
+        document.head.appendChild(script);
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.pyodide = await (window as any)['loadPyodide']();
+      this.pyReady.set(true);
+    } catch {
+      this.pyOutput.set(['❌ Failed to load Python runtime. Check your internet connection.']);
+    } finally {
+      this.pyLoading.set(false);
+    }
+  }
+
+  async runPython(code: string): Promise<void> {
+    if (this.pyRunning()) return;
+    this.pyRunning.set(true);
+    this.pyOutput.set([]);
+    try {
+      if (!this.pyodide) await this.loadPyodide();
+      if (!this.pyodide) return;
+      const py = this.pyodide as { runPythonAsync: (code: string) => Promise<unknown>; globals: { get: (k: string) => unknown } };
+      const lines: string[] = [];
+      // Redirect stdout
+      await py.runPythonAsync(`
+import sys, io
+_buf = io.StringIO()
+sys.stdout = _buf
+`);
+      try {
+        await py.runPythonAsync(code);
+        await py.runPythonAsync(`sys.stdout = sys.__stdout__`);
+        const out = py.globals.get('_buf') as { getvalue: () => string };
+        const text = typeof out?.getvalue === 'function' ? out.getvalue() : '';
+        const outputLines = text.split('\n').filter((l: string) => l !== '' || text.endsWith('\n'));
+        this.pyOutput.set(outputLines.length ? outputLines : ['(no output)']);
+      } catch (err) {
+        await py.runPythonAsync(`sys.stdout = sys.__stdout__`).catch(() => {});
+        lines.push('❌ ' + (err instanceof Error ? err.message : String(err)));
+        this.pyOutput.set(lines);
+      }
+    } catch (err) {
+      this.pyOutput.set(['❌ ' + (err instanceof Error ? err.message : String(err))]);
+    } finally {
+      this.pyRunning.set(false);
+    }
+  }
+
+  clearPyOutput(): void {
+    this.pyOutput.set([]);
+  }
+
   static buildTab(
     id: string,
     code: string,
@@ -72,6 +139,22 @@ export class CodeTabsComponent implements OnChanges {
   selectTab(id: string): void {
     this.activeTab.set(id);
     this.copied.set(false);
+  }
+
+  onTabKeydown(event: KeyboardEvent): void {
+    const keys = ['ArrowRight', 'ArrowLeft', 'Home', 'End'];
+    if (!keys.includes(event.key)) return;
+    event.preventDefault();
+    const currentIdx = this.tabs.findIndex(t => t.id === this.activeTab());
+    let next = currentIdx;
+    if (event.key === 'ArrowRight') next = (currentIdx + 1) % this.tabs.length;
+    else if (event.key === 'ArrowLeft') next = (currentIdx - 1 + this.tabs.length) % this.tabs.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = this.tabs.length - 1;
+    this.selectTab(this.tabs[next].id);
+    const bar = (event.currentTarget as HTMLElement);
+    const btn = bar.querySelector<HTMLElement>(`[data-tab-index="${next}"]`);
+    btn?.focus();
   }
 
   activeTabData(): LangTab | undefined {

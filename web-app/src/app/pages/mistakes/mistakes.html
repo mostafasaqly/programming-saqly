@@ -1,0 +1,95 @@
+<div class="mistakes-page fade-in">
+
+  <header class="mistakes-header">
+    <a routerLink="/" class="back-link">← {{ lang.isArabic() ? 'الرئيسية' : 'Home' }}</a>
+    <h1 class="mistakes-title">
+      🔁 {{ lang.isArabic() ? 'مراجعة أخطائي' : 'Review My Mistakes' }}
+    </h1>
+    <p class="mistakes-sub">
+      {{ lang.isArabic()
+        ? 'هذه الأسئلة التي أجبت عليها بشكل خاطئ — راجعها وحاول مجدداً.'
+        : 'These are questions you answered incorrectly — review and try again.' }}
+    </p>
+  </header>
+
+  @if (wrongAnswers().length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">🎉</div>
+      <h2>{{ lang.isArabic() ? 'لا توجد أخطاء!' : 'No mistakes!' }}</h2>
+      <p>{{ lang.isArabic()
+        ? 'أحسنت! لم تخطئ في أي سؤال حتى الآن. استمر!'
+        : 'Well done! You haven\'t made any mistakes yet. Keep it up!' }}</p>
+      <a routerLink="/" class="go-home-btn">{{ lang.isArabic() ? 'العودة للدورة' : 'Back to Course' }}</a>
+    </div>
+  } @else {
+
+    <div class="mistakes-stats">
+      <span class="stat-badge">
+        {{ lang.isArabic() ? 'أخطاء:' : 'Mistakes:' }}
+        <strong>{{ wrongAnswers().length }}</strong>
+      </span>
+      @if (correctedCount() > 0) {
+        <span class="stat-badge stat-green">
+          {{ lang.isArabic() ? 'صوّبت:' : 'Corrected:' }}
+          <strong>{{ correctedCount() }} / {{ wrongAnswers().length }}</strong>
+        </span>
+      }
+      <button class="reset-btn" (click)="resetAll()">
+        ↺ {{ lang.isArabic() ? 'إعادة المحاولة' : 'Reset attempts' }}
+      </button>
+    </div>
+
+    <div class="mistakes-list">
+      @for (w of wrongAnswers(); track w.section.id + '-' + w.questionIndex) {
+        <div class="mistake-quiz-card" [class.corrected]="retryCorrect(w)">
+
+          <div class="mqc-section-tag">
+            <a [routerLink]="['/section', w.section.id]">
+              {{ w.section.id | number:'2.0-0' }}  {{ lang.isArabic() ? w.section.titleAr : w.section.titleEn }}
+            </a>
+          </div>
+
+          <p class="mqc-question">
+            <span class="mqc-num">{{ w.questionIndex + 1 }}.</span>
+            {{ lang.isArabic() ? w.question.questionAr : w.question.questionEn }}
+          </p>
+
+          <div class="mqc-options">
+            @for (opt of w.question.options; track opt; let oi = $index) {
+              <button
+                class="mqc-option"
+                [class.correct]="oi === w.question.correctIndex && (retryAnswered(w) || true)"
+                [class.was-wrong]="oi === w.selectedIndex && !retryAnswered(w)"
+                [class.retry-correct]="retryAnswered(w) && oi === w.question.correctIndex"
+                [class.retry-wrong]="retryAnswered(w) && retrySelected(w) === oi && oi !== w.question.correctIndex"
+                [class.retry-selected]="retrySelected(w) === oi"
+                [disabled]="retryAnswered(w)"
+                (click)="answer(w, oi)"
+              >
+                {{ opt }}
+              </button>
+            }
+          </div>
+
+          @if (retryAnswered(w)) {
+            <div class="mqc-explanation"
+              [class.correct-bg]="retryCorrect(w)"
+              [class.wrong-bg]="!retryCorrect(w)"
+              role="status">
+              {{ retryCorrect(w) ? '✅ ' : '❌ ' }}
+              {{ lang.isArabic() ? w.question.explanationAr : w.question.explanationEn }}
+            </div>
+          } @else {
+            <div class="mqc-your-answer">
+              ⚠️ {{ lang.isArabic() ? 'إجابتك السابقة:' : 'Your previous answer:' }}
+              <span class="wrong-answer-text">{{ w.question.options[w.selectedIndex] }}</span>
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+
+  }
+
+</div>

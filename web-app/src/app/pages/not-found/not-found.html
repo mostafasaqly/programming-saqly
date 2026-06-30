@@ -1,0 +1,20 @@
+<div class="not-found-page">
+  <div class="nf-card">
+    <div class="nf-code">404</div>
+    <div class="nf-icon">🤔</div>
+    <h1 class="nf-title">
+      {{ lang.isArabic() ? 'الصفحة غير موجودة' : 'Page Not Found' }}
+    </h1>
+    <p class="nf-sub">
+      {{ lang.isArabic()
+        ? 'يبدو أن هذه الصفحة غير موجودة أو تم نقلها. لا تقلق، يمكنك العودة للرئيسية!'
+        : 'This page doesn\'t exist or has been moved. No worries, head back home!' }}
+    </p>
+    <a routerLink="/" class="nf-btn">
+      🏠 {{ lang.isArabic() ? 'العودة للرئيسية' : 'Back to Home' }}
+    </a>
+    <p class="nf-hint">
+      {{ lang.isArabic() ? 'تلميح: البرمجة مليئة بالأخطاء — وهذا طبيعي 😄' : 'Hint: Programming is full of errors — that\'s normal 😄' }}
+    </p>
+  </div>
+</div>

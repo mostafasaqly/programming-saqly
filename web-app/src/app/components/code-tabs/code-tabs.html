@@ -2,14 +2,16 @@
 <div class="code-tabs-block">
 
   <!-- Tab Bar -->
-  <div class="tab-bar" role="tablist" [attr.aria-label]="lang.isArabic() ? 'لغات البرمجة' : 'Programming Languages'">
-    @for (tab of tabs; track tab.id) {
+  <div class="tab-bar" role="tablist" [attr.aria-label]="lang.isArabic() ? 'لغات البرمجة' : 'Programming Languages'" (keydown)="onTabKeydown($event)">
+    @for (tab of tabs; track tab.id; let i = $index) {
       <button
         class="tab-btn"
         role="tab"
         [class.active]="activeTab() === tab.id"
         [attr.aria-selected]="activeTab() === tab.id"
         [attr.aria-controls]="'panel-' + tab.id"
+        [attr.tabindex]="activeTab() === tab.id ? 0 : -1"
+        [attr.data-tab-index]="i"
         (click)="selectTab(tab.id)"
       >
         <span class="tab-icon" aria-hidden="true">{{ tab.icon }}</span>
@@ -66,12 +68,48 @@
             ▶ {{ lang.isArabic() ? 'تشغيل هنا' : 'Run here' }}
           </button>
           @if (jsOutput().length > 0) {
-            <div class="js-output" dir="ltr">
+            <div class="js-output" dir="ltr" aria-live="polite">
               <div class="js-output-label">{{ lang.isArabic() ? 'الناتج:' : 'Output:' }}</div>
               @for (line of jsOutput(); track $index) {
                 <div class="js-output-line" [class.error-line]="line.startsWith('❌')">{{ line }}</div>
               }
-              <button class="clear-btn" (click)="clearOutput()">✕</button>
+              <button class="clear-btn" (click)="clearOutput()" [attr.aria-label]="lang.isArabic() ? 'مسح الناتج' : 'Clear output'">✕</button>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Inline Python runner (Pyodide) -->
+      @if (tab.id === 'python') {
+        <div class="inline-runner">
+          <div class="py-runner-bar">
+            <button
+              class="run-inline-btn"
+              (click)="runPython(tab.code)"
+              [disabled]="pyRunning() || pyLoading()"
+              [attr.aria-label]="lang.isArabic() ? 'تشغيل كود Python هنا' : 'Run Python code here'"
+            >
+              @if (pyLoading()) {
+                <span class="spinner" aria-hidden="true"></span>
+                {{ lang.isArabic() ? 'تحميل Python...' : 'Loading Python...' }}
+              } @else if (pyRunning()) {
+                <span class="spinner" aria-hidden="true"></span>
+                {{ lang.isArabic() ? 'جارٍ التشغيل...' : 'Running...' }}
+              } @else {
+                ▶ {{ lang.isArabic() ? 'تشغيل هنا (Python)' : 'Run here (Python)' }}
+              }
+            </button>
+            @if (!pyReady() && !pyLoading()) {
+              <span class="py-note">{{ lang.isArabic() ? '• أول تشغيل يحمّل Python (~8 ثانية)' : '• First run loads Python (~8s)' }}</span>
+            }
+          </div>
+          @if (pyOutput().length > 0) {
+            <div class="js-output" dir="ltr" aria-live="polite">
+              <div class="js-output-label">{{ lang.isArabic() ? 'الناتج:' : 'Output:' }}</div>
+              @for (line of pyOutput(); track $index) {
+                <div class="js-output-line" [class.error-line]="line.startsWith('❌')">{{ line }}</div>
+              }
+              <button class="clear-btn" (click)="clearPyOutput()" [attr.aria-label]="lang.isArabic() ? 'مسح الناتج' : 'Clear output'">✕</button>
             </div>
           }
         </div>

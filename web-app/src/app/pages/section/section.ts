@@ -40,10 +40,20 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
   private _hintVisible = signal<Record<number, boolean>>({});
   private _solutionVisible = signal<Record<number, boolean>>({});
   private _solutionLang = signal<Record<number, 'python' | 'js'>>({});
+  private _userCode = signal<Record<number, string>>({});
+  private _gradeResult = signal<Record<number, 'correct' | 'wrong' | null>>({});
+  private _gradeRunning = signal<Record<number, boolean>>({});
 
   hintVisible(i: number): boolean { return !!this._hintVisible()[i]; }
   solutionVisible(i: number): boolean { return !!this._solutionVisible()[i]; }
   solutionLang(i: number): 'python' | 'js' { return this._solutionLang()[i] ?? 'python'; }
+  userCode(i: number): string { return this._userCode()[i] ?? ''; }
+  gradeResult(i: number): 'correct' | 'wrong' | null { return this._gradeResult()[i] ?? null; }
+  gradeRunning(i: number): boolean { return !!this._gradeRunning()[i]; }
+  isChallengeCompleted(i: number): boolean {
+    const s = this.section();
+    return s ? this.course.isChallengeCompleted(s.id, i) : false;
+  }
 
   toggleHint(i: number): void {
     this._hintVisible.update(s => ({ ...s, [i]: !s[i] }));
@@ -53,6 +63,41 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   setSolutionLang(i: number, lang: 'python' | 'js'): void {
     this._solutionLang.update(s => ({ ...s, [i]: lang }));
+  }
+  setUserCode(i: number, code: string): void {
+    this._userCode.update(s => ({ ...s, [i]: code }));
+    this._gradeResult.update(s => ({ ...s, [i]: null }));
+  }
+
+  runUserCodeJs(i: number, expectedOutput: string): void {
+    this._gradeRunning.update(s => ({ ...s, [i]: true }));
+    const code = this._userCode()[i] ?? '';
+    const lines: string[] = [];
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    try {
+      const win = iframe.contentWindow as Window & { console: Console };
+      win.console.log = (...args: unknown[]) => {
+        lines.push(args.map(a => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' '));
+      };
+      (win as unknown as Record<string, unknown>)['alert'] = () => {};
+      (win as unknown as Record<string, unknown>)['prompt'] = () => null;
+      (iframe.contentWindow as unknown as Record<string, (c: string) => void>)['eval'](code);
+    } catch (e) {
+      lines.push('❌ ' + (e instanceof Error ? e.message : String(e)));
+    } finally {
+      document.body.removeChild(iframe);
+    }
+    const actual = lines.join('\n').trim();
+    const expected = expectedOutput.trim();
+    const correct = actual === expected;
+    this._gradeResult.update(s => ({ ...s, [i]: correct ? 'correct' : 'wrong' }));
+    if (correct) {
+      const sec = this.section();
+      if (sec) this.course.markChallengeCompleted(sec.id, i);
+    }
+    this._gradeRunning.update(s => ({ ...s, [i]: false }));
   }
 
   // Quiz state — persisted via CourseService
@@ -168,6 +213,9 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
     this._hintVisible.set({});
     this._solutionVisible.set({});
     this._solutionLang.set({});
+    this._userCode.set({});
+    this._gradeResult.set({});
+    this._gradeRunning.set({});
   }
 
   get prevSection(): SectionContent | undefined {
@@ -237,6 +285,21 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loopTimer = null;
     }
     this.loopRunning.set(false);
+  }
+
+  printCheatSheet(): void {
+    const el = document.getElementById('cheat-print-area');
+    if (!el) return;
+    const win = window.open('', '_blank', 'width=700,height=600');
+    if (!win) return;
+    win.document.write(`<!doctype html><html dir="${this.lang.isRTL() ? 'rtl' : 'ltr'}"><head><meta charset="utf-8"><title>Cheat Sheet</title><style>
+      body{font-family:Arial,sans-serif;padding:24px;color:#111;direction:${this.lang.isRTL() ? 'rtl' : 'ltr'}}
+      h2{font-size:1.1rem;margin:12px 0 6px}ul{margin:4px 0 12px;padding-inline-start:20px}li{margin:4px 0;font-size:0.9rem}
+      .cheat-title-row{display:flex;align-items:center;gap:8px;font-size:1.3rem;font-weight:700;margin-bottom:16px}
+    </style></head><body>${el.innerHTML}</body></html>`);
+    win.document.close();
+    win.focus();
+    win.print();
   }
 
   getLevelLabel(): string {

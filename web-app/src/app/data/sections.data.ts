@@ -40,6 +40,7 @@ export interface Challenge {
   hintEn: string;
   solutionPython: string;
   solutionJs: string;
+  expectedOutput?: string;
 }
 
 export interface CommonMistake {
@@ -410,6 +411,7 @@ console.log(name);`,
         hintEn: 'Use # for comments in Python or // in JavaScript',
         solutionPython: `# تعريف الأرقام\na = 5\nb = 3\n\n# حساب المجموع\nresult = a + b\n\n# طباعة النتيجة\nprint(result)  # الناتج: 8`,
         solutionJs: `// Define the numbers\nlet a = 5;\nlet b = 3;\n\n// Calculate the sum\nlet result = a + b;\n\n// Print the result\nconsole.log(result); // Output: 8`,
+        expectedOutput: '8',
       },
     ],
     commonMistakes: [
@@ -1124,6 +1126,7 @@ console.log(Boolean("hi")); // true`,
         hintEn: 'Use int() in Python or Number() in JavaScript',
         solutionPython: `age = "25"\nage_num = int(age)\nresult = age_num + 5\nprint(result)  # 30`,
         solutionJs: `let age = "25";\nlet ageNum = Number(age);\nlet result = ageNum + 5;\nconsole.log(result); // 30`,
+        expectedOutput: '30',
       },
     ],
     commonMistakes: [
@@ -1383,6 +1386,7 @@ console.log(status); // Adult`,
         hintEn: 'Use if / elif / else with a specific age value',
         solutionPython: `age = 16\n\nif age < 13:\n    print("طفل / Child")\nelif age < 18:\n    print("مراهق / Teen")\nelse:\n    print("بالغ / Adult")`,
         solutionJs: `let age = 16;\n\nif (age < 13) {\n    console.log("Child");\n} else if (age < 18) {\n    console.log("Teen");\n} else {\n    console.log("Adult");\n}`,
+        expectedOutput: 'Teen',
       },
     ],
   },
@@ -1774,6 +1778,7 @@ console.log(square(7)); // 49`,
         hintEn: 'def area(length, width): return ...',
         solutionPython: `def area(length, width):\n    return length * width\n\nprint(area(5, 3))   # 15\nprint(area(10, 4))  # 40`,
         solutionJs: `function area(length, width) {\n    return length * width;\n}\n\nconsole.log(area(5, 3));   // 15\nconsole.log(area(10, 4));  // 40`,
+        expectedOutput: '15\n40',
       },
     ],
   },
@@ -1873,6 +1878,7 @@ console.log(globalVar); // works
         hintEn: 'Define tax_rate inside the function itself',
         solutionPython: `def calculate_tax(price):\n    tax_rate = 0.15  # متغير محلي\n    return price * tax_rate\n\nprint(calculate_tax(100))  # 15.0\nprint(calculate_tax(200))  # 30.0`,
         solutionJs: `function calculateTax(price) {\n    const taxRate = 0.15; // local variable\n    return price * taxRate;\n}\n\nconsole.log(calculateTax(100)); // 15\nconsole.log(calculateTax(200)); // 30`,
+        expectedOutput: '15\n30',
       },
     ],
     commonMistakes: [
@@ -1976,6 +1982,7 @@ console.log(factorial(1)); // 1`,
         hintEn: 'sum(n) = n + sum(n-1), base case: sum(0) = 0',
         solutionPython: `def sum_to_n(n):\n    if n == 0:  # Base case\n        return 0\n    return n + sum_to_n(n - 1)\n\nprint(sum_to_n(5))  # 15 (1+2+3+4+5)`,
         solutionJs: `function sumToN(n) {\n    if (n === 0) return 0; // Base case\n    return n + sumToN(n - 1);\n}\n\nconsole.log(sumToN(5)); // 15`,
+        expectedOutput: '15',
       },
     ],
     commonMistakes: [
@@ -2094,6 +2101,7 @@ console.log(findMax(nums)); // 9`,
         hintEn: 'Start with: "Assume the first element is the largest, then compare each element..."',
         solutionPython: `# Pseudocode:\n# 1. ضع أول عنصر كـ max\n# 2. لكل عنصر في القائمة\n#    إذا كان أكبر من max: حدّث max\n# 3. أعد max\n\ndef find_max(numbers):\n    max_val = numbers[0]\n    for num in numbers:\n        if num > max_val:\n            max_val = num\n    return max_val\n\nprint(find_max([3, 7, 2, 9, 1]))  # 9`,
         solutionJs: `// Pseudocode:\n// 1. Set first element as max\n// 2. For each element in array\n//    If larger than max: update max\n// 3. Return max\n\nfunction findMax(numbers) {\n    let max = numbers[0];\n    for (let num of numbers) {\n        if (num > max) max = num;\n    }\n    return max;\n}\n\nconsole.log(findMax([3, 7, 2, 9, 1])); // 9`,
+        expectedOutput: '9',
       },
     ],
     commonMistakes: [
@@ -2902,6 +2910,26 @@ printStatement(myAccount);`,
         hintEn: 'Example: guessing game — pick a number between 1-10 and ask user to guess',
         solutionPython: `# لعبة تخمين الرقم\nimport random\n\nsecret = random.randint(1, 10)\nguess = int(input("خمّن رقماً بين 1 و 10: "))\n\nif guess == secret:\n    print("صحيح! أنت رائع!")\nelif guess < secret:\n    print(f"الرقم أكبر. الرقم الصحيح هو {secret}")\nelse:\n    print(f"الرقم أصغر. الرقم الصحيح هو {secret}")`,
         solutionJs: `// Number guessing game\nlet secret = Math.floor(Math.random() * 10) + 1;\nlet guess = Number(prompt("Guess a number between 1 and 10:"));\n\nif (guess === secret) {\n    console.log("Correct! Amazing!");\n} else if (guess < secret) {\n    console.log(\`Too low. The number was \${secret}\`);\n} else {\n    console.log(\`Too high. The number was \${secret}\`);\n}`,
+      },
+    ],
+    commonMistakes: [
+      {
+        mistakeAr: 'التوقف عن التعلم بعد إتمام الدورة',
+        mistakeEn: 'Stopping learning after completing the course',
+        fixAr: 'هذه الدورة هي البداية فقط — ابنِ مشاريع واستمر في تعلم لغة واحدة بعمق',
+        fixEn: 'This course is just the beginning — build projects and keep learning one language deeply',
+      },
+      {
+        mistakeAr: 'محاولة تعلم كل اللغات في نفس الوقت',
+        mistakeEn: 'Trying to learn all languages at the same time',
+        fixAr: 'اختر لغة واحدة (Python أو JavaScript) وأتقنها أولاً قبل الانتقال لأخرى',
+        fixEn: 'Pick one language (Python or JavaScript) and master it first before moving to another',
+      },
+      {
+        mistakeAr: 'الخوف من الأخطاء وعدم التجريب',
+        mistakeEn: 'Fear of errors and not experimenting',
+        fixAr: 'الأخطاء جزء طبيعي من البرمجة — كل مبرمج محترف يخطئ ويتعلم منها',
+        fixEn: 'Errors are a natural part of programming — every professional developer makes mistakes and learns from them',
       },
     ],
   },
