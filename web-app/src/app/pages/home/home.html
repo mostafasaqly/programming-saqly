@@ -39,6 +39,50 @@
     </a>
   </section>
 
+  <!-- Search -->
+  <div class="search-bar-wrap">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input
+        class="search-input"
+        type="text"
+        [placeholder]="lang.isArabic() ? 'ابحث في المحتوى...' : 'Search course content...'"
+        [value]="searchQuery()"
+        (input)="onSearch($any($event.target).value)"
+        dir="auto"
+      />
+      @if (searchQuery()) {
+        <button class="search-clear" (click)="clearSearch()">✕</button>
+      }
+    </div>
+
+    @if (searchQuery() && searchResults().length === 0) {
+      <div class="search-empty">
+        {{ lang.isArabic() ? 'لا نتائج لـ "' + searchQuery() + '"' : 'No results for "' + searchQuery() + '"' }}
+      </div>
+    }
+
+    @if (searchResults().length > 0) {
+      <div class="search-results">
+        <p class="search-results-label">
+          {{ searchResults().length }} {{ lang.isArabic() ? 'نتيجة' : 'results' }}
+        </p>
+        @for (sec of searchResults(); track sec.id) {
+          <a [routerLink]="['/section', sec.id]" class="search-result-item">
+            <span class="sr-icon">{{ sec.icon }}</span>
+            <div class="sr-body">
+              <span class="sr-title">{{ lang.isArabic() ? sec.titleAr : sec.titleEn }}</span>
+              <span class="sr-part">{{ lang.isArabic() ? sec.partTitleAr : sec.partTitleEn }}</span>
+            </div>
+            @if (course.isCompleted(sec.id)) {
+              <span class="sr-done">✓</span>
+            }
+          </a>
+        }
+      </div>
+    }
+  </div>
+
   <!-- Parts Overview -->
   <section class="parts-overview">
     <h2 class="section-heading">

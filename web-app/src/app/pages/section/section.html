@@ -417,6 +417,31 @@
     </ul>
   </section>
 
+  <!-- Common Mistakes -->
+  @if (sec.commonMistakes?.length) {
+    <section class="content-section mistakes-section">
+      <h2 class="content-heading">{{ lang.isArabic() ? '⚠️ أخطاء شائعة' : '⚠️ Common Mistakes' }}</h2>
+      @for (m of sec.commonMistakes!; track m.mistakeEn; let mi = $index) {
+        <div class="mistake-card">
+          <div class="mistake-row">
+            <span class="mistake-icon">❌</span>
+            <div class="mistake-body">
+              <p class="mistake-label">{{ lang.isArabic() ? 'الخطأ:' : 'Mistake:' }}</p>
+              <p class="mistake-text">{{ lang.isArabic() ? m.mistakeAr : m.mistakeEn }}</p>
+            </div>
+          </div>
+          <div class="mistake-row fix-row">
+            <span class="mistake-icon">✅</span>
+            <div class="mistake-body">
+              <p class="mistake-label">{{ lang.isArabic() ? 'الحل:' : 'Fix:' }}</p>
+              <p class="mistake-text">{{ lang.isArabic() ? m.fixAr : m.fixEn }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </section>
+  }
+
   <!-- Challenge -->
   @if (sec.challenges?.length) {
     <section class="content-section challenge-section">

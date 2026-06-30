@@ -1141,3 +1141,55 @@
 }
 
 .score-perfect { color: #3fb950; font-weight: 600; }
+
+/* ── Common Mistakes ─────────────────────────────────────── */
+.mistakes-section { margin-top: 8px; }
+
+.mistake-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.mistake-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+
+  &.fix-row {
+    background: color-mix(in srgb, #3fb950 6%, transparent);
+    border-top: 1px solid var(--border);
+  }
+}
+
+.mistake-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.mistake-body {
+  flex: 1;
+}
+
+.mistake-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin: 0 0 4px;
+}
+
+.mistake-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.55;
+  font-family: var(--font-code);
+}
+
+.fix-row .mistake-text { color: #3fb950; }
