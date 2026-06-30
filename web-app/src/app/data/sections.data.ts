@@ -35,6 +35,8 @@ export interface SectionContent {
   level: 'beginner' | 'intermediate';
   conceptsAr: string[];
   conceptsEn: string[];
+  conceptDescriptionsAr?: string[];
+  conceptDescriptionsEn?: string[];
   diagramType: string;
   codeExamples: CodeExample[];
   multiLangExamples?: MultiLangExample[];
@@ -61,6 +63,18 @@ export const COURSE_SECTIONS: SectionContent[] = [
     color: '#58a6ff',
     conceptsAr: ['هيكل الدورة', 'طريقة التعلم', 'الأهداف', 'الأدوات المطلوبة'],
     conceptsEn: ['Course structure', 'Learning approach', 'Goals', 'Required tools'],
+    conceptDescriptionsAr: [
+      'الدورة مقسمة إلى 8 أجزاء تبدأ من أساسيات البرمجة وتصل إلى مشاريع تطبيقية متكاملة.',
+      'كل قسم يجمع بين الشرح النظري والأمثلة العملية لتعزيز الفهم وتثبيت المعلومات.',
+      'الهدف هو بناء أساس برمجي متين يُمكّنك من الانتقال بثقة إلى لغات وتخصصات أكثر تقدمًا.',
+      'لا تحتاج إلى تثبيت أي برنامج — متصفح الويب وحده يكفي للبدء فورًا.',
+    ],
+    conceptDescriptionsEn: [
+      'The course is divided into 8 parts, starting from programming basics and building up to complete hands-on projects.',
+      'Each section combines theory and practical examples to reinforce understanding and retention.',
+      'The goal is to build a solid programming foundation so you can confidently move on to more advanced languages and specializations.',
+      'No software installation needed — a web browser alone is enough to get started right away.',
+    ],
     diagramType: 'course-map',
     codeExamples: [],
     editorLinks: [],
@@ -92,6 +106,18 @@ export const COURSE_SECTIONS: SectionContent[] = [
     color: '#d29922',
     conceptsAr: ['ما هي البرمجة', 'لماذا نتعلم البرمجة', 'كيف يفكر الحاسوب', 'الخوارزمية'],
     conceptsEn: ['What is programming', 'Why learn to code', 'How computers think', 'Algorithm'],
+    conceptDescriptionsAr: [
+      'البرمجة هي كتابة تعليمات دقيقة للحاسوب لأداء مهمة معينة، مثلما تكتب وصفة طبخ خطوة بخطوة.',
+      'البرمجة تفتح أبواب التوظيف والإبداع وبناء المنتجات، وتُستخدم في كل مجال من الطب إلى الفضاء.',
+      'الحاسوب يُنفّذ التعليمات بالترتيب الحرفي دون تفسير — لذا يجب أن تكون التعليمات واضحة تمامًا.',
+      'الخوارزمية هي سلسلة خطوات منطقية لحل مشكلة، كخطوات البحث عن كلمة في قاموس.',
+    ],
+    conceptDescriptionsEn: [
+      'Programming is writing precise instructions for a computer to perform a task — like writing a recipe step by step.',
+      'Coding opens doors to jobs, creativity, and product building, and is used in every field from medicine to space exploration.',
+      'Computers execute instructions in exact order with no interpretation — so instructions must be completely unambiguous.',
+      'An algorithm is a logical sequence of steps to solve a problem, like the steps to look up a word in a dictionary.',
+    ],
     diagramType: 'human-computer',
     codeExamples: [],
     editorLinks: [],
@@ -123,6 +149,18 @@ export const COURSE_SECTIONS: SectionContent[] = [
     color: '#3fb950',
     conceptsAr: ['بيئة التطوير', 'المحرر النصي', 'تشغيل الكود', 'Hello World'],
     conceptsEn: ['Development environment', 'Text editor', 'Running code', 'Hello World'],
+    conceptDescriptionsAr: [
+      'بيئة التطوير هي المكان الذي تكتب فيه وتُشغّل الكود، وتشمل المحرر النصي والمتصفح أو المحطة الطرفية.',
+      'المحرر النصي كـ VS Code يُميّز الكلمات بألوان ويساعدك على اكتشاف الأخطاء قبل تشغيل البرنامج.',
+      'تشغيل الكود يعني تسليمه للحاسوب لتنفيذه وإظهار نتيجته على الشاشة.',
+      'Hello World هو أبسط برنامج ممكن، ويُستخدم تقليديًا للتأكد أن البيئة تعمل بشكل صحيح.',
+    ],
+    conceptDescriptionsEn: [
+      'A development environment is where you write and run code — it includes a text editor and a browser or terminal.',
+      'A text editor like VS Code highlights keywords with colors and helps you spot errors before running the program.',
+      'Running code means handing it to the computer to execute and display its result on the screen.',
+      'Hello World is the simplest possible program, traditionally used to confirm that your environment is working correctly.',
+    ],
     diagramType: 'setup',
     codeExamples: [
       {
@@ -170,6 +208,18 @@ export const COURSE_SECTIONS: SectionContent[] = [
     color: '#bc8cff',
     conceptsAr: ['التعليق السطري', 'التعليق المتعدد الأسطر', 'توثيق الكود', 'قابلية القراءة'],
     conceptsEn: ['Single-line comment', 'Multi-line comment', 'Code documentation', 'Readability'],
+    conceptDescriptionsAr: [
+      'التعليق السطري يبدأ بـ // ويغطي سطرًا واحدًا فقط، ويُستخدم لشرح سريع للسطر المجاور.',
+      'التعليق المتعدد الأسطر يُكتب بين /* و */ ويُستخدم لشرح مقاطع كبيرة أو إخفاء كود مؤقتًا.',
+      'توثيق الكود يعني كتابة تعليقات تشرح الغرض من الدوال والمتغيرات لمساعدة المطورين الآخرين.',
+      'الكود الجيد يكون واضحًا بنفسه لكن التعليقات تُساعد عند وجود منطق معقد أو قرارات غير واضحة.',
+    ],
+    conceptDescriptionsEn: [
+      'A single-line comment starts with // and covers one line only, used for a quick explanation next to that line.',
+      'A multi-line comment is written between /* and */ and is used to explain large sections or temporarily hide code.',
+      'Code documentation means writing comments that explain the purpose of functions and variables to help other developers.',
+      'Good code is self-explanatory, but comments help when logic is complex or decisions are not immediately obvious.',
+    ],
     diagramType: 'comments',
     codeExamples: [
       {
@@ -216,6 +266,18 @@ console.log(name);`,
     color: '#58a6ff',
     conceptsAr: ['تعريف المتغير', 'التسمية', 'التعيين', 'الاستخدام'],
     conceptsEn: ['Variable declaration', 'Naming', 'Assignment', 'Usage'],
+    conceptDescriptionsAr: [
+      'تعريف المتغير يعني إخبار الحاسوب باسم المتغير ونوعه، كـ let age في JavaScript.',
+      'اسم المتغير يجب أن يكون وصفيًا ويبدأ بحرف، واصطلاح camelCase شائع مثل firstName.',
+      'التعيين يعني وضع قيمة داخل المتغير باستخدام علامة = مثل age = 25.',
+      'بعد التعريف والتعيين يمكنك استخدام المتغير في أي مكان بكتابة اسمه فقط.',
+    ],
+    conceptDescriptionsEn: [
+      'Variable declaration tells the computer the name of the variable, like let age in JavaScript.',
+      'Variable names should be descriptive and start with a letter; camelCase like firstName is the common convention.',
+      'Assignment means placing a value into the variable using the = sign, for example age = 25.',
+      'After declaring and assigning, you can use the variable anywhere in your code just by writing its name.',
+    ],
     diagramType: 'variable-box',
     codeExamples: [
       {
@@ -276,6 +338,22 @@ console.log(score); // 15`,
     color: '#d29922',
     conceptsAr: ['Number (رقم)', 'String (نص)', 'Boolean (منطقي)', 'Null & Undefined', 'Array (مصفوفة)', 'Object (كائن)'],
     conceptsEn: ['Number', 'String', 'Boolean', 'Null & Undefined', 'Array', 'Object'],
+    conceptDescriptionsAr: [
+      'Number يمثل أي قيمة رقمية صحيحة أو عشرية مثل 42 أو 3.14، ويدعم العمليات الحسابية مباشرة.',
+      'String هو أي نص بين علامات اقتباس مثل "مرحبا"، ويمكن دمجه أو البحث فيه أو تقطيعه.',
+      'Boolean يحمل قيمة واحدة من اثنتين فقط: true أو false، ويُستخدم في الشروط والمقارنات.',
+      'Null تعني "قيمة فارغة مقصودة"، بينما Undefined تعني "لم تُعطَ قيمة بعد".',
+      'Array مصفوفة تُخزّن قائمة مرتبة من القيم يمكن الوصول إليها بالفهرس مثل [0] و[1].',
+      'Object كائن يُخزّن بيانات كأزواج مفتاح-قيمة مثل { name: "Sara", age: 25 }.',
+    ],
+    conceptDescriptionsEn: [
+      'Number represents any integer or decimal value like 42 or 3.14, and directly supports arithmetic operations.',
+      'String is any text wrapped in quotes like "hello", and can be concatenated, searched, or sliced.',
+      'Boolean holds one of only two values: true or false, and is used in conditions and comparisons.',
+      'Null means "intentionally empty value", while Undefined means "no value has been assigned yet".',
+      'Array stores an ordered list of values accessible by index like [0] and [1].',
+      'Object stores data as key-value pairs like { name: "Sara", age: 25 }.',
+    ],
     diagramType: 'data-types',
     codeExamples: [
       {
@@ -336,6 +414,18 @@ console.log(typeof notDefined);// "undefined"`,
     color: '#f85149',
     conceptsAr: ['const في JavaScript', 'الفرق بين let و const', 'متى تستخدم كل منهما', 'الثوابت في Python'],
     conceptsEn: ['const in JavaScript', 'Difference between let and const', 'When to use each', 'Constants in Python'],
+    conceptDescriptionsAr: [
+      'const يُعرّف ثابتًا لا يمكن إعادة تعيينه بعد تحديد قيمته الأولى.',
+      'let تسمح بتغيير القيمة لاحقًا، أما const فتمنع أي إعادة تعيين وتسبب خطأً.',
+      'استخدم const كخيار افتراضي وانتقل إلى let فقط عندما تعرف أن القيمة ستتغير.',
+      'في Python لا يوجد كلمة مفتاحية للثوابت، لكن الاصطلاح يقضي بكتابة الاسم بأحرف كبيرة مثل MAX_SIZE.',
+    ],
+    conceptDescriptionsEn: [
+      'const defines a constant that cannot be reassigned after its initial value is set.',
+      'let allows changing the value later, while const prevents any reassignment and throws an error.',
+      'Use const as your default choice and switch to let only when you know the value will change.',
+      'Python has no constant keyword, but convention is to write the name in UPPER_CASE like MAX_SIZE.',
+    ],
     diagramType: 'constant-lock',
     codeExamples: [
       {
@@ -384,6 +474,20 @@ console.log(MAX_USERS);// 100
     color: '#bc8cff',
     conceptsAr: ['إنشاء النص', 'دمج النصوص', 'طول النص', 'البحث داخل النص', 'Template Literals'],
     conceptsEn: ['Creating strings', 'Concatenation', 'String length', 'Searching strings', 'Template Literals'],
+    conceptDescriptionsAr: [
+      'يمكن إنشاء النص بعلامات اقتباس مفردة \' \'، مزدوجة \" \"، أو خلفية ` ` لدعم التعبيرات.',
+      'دمج النصوص يعني ربطها معًا باستخدام + مثل "Hello" + " " + "World".',
+      '.length خاصية تُعطيك عدد الأحرف في النص بما فيها المسافات.',
+      '.includes() تُرجع true إذا وُجد النص المبحوث عنه داخل النص الأصلي.',
+      'Template Literals تُتيح تضمين متغيرات داخل النص مباشرة بصيغة ${variable}.',
+    ],
+    conceptDescriptionsEn: [
+      'Strings can be created with single \' \', double \" \", or backtick ` ` quotes — backticks support expressions.',
+      'Concatenation means joining strings together using + like "Hello" + " " + "World".',
+      '.length is a property that gives you the number of characters in the string, including spaces.',
+      '.includes() returns true if the searched text exists inside the original string.',
+      'Template Literals let you embed variables directly inside a string using ${variable} syntax.',
+    ],
     diagramType: 'string-chars',
     codeExamples: [
       {
@@ -439,6 +543,18 @@ console.log(fullName.includes("Sara")); // true`,
     color: '#3fb950',
     conceptsAr: ['العمليات الحسابية', 'عمليات المقارنة', 'العمليات المنطقية', 'أولوية العمليات'],
     conceptsEn: ['Arithmetic operators', 'Comparison operators', 'Logical operators', 'Operator precedence'],
+    conceptDescriptionsAr: [
+      'العمليات الحسابية تشمل + - * / % ** وتعمل على الأرقام مثل الرياضيات تمامًا.',
+      'عمليات المقارنة مثل === و!== و> و< تُقارن قيمتين وتُعيد دائمًا true أو false.',
+      'العمليات المنطقية && و|| و! تُدمج شروطًا متعددة في تعبير واحد.',
+      'أولوية العمليات تحدد أيها تُنفَّذ أولًا — الضرب والقسمة قبل الجمع والطرح.',
+    ],
+    conceptDescriptionsEn: [
+      'Arithmetic operators include + - * / % ** and work on numbers exactly like in mathematics.',
+      'Comparison operators like === !== > < compare two values and always return true or false.',
+      'Logical operators && || ! combine multiple conditions into a single expression.',
+      'Operator precedence determines which operation runs first — multiplication and division before addition and subtraction.',
+    ],
     diagramType: 'operators',
     codeExamples: [
       {
@@ -496,6 +612,20 @@ console.log(!true);         // false`,
     color: '#58a6ff',
     conceptsAr: ['التحويل الصريح', 'التحويل الضمني', 'String()', 'Number()', 'parseInt() و parseFloat()'],
     conceptsEn: ['Explicit conversion', 'Implicit conversion', 'String()', 'Number()', 'parseInt() and parseFloat()'],
+    conceptDescriptionsAr: [
+      'التحويل الصريح يعني أنت تطلبه بوضوح مثل Number("42") أو String(99).',
+      'التحويل الضمني يحدث تلقائيًا مثل "5" + 1 يُعطي "51" لأن JavaScript تحوّل الرقم لنص.',
+      'String() تُحوّل أي قيمة إلى نص بما فيها الأرقام والقيم المنطقية.',
+      'Number() تُحوّل النص إلى رقم، وتُعيد NaN إذا كان النص غير رقمي.',
+      'parseInt() تأخذ الجزء الصحيح فقط، و parseFloat() تأخذ الرقم بكامل خانات العشرية.',
+    ],
+    conceptDescriptionsEn: [
+      'Explicit conversion means you request it directly, like Number("42") or String(99).',
+      'Implicit conversion happens automatically, like "5" + 1 gives "51" because JavaScript converts the number to a string.',
+      'String() converts any value to a string, including numbers and booleans.',
+      'Number() converts a string to a number, and returns NaN if the string is not numeric.',
+      'parseInt() takes only the integer part, while parseFloat() keeps all decimal digits.',
+    ],
     diagramType: 'type-cast',
     codeExamples: [
       {
@@ -556,6 +686,20 @@ console.log(Boolean("hi")); // true`,
     color: '#d29922',
     conceptsAr: ['console.log()', 'prompt()', 'alert()', 'الإدخال في Node.js', 'الإدخال في Python'],
     conceptsEn: ['console.log()', 'prompt()', 'alert()', 'Input in Node.js', 'Input in Python'],
+    conceptDescriptionsAr: [
+      'console.log() تطبع أي قيمة في وحدة تحكم المطور وهي الأداة الأساسية لتتبع سير البرنامج.',
+      'prompt() تفتح نافذة حوار في المتصفح تطلب نصًا من المستخدم وتُعيده كـ String.',
+      'alert() تعرض رسالة في نافذة منبثقة بالمتصفح وتنتظر المستخدم حتى يغلقها.',
+      'في Node.js يمكن قراءة الإدخال عبر readline أو مكتبات خارجية لأن prompt() غير متاحة.',
+      'في Python تستخدم دالة input() لقراءة نص من المستخدم في سطر الأوامر وتُعيده دائمًا كـ str.',
+    ],
+    conceptDescriptionsEn: [
+      'console.log() prints any value to the developer console and is the primary tool for tracking program flow.',
+      'prompt() opens a dialog box in the browser asking the user for text and returns it as a String.',
+      'alert() displays a message in a browser popup and waits for the user to close it.',
+      'In Node.js, input is read via readline or external libraries since prompt() is not available.',
+      'In Python, the input() function reads text from the user on the command line and always returns a str.',
+    ],
     diagramType: 'io',
     codeExamples: [
       {
@@ -618,6 +762,20 @@ print("Hello,", name + "!")`,
     color: '#f85149',
     conceptsAr: ['if', 'else', 'else if', 'التعبيرات الشرطية', 'switch'],
     conceptsEn: ['if', 'else', 'else if', 'Conditional expressions', 'switch'],
+    conceptDescriptionsAr: [
+      'if تُنفّذ كتلة الكود فقط إذا كان الشرط بين القوسين يُقيَّم إلى true.',
+      'else تُنفّذ كتلة بديلة عندما يكون شرط if خاطئًا، وهي اختيارية.',
+      'else if تُتيح فحص شروط إضافية بالترتيب حتى يتحقق أحدها أو تُنفَّذ else في النهاية.',
+      'العامل الثلاثي condition ? valueIfTrue : valueIfFalse مختصر مناسب للشروط البسيطة.',
+      'switch يُقارن متغيرًا بقائمة قيم ثابتة وينتقل إلى الحالة المطابقة مباشرة.',
+    ],
+    conceptDescriptionsEn: [
+      'if executes a block of code only when the condition in parentheses evaluates to true.',
+      'else runs an alternative block when the if condition is false, and is optional.',
+      'else if lets you check additional conditions in order until one matches, or else runs at the end.',
+      'The ternary operator condition ? valueIfTrue : valueIfFalse is a compact form suited for simple conditions.',
+      'switch compares a variable against a list of fixed values and jumps directly to the matching case.',
+    ],
     diagramType: 'flowchart',
     codeExamples: [
       {
@@ -678,6 +836,20 @@ console.log(status); // Adult`,
     color: '#bc8cff',
     conceptsAr: ['إنشاء المصفوفة', 'الفهرسة', 'إضافة وحذف عناصر', 'التكرار على المصفوفة', 'طرق المصفوفات'],
     conceptsEn: ['Creating arrays', 'Indexing', 'Adding and removing elements', 'Iterating arrays', 'Array methods'],
+    conceptDescriptionsAr: [
+      'تُنشأ المصفوفة بوضع القيم بين قوسين مربعين مثل ["Apple", "Banana", "Orange"].',
+      'الفهرسة تبدأ من 0، فالعنصر الأول في fruits[0] والثاني في fruits[1].',
+      'push() يُضيف عنصرًا في النهاية، pop() يحذف من النهاية، وunshift/shift يعملان على البداية.',
+      'حلقة for...of تُمرّر عبر كل عنصر بالترتيب وهي أسهل طريقة للتكرار على مصفوفة.',
+      'طرق مثل .map() و.filter() و.find() تُتيح تحويل المصفوفة أو تصفيتها بكود أقل.',
+    ],
+    conceptDescriptionsEn: [
+      'An array is created by placing values inside square brackets like ["Apple", "Banana", "Orange"].',
+      'Indexing starts at 0, so the first element is at fruits[0] and the second at fruits[1].',
+      'push() adds to the end, pop() removes from the end, while unshift/shift work on the beginning.',
+      'A for...of loop iterates over every element in order and is the easiest way to loop through an array.',
+      'Methods like .map(), .filter(), and .find() let you transform or filter an array with less code.',
+    ],
     diagramType: 'array-visual',
     codeExamples: [
       {
@@ -739,6 +911,20 @@ for (let fruit of fruits) {
     color: '#3fb950',
     conceptsAr: ['for loop', 'while loop', 'do...while', 'break و continue', 'التكرار على المصفوفات'],
     conceptsEn: ['for loop', 'while loop', 'do...while', 'break and continue', 'Iterating arrays'],
+    conceptDescriptionsAr: [
+      'حلقة for تُعرّف متغير عداد وشرط إيقاف وخطوة تحديث في سطر واحد مثل for(let i=0; i<5; i++).',
+      'حلقة while تتكرر طالما الشرط صحيح — مفيدة حين لا تعرف عدد التكرارات مسبقًا.',
+      'do...while تُنفّذ الكتلة مرة واحدة على الأقل ثم تتحقق من الشرط في كل تكرار تالٍ.',
+      'break يُخرجك من الحلقة فورًا، وcontinue يتجاوز التكرار الحالي وينتقل للتالي.',
+      'for...of تُكرر على عناصر المصفوفة مباشرة دون الحاجة لمتغير عداد.',
+    ],
+    conceptDescriptionsEn: [
+      'A for loop defines a counter variable, a stop condition, and an update step all in one line like for(let i=0; i<5; i++).',
+      'A while loop repeats as long as the condition is true — useful when you don\'t know the number of iterations in advance.',
+      'do...while executes the block at least once, then checks the condition on each subsequent iteration.',
+      'break exits the loop immediately, while continue skips the current iteration and moves to the next one.',
+      'for...of iterates over array elements directly without needing a counter variable.',
+    ],
     diagramType: 'loop-diagram',
     codeExamples: [
       {
@@ -806,6 +992,20 @@ for (let i = 0; i < 10; i++) {
     color: '#58a6ff',
     conceptsAr: ['تعريف الدالة', 'المعاملات (Parameters)', 'القيمة المُعادة (Return)', 'دوال السهم', 'إعادة الاستخدام'],
     conceptsEn: ['Function definition', 'Parameters', 'Return value', 'Arrow functions', 'Reusability'],
+    conceptDescriptionsAr: [
+      'تُعرَّف الدالة بكلمة function ثم الاسم والأقواس والكتلة مثل function greet() { }.',
+      'المعاملات هي متغيرات وهمية في تعريف الدالة تستقبل القيم الفعلية عند استدعائها.',
+      'return تُعيد قيمة من الدالة إلى مكان الاستدعاء وتوقف تنفيذ الدالة فورًا.',
+      'دوال السهم (=>) صيغة أحدث وأقصر مثل const add = (a, b) => a + b.',
+      'إعادة الاستخدام تعني كتابة الكود مرة واحدة واستدعاؤه في أماكن متعددة بدلًا من التكرار.',
+    ],
+    conceptDescriptionsEn: [
+      'A function is defined with the function keyword, then its name, parentheses, and a block like function greet() { }.',
+      'Parameters are placeholder variables in the function definition that receive actual values when the function is called.',
+      'return sends a value back to the caller and immediately stops the function\'s execution.',
+      'Arrow functions (=>) are a newer, shorter syntax like const add = (a, b) => a + b.',
+      'Reusability means writing code once and calling it in multiple places instead of repeating it.',
+    ],
     diagramType: 'function-box',
     codeExamples: [
       {
@@ -871,6 +1071,18 @@ console.log(square(7)); // 49`,
     color: '#d29922',
     conceptsAr: ['النطاق العام (Global)', 'النطاق المحلي (Local)', 'نطاق الكتلة (Block)', 'رفع المتغيرات (Hoisting)'],
     conceptsEn: ['Global scope', 'Local scope', 'Block scope', 'Hoisting'],
+    conceptDescriptionsAr: [
+      'المتغير العام مُعرَّف خارج أي دالة أو كتلة ويمكن الوصول إليه من أي مكان في الملف.',
+      'المتغير المحلي مُعرَّف داخل دالة ولا يمكن الوصول إليه من خارجها — يُتلف عند انتهاء الدالة.',
+      'let و const لها نطاق الكتلة {} بمعنى لا يمكن الوصول إليها خارج الأقواس التي عُرّفت فيها.',
+      'Hoisting هي سلوك JavaScript التلقائي بنقل تعريفات var والدوال إلى أعلى نطاقها — تجنّب الاعتماد عليه.',
+    ],
+    conceptDescriptionsEn: [
+      'A global variable is defined outside any function or block and can be accessed from anywhere in the file.',
+      'A local variable is defined inside a function and cannot be accessed from outside it — it is destroyed when the function ends.',
+      'let and const have block scope {}, meaning they cannot be accessed outside the braces where they were defined.',
+      'Hoisting is JavaScript\'s automatic behavior of moving var declarations and function definitions to the top of their scope — avoid relying on it.',
+    ],
     diagramType: 'scope-diagram',
     codeExamples: [
       {
@@ -923,6 +1135,18 @@ console.log(globalVar); // works
     color: '#bc8cff',
     conceptsAr: ['الحالة الأساسية (Base Case)', 'الاستدعاء الذاتي', 'مكدس الاستدعاء', 'مقارنة مع الحلقات'],
     conceptsEn: ['Base case', 'Recursive call', 'Call stack', 'Comparison with loops'],
+    conceptDescriptionsAr: [
+      'الحالة الأساسية هي الشرط الذي يُوقف التكرار الذاتي — بدونه تستمر الدالة إلى الأبد.',
+      'الاستدعاء الذاتي هو قيام الدالة بنداء نفسها بمعاملات أصغر في كل مرة حتى تصل للحالة الأساسية.',
+      'مكدس الاستدعاء يتتبع كل استدعاء معلق — تراكم كثير من الاستدعاءات يُسبب Stack Overflow.',
+      'التكرار الذاتي أنيق للمشكلات كالمضروب وشجرة المجلدات، بينما الحلقات أكثر كفاءة في الذاكرة.',
+    ],
+    conceptDescriptionsEn: [
+      'The base case is the condition that stops the recursion — without it the function runs forever.',
+      'The recursive call is the function calling itself with smaller arguments each time until the base case is reached.',
+      'The call stack tracks every pending call — too many stacked calls causes a Stack Overflow error.',
+      'Recursion is elegant for problems like factorial and folder trees, while loops are more memory-efficient.',
+    ],
     diagramType: 'recursion',
     codeExamples: [
       {
@@ -971,6 +1195,20 @@ console.log(factorial(1)); // 1`,
     color: '#3fb950',
     conceptsAr: ['تحليل المشكلة', 'تقسيم المشكلة', 'Pseudocode', 'اختبار الحل', 'تحسين الكود'],
     conceptsEn: ['Problem analysis', 'Breaking down problems', 'Pseudocode', 'Testing solutions', 'Code optimization'],
+    conceptDescriptionsAr: [
+      'تحليل المشكلة يعني فهم المدخلات والمخرجات المطلوبة والقيود قبل كتابة أي سطر كود.',
+      'تقسيم المشكلة يعني تجزئتها إلى مهام صغيرة يمكن حل كل منها على حدة ثم تجميعها.',
+      'Pseudocode هو وصف شبه-برمجي باللغة الطبيعية يُساعدك على التخطيط قبل الكتابة الفعلية.',
+      'اختبار الحل يشمل تجربة حالات طبيعية وحالات حافة مثل مدخل فارغ أو رقم سالب.',
+      'تحسين الكود يعني تقليل التكرار والتعقيد بعد أن يعمل الحل الأولي بشكل صحيح.',
+    ],
+    conceptDescriptionsEn: [
+      'Problem analysis means understanding the required inputs, outputs, and constraints before writing any line of code.',
+      'Breaking down problems means splitting them into small tasks, solving each one separately, then assembling the solution.',
+      'Pseudocode is a semi-programming description in natural language that helps you plan before actual writing.',
+      'Testing the solution includes trying normal cases and edge cases like empty input or a negative number.',
+      'Code optimization means reducing repetition and complexity after the initial solution is working correctly.',
+    ],
     diagramType: 'problem-solving',
     codeExamples: [
       {
@@ -1027,6 +1265,18 @@ console.log(findMax(nums)); // 9`,
     color: '#f85149',
     conceptsAr: ['البت (Bit)', 'البايت (Byte)', 'الكيلوبايت والميجابايت', 'تمثيل البيانات'],
     conceptsEn: ['Bit', 'Byte', 'Kilobyte and Megabyte', 'Data representation'],
+    conceptDescriptionsAr: [
+      'البت هو أصغر وحدة بيانات في الحاسوب ولا يمكنه تخزين سوى قيمة واحدة من اثنتين: 0 أو 1.',
+      'البايت يتكون من 8 بتات ويمكنه تمثيل 256 قيمة مختلفة من 0 إلى 255، ويكفي لتخزين حرف واحد.',
+      'الكيلوبايت = 1024 بايت، والميجابايت = 1024 كيلوبايت — هذه الوحدات تصف حجم الملفات والذاكرة.',
+      'كل ما يخزّنه الحاسوب — نصوص وصور وصوت — يُحوَّل في النهاية إلى سلسلة من 0 و1.',
+    ],
+    conceptDescriptionsEn: [
+      'A bit is the smallest unit of data in a computer and can only store one of two values: 0 or 1.',
+      'A byte consists of 8 bits and can represent 256 different values from 0 to 255 — enough to store a single character.',
+      'A kilobyte = 1024 bytes, and a megabyte = 1024 kilobytes — these units describe file and memory sizes.',
+      'Everything a computer stores — text, images, audio — is ultimately converted into a sequence of 0s and 1s.',
+    ],
     diagramType: 'bits-bytes',
     codeExamples: [
       {
@@ -1079,6 +1329,18 @@ console.log(~5);      // -6 (NOT)`,
     color: '#58a6ff',
     conceptsAr: ['القاعدة 2', 'التحويل من عشري إلى ثنائي', 'التحويل من ثنائي إلى عشري', 'الجمع الثنائي'],
     conceptsEn: ['Base 2', 'Decimal to binary', 'Binary to decimal', 'Binary addition'],
+    conceptDescriptionsAr: [
+      'النظام الثنائي قاعدته 2 — كل خانة تمثل ضعف الخانة التي على يمينها (1، 2، 4، 8، 16...).',
+      'لتحويل عشري إلى ثنائي قسّم الرقم على 2 باستمرار واجمع باقيات القسمة من الأخير للأول.',
+      'لتحويل ثنائي إلى عشري اضرب كل رقم بقوة 2 المقابلة لخانته ثم اجمع النتائج.',
+      'الجمع الثنائي يعمل كالجمع العشري لكن يحمل 1 عند تجاوز 1+1 (لأن 2 بالثنائي = 10).',
+    ],
+    conceptDescriptionsEn: [
+      'The binary system has base 2 — each position represents double the position to its right (1, 2, 4, 8, 16...).',
+      'To convert decimal to binary, repeatedly divide by 2 and collect the remainders from last to first.',
+      'To convert binary to decimal, multiply each digit by its corresponding power of 2 then sum the results.',
+      'Binary addition works like decimal addition but carries 1 when 1+1 is reached (since 2 in binary = 10).',
+    ],
     diagramType: 'binary-converter',
     codeExamples: [
       {
@@ -1132,6 +1394,20 @@ console.log(decimalToBinary(255));    // "11111111"`,
     color: '#d29922',
     conceptsAr: ['القاعدة 16', 'أرقام A-F', 'التحويل', 'الألوان في CSS', 'عناوين الذاكرة'],
     conceptsEn: ['Base 16', 'Digits A-F', 'Conversion', 'Colors in CSS', 'Memory addresses'],
+    conceptDescriptionsAr: [
+      'النظام السداسي عشري قاعدته 16 — كل خانة تمثل 16 ضعف الخانة التي على يمينها.',
+      'الأرقام 10–15 تُمثَّل بالحروف A–F، إذ A=10 وB=11 حتى F=15 لتوفير رمز واحد لكل قيمة.',
+      'FF بالسداسي يساوي 255 بالعشري — سهل التحويل عبر parseInt("FF", 16) في JavaScript.',
+      'ألوان CSS كـ #FF5733 مكوّنة من ثلاثة أزواج سداسية تُمثّل قنوات الأحمر والأخضر والأزرق.',
+      'عناوين الذاكرة وقيم الذاكرة تُعرض عادةً بالسداسي لأنه أقصر من الثنائي وأسهل قراءةً.',
+    ],
+    conceptDescriptionsEn: [
+      'The hexadecimal system has base 16 — each position represents 16 times the position to its right.',
+      'Numbers 10–15 are represented by letters A–F, where A=10 and B=11 up to F=15, giving one symbol per value.',
+      'FF in hex equals 255 in decimal — easy to convert via parseInt("FF", 16) in JavaScript.',
+      'CSS colors like #FF5733 consist of three hex pairs representing the Red, Green, and Blue channels.',
+      'Memory addresses and register values are usually shown in hex because it\'s shorter than binary and easier to read.',
+    ],
     diagramType: 'hex-colors',
     codeExamples: [
       {
@@ -1184,6 +1460,20 @@ console.log(\`Red: \${parseInt("FF",16)}, Green: 0, Blue: 0\`);`,
     color: '#bc8cff',
     conceptsAr: ['AND Gate', 'OR Gate', 'NOT Gate', 'XOR Gate', 'جداول الحقيقة'],
     conceptsEn: ['AND Gate', 'OR Gate', 'NOT Gate', 'XOR Gate', 'Truth tables'],
+    conceptDescriptionsAr: [
+      'بوابة AND تُخرج 1 فقط عندما يكون كلا الطرفين 1 — تُقابل && في البرمجة.',
+      'بوابة OR تُخرج 1 عندما يكون طرف واحد على الأقل 1 — تُقابل || في البرمجة.',
+      'بوابة NOT تعكس الإشارة: 0 تصبح 1، و1 تصبح 0 — تُقابل ! في البرمجة.',
+      'بوابة XOR تُخرج 1 فقط عندما يختلف الطرفان — مفيدة في التشفير والكشف عن الأخطاء.',
+      'جدول الحقيقة يُدرج جميع تركيبات المدخلات ومخرجاتها لتحليل أي دالة منطقية بشكل كامل.',
+    ],
+    conceptDescriptionsEn: [
+      'AND gate outputs 1 only when both inputs are 1 — equivalent to && in programming.',
+      'OR gate outputs 1 when at least one input is 1 — equivalent to || in programming.',
+      'NOT gate inverts the signal: 0 becomes 1 and 1 becomes 0 — equivalent to ! in programming.',
+      'XOR gate outputs 1 only when the two inputs differ — useful in encryption and error detection.',
+      'A truth table lists all input combinations and their outputs to fully analyze any logical function.',
+    ],
     diagramType: 'logic-gates',
     codeExamples: [
       {
@@ -1243,6 +1533,20 @@ console.log(xor(true, true));  // false`,
     color: '#3fb950',
     conceptsAr: ['المصفوفات', 'الحلقات', 'الشروط', 'الدوال', 'تنسيق الإخراج'],
     conceptsEn: ['Arrays', 'Loops', 'Conditions', 'Functions', 'Output formatting'],
+    conceptDescriptionsAr: [
+      'المصفوفات تُخزّن درجات كل طالب في قائمة منظمة يمكن التكرار عليها.',
+      'الحلقات تُمرّ على كل درجة في المصفوفة لجمعها وحساب المعدل.',
+      'الشروط تُحدد التقدير الحرفي (A/B/C/D/F) بناءً على المعدل المحسوب.',
+      'الدوال تُقسّم المشروع إلى وحدات مستقلة لكل منها مسؤولية واحدة.',
+      'تنسيق الإخراج يُظهر التقرير بشكل منظم وقابل للقراءة باستخدام console.log.',
+    ],
+    conceptDescriptionsEn: [
+      'Arrays store each student\'s grades in an organized list that can be iterated over.',
+      'Loops go through every grade in the array to sum them up and calculate the average.',
+      'Conditions determine the letter grade (A/B/C/D/F) based on the calculated average.',
+      'Functions split the project into independent units, each with a single responsibility.',
+      'Output formatting displays the report in an organized, readable way using console.log.',
+    ],
     diagramType: 'project',
     codeExamples: [
       {
@@ -1310,6 +1614,18 @@ printReport("Ali Hassan", [65, 72, 58, 70, 68]);`,
     color: '#58a6ff',
     conceptsAr: ['الكائنات (Objects)', 'الدوال', 'التحقق من الشروط', 'إدارة الحالة'],
     conceptsEn: ['Objects', 'Functions', 'Condition validation', 'State management'],
+    conceptDescriptionsAr: [
+      'الكائنات تُجمّع بيانات الحساب (الرصيد، الاسم، العمليات) في بنية واحدة متماسكة.',
+      'الدوال تُعبّر عن كل عملية بنكية (إيداع، سحب، كشف) كدالة مستقلة قابلة لإعادة الاستخدام.',
+      'التحقق من الشروط يضمن رفض المبالغ السالبة والسحب الزائد عن الرصيد قبل التنفيذ.',
+      'إدارة الحالة تعني تحديث رصيد الحساب وسجل العمليات بشكل صحيح عند كل تغيير.',
+    ],
+    conceptDescriptionsEn: [
+      'Objects group the account data (balance, name, transactions) into one cohesive structure.',
+      'Functions represent each banking operation (deposit, withdrawal, statement) as an independent, reusable unit.',
+      'Condition validation ensures negative amounts and overdrafts are rejected before executing the operation.',
+      'State management means correctly updating the account balance and transaction log on every change.',
+    ],
     diagramType: 'project',
     codeExamples: [
       {
@@ -1395,6 +1711,18 @@ printStatement(myAccount);`,
     color: '#d29922',
     conceptsAr: ['مراجعة المفاهيم', 'أين تذهب بعد ذلك', 'لغات البرمجة المختلفة', 'موارد التعلم'],
     conceptsEn: ['Concepts review', 'Where to go next', 'Different programming languages', 'Learning resources'],
+    conceptDescriptionsAr: [
+      'تعلّمت المتغيرات والثوابت وأنواع البيانات والعمليات والشروط والحلقات والدوال والمصفوفات.',
+      'الخطوة القادمة هي التعمق في لغة واحدة كـ JavaScript أو Python وبناء مشاريع حقيقية.',
+      'كل لغة لها مجال قوة: Python للذكاء الاصطناعي، JavaScript للويب، Swift لـ iOS، Kotlin لـ Android.',
+      'موارد مجانية ممتازة: MDN Web Docs، freeCodeCamp، CS50 Harvard، وYouTube.',
+    ],
+    conceptDescriptionsEn: [
+      'You\'ve learned variables, constants, data types, operators, conditions, loops, functions, and arrays.',
+      'The next step is to go deeper into one language like JavaScript or Python and build real projects.',
+      'Each language has a strength area: Python for AI, JavaScript for the web, Swift for iOS, Kotlin for Android.',
+      'Excellent free resources: MDN Web Docs, freeCodeCamp, CS50 Harvard, and YouTube.',
+    ],
     diagramType: 'roadmap',
     codeExamples: [],
     editorLinks: [],

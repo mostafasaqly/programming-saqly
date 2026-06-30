@@ -699,9 +699,9 @@
 
 .concept-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 12px 14px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
@@ -722,11 +722,26 @@
   font-size: 12px;
   font-weight: 700;
   flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.concept-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .concept-text {
   font-size: 14px;
   color: var(--text-primary);
+  font-weight: 500;
+}
+
+.concept-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 0;
 }
 
 /* Key Points */

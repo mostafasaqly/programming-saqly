@@ -370,7 +370,12 @@
       @for (concept of (lang.isArabic() ? sec.conceptsAr : sec.conceptsEn); track concept; let i = $index) {
         <div class="concept-item" [style.animation-delay.ms]="i * 60">
           <span class="concept-num">{{ i + 1 }}</span>
-          <span class="concept-text">{{ concept }}</span>
+          <div class="concept-body">
+            <span class="concept-text">{{ concept }}</span>
+            @if ((lang.isArabic() ? sec.conceptDescriptionsAr : sec.conceptDescriptionsEn)?.[i]) {
+              <p class="concept-desc">{{ (lang.isArabic() ? sec.conceptDescriptionsAr : sec.conceptDescriptionsEn)![i] }}</p>
+            }
+          </div>
         </div>
       }
     </div>
@@ -412,31 +417,6 @@
     </ul>
   </section>
 
-  <!-- Online Editor Links -->
-  @if (sec.editorLinks.length > 0) {
-    <section class="content-section editor-section">
-      <h2 class="content-heading">{{ lang.isArabic() ? 'جرّب الكود الآن' : 'Try the Code Now' }}</h2>
-      <p class="editor-note">
-        {{ lang.isArabic()
-          ? 'افتح أحد المحررات الإلكترونية المجانية التالية وجرّب كتابة الكود بنفسك:'
-          : 'Open one of these free online editors and try writing the code yourself:' }}
-      </p>
-      <div class="editor-links">
-        @for (link of sec.editorLinks; track link.url) {
-          <a
-            class="editor-btn"
-            [href]="link.url"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span class="editor-icon">{{ link.language === 'javascript' ? '⚡' : link.language === 'python' ? '🐍' : '💻' }}</span>
-            <span>{{ link.label }}</span>
-            <span class="ext-icon">↗</span>
-          </a>
-        }
-      </div>
-    </section>
-  }
 
   <!-- Navigation -->
   <nav class="section-nav">
