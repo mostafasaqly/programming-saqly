@@ -34,10 +34,46 @@
         <span class="stat-label">{{ lang.isArabic() ? 'مكتمل' : 'Done' }}</span>
       </div>
     </div>
-    <a class="cta-btn" [routerLink]="['/section', 1]">
-      {{ lang.isArabic() ? 'ابدأ التعلم ←' : 'Start Learning →' }}
-    </a>
+    <div class="cta-group">
+      @if (lastSection()) {
+        <a class="cta-btn cta-continue" [routerLink]="['/section', lastSection()!.id]">
+          {{ lang.isArabic() ? '▶ كمّل من حيث وقفت' : '▶ Continue Where You Left Off' }}
+          <span class="cta-sub">{{ lang.isArabic() ? lastSection()!.titleAr : lastSection()!.titleEn }}</span>
+        </a>
+        <a class="cta-btn cta-ghost" [routerLink]="['/section', 1]">
+          {{ lang.isArabic() ? 'ابدأ من الأول' : 'Start From Beginning' }}
+        </a>
+      } @else {
+        <a class="cta-btn cta-start" [routerLink]="['/section', 1]">
+          {{ lang.isArabic() ? '🚀 ابدأ من هنا' : '🚀 Start Here' }}
+        </a>
+      }
+    </div>
   </section>
+
+  <!-- Progress Dashboard -->
+  @if (course.completedCount() > 0) {
+    <section class="progress-dashboard reveal">
+      <div class="dash-header">
+        <h2 class="dash-title">{{ lang.isArabic() ? '📊 تقدّمك' : '📊 Your Progress' }}</h2>
+        <span class="dash-percent">{{ course.progressPercent() }}%</span>
+      </div>
+      <div class="dash-bar-wrap">
+        <div class="dash-bar">
+          <div class="dash-fill" [style.width.%]="course.progressPercent()"></div>
+        </div>
+        <span class="dash-label">{{ course.completedCount() }} / {{ course.sections.length }} {{ lang.isArabic() ? 'قسم مكتمل' : 'sections done' }}</span>
+      </div>
+      <div class="dash-parts-row">
+        @for (p of parts; track p.part) {
+          <div class="dash-part-dot" [class.done]="isPartCompleted(p.part)" [style.--color]="p.color"
+            [title]="(lang.isArabic() ? p.titleAr : p.titleEn) + ': ' + getPartCompletedCount(p.part) + '/' + getSectionsByPart(p.part).length">
+            @if (isPartCompleted(p.part)) { ✓ } @else { {{ p.part }} }
+          </div>
+        }
+      </div>
+    </section>
+  }
 
   <!-- Completion Certificate -->
   @if (course.progressPercent() === 100) {
@@ -120,13 +156,16 @@
     </h2>
     <div class="parts-grid">
       @for (part of parts; track part.part) {
-        <div class="part-card" [style.--color]="part.color">
+        <div class="part-card" [style.--color]="part.color" [class.part-done]="isPartCompleted(part.part)">
           <div class="part-card-header">
             <span class="part-tag">{{ lang.isArabic() ? 'الجزء' : 'Part' }} {{ part.part }}</span>
             <span class="section-count">
-              {{ getSectionsByPart(part.part).length }}
+              {{ getPartCompletedCount(part.part) }}/{{ getSectionsByPart(part.part).length }}
               {{ lang.isArabic() ? 'أقسام' : 'sections' }}
             </span>
+            @if (isPartCompleted(part.part)) {
+              <span class="part-badge">🏅 {{ lang.isArabic() ? 'مكتمل' : 'Done' }}</span>
+            }
           </div>
           <h3 class="part-card-title">
             {{ lang.isArabic() ? part.titleAr : part.titleEn }}

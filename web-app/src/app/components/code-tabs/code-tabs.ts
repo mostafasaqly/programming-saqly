@@ -44,6 +44,66 @@ export class CodeTabsComponent implements OnChanges {
   jsOutput = signal<string[]>([]);
   jsRunning = signal(false);
 
+  // Editable sandbox
+  sandboxCode = signal<Record<string, string>>({});
+  sandboxMode = signal<Record<string, boolean>>({});
+  sandboxOutput = signal<Record<string, string[]>>({});
+
+  getSandboxCode(tabId: string, originalCode: string): string {
+    return this.sandboxCode()[tabId] ?? originalCode;
+  }
+
+  isSandboxMode(tabId: string): boolean {
+    return !!this.sandboxMode()[tabId];
+  }
+
+  toggleSandbox(tabId: string, originalCode: string): void {
+    const current = this.sandboxMode()[tabId];
+    if (!current) {
+      this.sandboxCode.update(s => ({ ...s, [tabId]: s[tabId] ?? originalCode }));
+    }
+    this.sandboxMode.update(s => ({ ...s, [tabId]: !current }));
+    this.sandboxOutput.update(s => ({ ...s, [tabId]: [] }));
+  }
+
+  setSandboxCode(tabId: string, code: string): void {
+    this.sandboxCode.update(s => ({ ...s, [tabId]: code }));
+    this.sandboxOutput.update(s => ({ ...s, [tabId]: [] }));
+  }
+
+  resetSandbox(tabId: string, originalCode: string): void {
+    this.sandboxCode.update(s => ({ ...s, [tabId]: originalCode }));
+    this.sandboxOutput.update(s => ({ ...s, [tabId]: [] }));
+  }
+
+  runSandboxJs(tabId: string): void {
+    const code = this.sandboxCode()[tabId] ?? '';
+    const lines: string[] = [];
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    try {
+      const win = iframe.contentWindow as Window & { console: Console };
+      win.console.log = (...args: unknown[]) => {
+        lines.push(args.map(a => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' '));
+      };
+      win.console.error = (...args: unknown[]) => { lines.push('❌ ' + args.map(a => String(a)).join(' ')); };
+      (win as unknown as Record<string, unknown>)['alert'] = () => {};
+      (win as unknown as Record<string, unknown>)['prompt'] = () => null;
+      (win as unknown as Record<string, unknown>)['confirm'] = () => false;
+      (iframe.contentWindow as unknown as Record<string, (c: string) => void>)['eval'](code);
+      this.sandboxOutput.update(s => ({ ...s, [tabId]: lines.length ? lines : ['(no output)'] }));
+    } catch (e) {
+      this.sandboxOutput.update(s => ({ ...s, [tabId]: ['❌ ' + (e instanceof Error ? e.message : String(e))] }));
+    } finally {
+      document.body.removeChild(iframe);
+    }
+  }
+
+  getSandboxOutput(tabId: string): string[] {
+    return this.sandboxOutput()[tabId] ?? [];
+  }
+
   // Python runner (Pyodide)
   pyOutput = signal<string[]>([]);
   pyRunning = signal(false);

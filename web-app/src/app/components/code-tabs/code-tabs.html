@@ -47,6 +47,15 @@
             }
           </button>
           <button
+            class="action-btn sandbox-toggle-btn"
+            [class.active]="isSandboxMode(tab.id)"
+            (click)="toggleSandbox(tab.id, tab.code)"
+            [attr.aria-label]="lang.isArabic() ? 'تعديل وتجربة الكود' : 'Edit and try the code'"
+            [attr.aria-pressed]="isSandboxMode(tab.id)"
+          >
+            ✏️ {{ isSandboxMode(tab.id) ? (lang.isArabic() ? 'عرض الكود' : 'View code') : (lang.isArabic() ? 'جرّب بنفسك' : 'Try it') }}
+          </button>
+          <button
             class="action-btn run-btn"
             (click)="openCompiler(tab.runUrl)"
             [attr.aria-label]="(lang.isArabic() ? 'تشغيل مثال ' : 'Run example in ') + tab.label"
@@ -56,13 +65,60 @@
         </div>
       </div>
 
-      <!-- Code body -->
-      <div class="code-body">
-        <pre><code [innerHTML]="getHighlighted(tab.code, tab.id)" dir="ltr"></code></pre>
-      </div>
+      <!-- Code body OR editable sandbox -->
+      @if (isSandboxMode(tab.id)) {
+        <div class="sandbox-wrap">
+          <div class="sandbox-label">
+            <span>{{ lang.isArabic() ? '✏️ عدّل الكود وجرّبه:' : '✏️ Edit the code and try it:' }}</span>
+            <button class="sandbox-reset-btn" (click)="resetSandbox(tab.id, tab.code)">↺ {{ lang.isArabic() ? 'إعادة تعيين' : 'Reset' }}</button>
+          </div>
+          <textarea
+            class="sandbox-editor"
+            dir="ltr"
+            spellcheck="false"
+            autocorrect="off"
+            autocapitalize="off"
+            [value]="getSandboxCode(tab.id, tab.code)"
+            (input)="setSandboxCode(tab.id, $any($event.target).value)"
+          ></textarea>
+          <div class="sandbox-actions">
+            @if (tab.id === 'javascript') {
+              <button class="sandbox-run-btn" (click)="runSandboxJs(tab.id)">
+                ▶ {{ lang.isArabic() ? 'تشغيل' : 'Run' }}
+              </button>
+            } @else if (tab.id === 'python') {
+              <button class="sandbox-run-btn" (click)="runPython(getSandboxCode(tab.id, tab.code))" [disabled]="pyRunning() || pyLoading()">
+                @if (pyLoading()) { <span class="spinner" aria-hidden="true"></span> {{ lang.isArabic() ? 'تحميل...' : 'Loading...' }}
+                } @else if (pyRunning()) { <span class="spinner" aria-hidden="true"></span> {{ lang.isArabic() ? 'جارٍ...' : 'Running...' }}
+                } @else { ▶ {{ lang.isArabic() ? 'تشغيل' : 'Run' }} }
+              </button>
+            } @else {
+              <span class="sandbox-note">{{ lang.isArabic() ? '📋 انسخ الكود وجرّبه في' : '📋 Copy & try in' }} <a [href]="tab.runUrl" target="_blank" rel="noopener">{{ tab.label }} compiler</a></span>
+            }
+          </div>
+          @if (tab.id === 'javascript' && getSandboxOutput(tab.id).length > 0) {
+            <div class="sandbox-output" dir="ltr" aria-live="polite">
+              @for (line of getSandboxOutput(tab.id); track $index) {
+                <div [class]="line.startsWith('❌') ? 'out-line out-error' : 'out-line'">{{ line }}</div>
+              }
+            </div>
+          }
+          @if (tab.id === 'python' && pyOutput().length > 0) {
+            <div class="sandbox-output" dir="ltr" aria-live="polite">
+              @for (line of pyOutput(); track $index) {
+                <div [class]="line.startsWith('❌') ? 'out-line out-error' : 'out-line'">{{ line }}</div>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="code-body">
+          <pre><code [innerHTML]="getHighlighted(tab.code, tab.id)" dir="ltr"></code></pre>
+        </div>
+      }
 
-      <!-- Inline JS runner (JavaScript tab only) -->
-      @if (tab.id === 'javascript') {
+      <!-- Inline JS runner (JavaScript tab only, view mode) -->
+      @if (tab.id === 'javascript' && !isSandboxMode(tab.id)) {
         <div class="inline-runner">
           <button class="run-inline-btn" (click)="runJs(tab.code)" [disabled]="jsRunning()">
             ▶ {{ lang.isArabic() ? 'تشغيل هنا' : 'Run here' }}
@@ -79,8 +135,8 @@
         </div>
       }
 
-      <!-- Inline Python runner (Pyodide) -->
-      @if (tab.id === 'python') {
+      <!-- Inline Python runner (Pyodide, view mode) -->
+      @if (tab.id === 'python' && !isSandboxMode(tab.id)) {
         <div class="inline-runner">
           <div class="py-runner-bar">
             <button

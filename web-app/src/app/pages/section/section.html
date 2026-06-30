@@ -564,9 +564,20 @@
             }
           </div>
           @if (quizAnswered(qi)) {
-            <div class="quiz-explanation" [class.correct-bg]="quizSelected(qi) === q.correctIndex" [class.wrong-bg]="quizSelected(qi) !== q.correctIndex">
-              {{ quizSelected(qi) === q.correctIndex ? '✅ ' : '❌ ' }}
-              {{ lang.isArabic() ? q.explanationAr : q.explanationEn }}
+            @if (quizSelected(qi) !== q.correctIndex) {
+              <div class="quiz-wrong-banner" role="alert">
+                <span class="quiz-wrong-icon">❌</span>
+                <div class="quiz-wrong-body">
+                  <strong>{{ lang.isArabic() ? 'إجابتك كانت:' : 'Your answer was:' }}</strong>
+                  <span class="wrong-choice">{{ q.options[quizSelected(qi)] }}</span>
+                  <strong>{{ lang.isArabic() ? 'الإجابة الصحيحة:' : 'Correct answer:' }}</strong>
+                  <span class="correct-choice">{{ q.options[q.correctIndex] }}</span>
+                </div>
+              </div>
+            }
+            <div class="quiz-explanation" [class.correct-bg]="quizSelected(qi) === q.correctIndex" [class.wrong-bg]="quizSelected(qi) !== q.correctIndex" role="status" aria-live="polite">
+              <span class="explanation-icon">{{ quizSelected(qi) === q.correctIndex ? '💡' : '📖' }}</span>
+              <span>{{ lang.isArabic() ? q.explanationAr : q.explanationEn }}</span>
             </div>
           }
         </div>
@@ -635,9 +646,14 @@
         </a>
       }
     </div>
-    <a routerLink="/" class="nav-home-btn">
-      🏠 {{ lang.isArabic() ? 'الرئيسية' : 'Home' }}
-    </a>
+    <div class="nav-center-group">
+      <a routerLink="/" class="nav-home-btn">
+        🏠 {{ lang.isArabic() ? 'الرئيسية' : 'Home' }}
+      </a>
+      <button class="nav-print-btn" (click)="printSection()" [attr.aria-label]="lang.isArabic() ? 'طباعة هذا القسم' : 'Print this section'">
+        🖨 {{ lang.isArabic() ? 'طباعة' : 'Print' }}
+      </button>
+    </div>
     <div class="nav-next">
       @if (nextSection) {
         <a [routerLink]="['/section', nextSection.id]" class="nav-btn nav-btn-next">

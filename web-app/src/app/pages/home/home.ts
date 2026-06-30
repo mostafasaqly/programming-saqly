@@ -17,18 +17,35 @@ export class HomeComponent {
   readonly parts = this.course.parts;
   readonly searchQuery = signal('');
 
+  readonly lastSection = computed(() => {
+    const id = this.course.lastVisitedId();
+    return id ? this.course.getSectionById(id) : null;
+  });
+
+  // Normalize Arabic text: remove tashkeel + unify hamza forms for fuzzy search
+  private normalizeAr(text: string): string {
+    return text
+      .replace(/[ؐ-ًؚ-ٟ]/g, '') // strip tashkeel
+      .replace(/[أإآٱ]/g, 'ا')                       // unify alef
+      .replace(/ة/g, 'ه')                             // ta marbuta → ha
+      .replace(/ى/g, 'ي')                             // alef maqsura → ya
+      .toLowerCase();
+  }
+
   readonly searchResults = computed(() => {
-    const q = this.searchQuery().trim().toLowerCase();
-    if (!q) return [];
+    const raw = this.searchQuery().trim();
+    if (!raw) return [];
+    const qNorm = this.normalizeAr(raw);
+    const qLow = raw.toLowerCase();
     return this.course.sections.filter(s =>
-      s.titleAr.includes(q) ||
-      s.titleEn.toLowerCase().includes(q) ||
-      s.descriptionAr.includes(q) ||
-      s.descriptionEn.toLowerCase().includes(q) ||
-      s.conceptsAr.some(c => c.includes(q)) ||
-      s.conceptsEn.some(c => c.toLowerCase().includes(q)) ||
-      s.keyPointsAr.some(k => k.includes(q)) ||
-      s.keyPointsEn.some(k => k.toLowerCase().includes(q))
+      this.normalizeAr(s.titleAr).includes(qNorm) ||
+      s.titleEn.toLowerCase().includes(qLow) ||
+      this.normalizeAr(s.descriptionAr).includes(qNorm) ||
+      s.descriptionEn.toLowerCase().includes(qLow) ||
+      s.conceptsAr.some(c => this.normalizeAr(c).includes(qNorm)) ||
+      s.conceptsEn.some(c => c.toLowerCase().includes(qLow)) ||
+      s.keyPointsAr.some(k => this.normalizeAr(k).includes(qNorm)) ||
+      s.keyPointsEn.some(k => k.toLowerCase().includes(qLow))
     );
   });
 
@@ -42,5 +59,14 @@ export class HomeComponent {
 
   getSectionsByPart(part: number) {
     return this.course.getSectionsByPart(part);
+  }
+
+  getPartCompletedCount(part: number): number {
+    return this.getSectionsByPart(part).filter(s => this.course.isCompleted(s.id)).length;
+  }
+
+  isPartCompleted(part: number): boolean {
+    const secs = this.getSectionsByPart(part);
+    return secs.length > 0 && secs.every(s => this.course.isCompleted(s.id));
   }
 }

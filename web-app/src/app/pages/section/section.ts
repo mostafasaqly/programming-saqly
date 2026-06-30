@@ -4,7 +4,8 @@ import { Title, Meta } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { CourseService } from '../../services/course.service';
 import { LanguageService } from '../../services/language.service';
-import { SectionContent, MULTI_LANG_EXAMPLES } from '../../data/sections.data';
+import { SectionContent } from '../../data/sections.data';
+import type { MultiLangExample } from '../../data/sections.data';
 import { CodeBlockComponent } from '../../components/code-block/code-block';
 import { CodeTabsComponent, LangTab } from '../../components/code-tabs/code-tabs';
 
@@ -183,8 +184,7 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
   // Python first — least syntax noise for absolute beginners.
   private static readonly LANG_ORDER = ['python', 'javascript', 'java', 'cpp', 'c'];
 
-  private buildMultiLangTabs(id: number): void {
-    const examples = MULTI_LANG_EXAMPLES[id] ?? [];
+  private buildMultiLangTabsFrom(examples: MultiLangExample[]): void {
     const order = SectionComponent.LANG_ORDER;
     const built = examples.map(ex => {
       const sorted = [...ex.tabs].sort((a, b) => {
@@ -201,6 +201,14 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     });
     this.multiLangTabs.set(built);
+  }
+
+  private buildMultiLangTabs(id: number): void {
+    // Lazy-load multilang examples only when entering a section
+    import('../../data/sections.multilang').then(m => {
+      const examples: MultiLangExample[] = m.MULTI_LANG_EXAMPLES[id] ?? [];
+      this.buildMultiLangTabsFrom(examples);
+    });
   }
 
   resetDemoState() {
@@ -285,6 +293,46 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loopTimer = null;
     }
     this.loopRunning.set(false);
+  }
+
+  printSection(): void {
+    const sec = this.section();
+    if (!sec) return;
+    const isAr = this.lang.isArabic();
+    const dir = isAr ? 'rtl' : 'ltr';
+    const title = isAr ? sec.titleAr : sec.titleEn;
+    const desc = isAr ? sec.descriptionAr : sec.descriptionEn;
+    const concepts = (isAr ? sec.conceptsAr : sec.conceptsEn).map(c => `<li>${c}</li>`).join('');
+    const keyPoints = (isAr ? sec.keyPointsAr : sec.keyPointsEn).map(k => `<li>💡 ${k}</li>`).join('');
+    const mistakes = sec.commonMistakes?.map(m =>
+      `<li><strong>${isAr ? m.mistakeAr : m.mistakeEn}</strong><br><small>✅ ${isAr ? m.fixAr : m.fixEn}</small></li>`
+    ).join('') ?? '';
+
+    const win = window.open('', '_blank', 'width=800,height=700');
+    if (!win) return;
+    win.document.write(`<!doctype html><html dir="${dir}" lang="${isAr ? 'ar' : 'en'}">
+<head><meta charset="utf-8"><title>${title}</title>
+<style>
+  body{font-family:${isAr ? "'Cairo',sans-serif" : "'Inter',sans-serif"};padding:32px 40px;color:#1f2328;direction:${dir};max-width:700px;margin:0 auto}
+  h1{font-size:1.6rem;font-weight:800;margin-bottom:8px}
+  p.desc{color:#57606a;margin-bottom:24px;line-height:1.7}
+  h2{font-size:1rem;font-weight:700;margin:20px 0 8px;padding-bottom:6px;border-bottom:1px solid #d0d7de}
+  ul{padding-inline-start:20px;margin:0;display:flex;flex-direction:column;gap:6px}
+  li{font-size:0.9rem;line-height:1.55}
+  .meta{font-size:12px;color:#6e7781;margin-bottom:4px}
+  @media print{@page{margin:1.5cm}}
+</style></head>
+<body>
+  <div class="meta">${isAr ? 'مقدمة في البرمجة — القسم' : 'Intro to Programming — Section'} ${String(sec.id).padStart(2,'0')}</div>
+  <h1>${sec.icon} ${title}</h1>
+  <p class="desc">${desc}</p>
+  <h2>${isAr ? 'المفاهيم الأساسية' : 'Core Concepts'}</h2><ul>${concepts}</ul>
+  <h2>${isAr ? 'النقاط المهمة' : 'Key Takeaways'}</h2><ul>${keyPoints}</ul>
+  ${mistakes ? `<h2>${isAr ? '⚠️ أخطاء شائعة' : '⚠️ Common Mistakes'}</h2><ul>${mistakes}</ul>` : ''}
+</body></html>`);
+    win.document.close();
+    win.focus();
+    setTimeout(() => win.print(), 300);
   }
 
   printCheatSheet(): void {

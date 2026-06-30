@@ -1,8 +1,10 @@
 <div class="mistakes-page fade-in">
 
   <header class="mistakes-header">
-    <a routerLink="/" class="back-link">← {{ lang.isArabic() ? 'الرئيسية' : 'Home' }}</a>
-    <h1 class="mistakes-title">
+    <a routerLink="/" class="back-link" [attr.aria-label]="lang.isArabic() ? 'العودة إلى الرئيسية' : 'Go back to home'">
+      ← {{ lang.isArabic() ? 'الرئيسية' : 'Home' }}
+    </a>
+    <h1 class="mistakes-title" id="mistakes-heading">
       🔁 {{ lang.isArabic() ? 'مراجعة أخطائي' : 'Review My Mistakes' }}
     </h1>
     <p class="mistakes-sub">
@@ -39,9 +41,10 @@
       </button>
     </div>
 
-    <div class="mistakes-list">
+    <div class="mistakes-list" role="list" [attr.aria-label]="lang.isArabic() ? 'قائمة الأسئلة الخاطئة' : 'List of incorrect answers'" aria-labelledby="mistakes-heading">
       @for (w of wrongAnswers(); track w.section.id + '-' + w.questionIndex) {
-        <div class="mistake-quiz-card" [class.corrected]="retryCorrect(w)">
+        <div class="mistake-quiz-card" [class.corrected]="retryCorrect(w)" role="listitem"
+          [attr.aria-label]="(lang.isArabic() ? 'سؤال من القسم ' : 'Question from section ') + (lang.isArabic() ? w.section.titleAr : w.section.titleEn)">
 
           <div class="mqc-section-tag">
             <a [routerLink]="['/section', w.section.id]">
@@ -54,7 +57,7 @@
             {{ lang.isArabic() ? w.question.questionAr : w.question.questionEn }}
           </p>
 
-          <div class="mqc-options">
+          <div class="mqc-options" role="group" [attr.aria-label]="lang.isArabic() ? 'خيارات الإجابة' : 'Answer options'">
             @for (opt of w.question.options; track opt; let oi = $index) {
               <button
                 class="mqc-option"
@@ -64,6 +67,8 @@
                 [class.retry-wrong]="retryAnswered(w) && retrySelected(w) === oi && oi !== w.question.correctIndex"
                 [class.retry-selected]="retrySelected(w) === oi"
                 [disabled]="retryAnswered(w)"
+                [attr.aria-pressed]="retrySelected(w) === oi"
+                [attr.aria-label]="opt + (oi === w.question.correctIndex ? (lang.isArabic() ? ' — الإجابة الصحيحة' : ' — correct answer') : '')"
                 (click)="answer(w, oi)"
               >
                 {{ opt }}

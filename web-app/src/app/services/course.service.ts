@@ -3,6 +3,7 @@ import { COURSE_SECTIONS, PARTS, SectionContent } from '../data/sections.data';
 
 const QUIZ_STORAGE_KEY = 'course-quiz-answers';
 const CHALLENGES_STORAGE_KEY = 'course-challenges-done';
+const LAST_VISITED_KEY = 'course-last-visited';
 
 @Injectable({ providedIn: 'root' })
 export class CourseService {
@@ -11,12 +12,14 @@ export class CourseService {
 
   private _completedIds = signal<Set<number>>(this.loadCompleted());
   private _activeId = signal<number | null>(null);
+  private _lastVisitedId = signal<number | null>(this.loadLastVisited());
   private _quizResults = signal<Record<number, Record<number, number>>>(this.loadQuizResults());
   // key: `${sectionId}-${challengeIndex}` → true when solved
   private _challengesDone = signal<Record<string, boolean>>(this.loadChallengesDone());
 
   readonly completedIds = this._completedIds.asReadonly();
   readonly activeId = this._activeId.asReadonly();
+  readonly lastVisitedId = this._lastVisitedId.asReadonly();
   readonly quizResults = this._quizResults.asReadonly();
 
   readonly completedCount = computed(() => this._completedIds().size);
@@ -80,6 +83,18 @@ export class CourseService {
 
   setActive(id: number | null): void {
     this._activeId.set(id);
+    if (id !== null) {
+      this._lastVisitedId.set(id);
+      try { localStorage.setItem(LAST_VISITED_KEY, String(id)); } catch {}
+    }
+  }
+
+  private loadLastVisited(): number | null {
+    try {
+      const raw = localStorage.getItem(LAST_VISITED_KEY);
+      if (raw) { const n = Number(raw); return isNaN(n) ? null : n; }
+    } catch {}
+    return null;
   }
 
   toggleComplete(id: number): void {
