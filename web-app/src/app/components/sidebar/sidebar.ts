@@ -23,4 +23,8 @@ export class SidebarComponent {
   padId(id: number): string {
     return String(id).padStart(2, '0');
   }
+
+  scrollTop(): void {
+    document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'instant' });
+  }
 }

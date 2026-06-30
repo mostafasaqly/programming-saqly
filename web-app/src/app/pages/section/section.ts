@@ -85,7 +85,7 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
       this.course.setActive(id);
       this.buildMultiLangTabs(id);
       this.updateTitle(found);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'instant' });
       this.resetDemoState();
       // Re-run reveal after route change (DOM re-renders)
       setTimeout(() => this.initReveal(), 120);

@@ -36,6 +36,7 @@
                 [routerLink]="['/section', section.id]"
                 routerLinkActive="active"
                 [class.completed]="course.isCompleted(section.id)"
+                (click)="scrollTop()"
               >
                 <span class="section-num">{{ padId(section.id) }}</span>
                 <span class="section-name">
