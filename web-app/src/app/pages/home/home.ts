@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CourseService } from '../../services/course.service';
 import { LanguageService } from '../../services/language.service';
@@ -8,6 +8,7 @@ import { LanguageService } from '../../services/language.service';
   imports: [RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
   readonly course = inject(CourseService);

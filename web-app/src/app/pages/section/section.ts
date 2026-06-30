@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, OnDestroy, signal, AfterViewInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Title } from '@angular/platform-browser';
+import { Title, Meta } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { CourseService } from '../../services/course.service';
 import { LanguageService } from '../../services/language.service';
@@ -20,6 +20,7 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
   private readonly el = inject(ElementRef);
   private revealObserver?: IntersectionObserver;
 
@@ -54,13 +55,17 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
     this._solutionLang.update(s => ({ ...s, [i]: lang }));
   }
 
-  // Quiz state
-  private _quizAnswers = signal<Record<number, number>>({});
+  // Quiz state — persisted via CourseService
+  private get _sectionId(): number { return this.section()?.id ?? 0; }
 
-  quizAnswered(qi: number): boolean { return this._quizAnswers()[qi] !== undefined; }
-  quizSelected(qi: number): number { return this._quizAnswers()[qi] ?? -1; }
+  quizAnswered(qi: number): boolean {
+    return this.course.getQuizAnswers(this._sectionId)[qi] !== undefined;
+  }
+  quizSelected(qi: number): number {
+    return this.course.getQuizAnswers(this._sectionId)[qi] ?? -1;
+  }
   answerQuiz(qi: number, selected: number, _correct: number): void {
-    this._quizAnswers.update(s => ({ ...s, [qi]: selected }));
+    this.course.saveQuizAnswer(this._sectionId, qi, selected);
   }
   allQuizAnswered(): boolean {
     const sec = this.section();
@@ -70,7 +75,7 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
   quizScore(): number {
     const sec = this.section();
     if (!sec?.quiz) return 0;
-    return sec.quiz.filter((q, i) => this._quizAnswers()[i] === q.correctIndex).length;
+    return sec.quiz.filter((q, i) => this.course.getQuizAnswers(this._sectionId)[i] === q.correctIndex).length;
   }
 
   ngOnInit() {
@@ -124,6 +129,10 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
     const name = this.lang.isArabic() ? sec.titleAr : sec.titleEn;
     const suffix = this.lang.isArabic() ? 'مقدمة في البرمجة' : 'Intro to Programming';
     this.titleService.setTitle(`${this.padId(sec.id)} · ${name} — ${suffix}`);
+    const desc = this.lang.isArabic() ? sec.descriptionAr : sec.descriptionEn;
+    this.metaService.updateTag({ name: 'description', content: desc });
+    this.metaService.updateTag({ property: 'og:title', content: `${name} — ${suffix}` });
+    this.metaService.updateTag({ property: 'og:description', content: desc });
   }
 
   // Python first — least syntax noise for absolute beginners.
@@ -159,7 +168,6 @@ export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
     this._hintVisible.set({});
     this._solutionVisible.set({});
     this._solutionLang.set({});
-    this._quizAnswers.set({});
   }
 
   get prevSection(): SectionContent | undefined {

@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CodeExample } from '../../data/sections.data';
 import { LanguageService } from '../../services/language.service';
 import { inject } from '@angular/core';
@@ -8,6 +8,7 @@ import { inject } from '@angular/core';
   imports: [],
   templateUrl: './code-block.html',
   styleUrl: './code-block.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CodeBlockComponent {
   @Input() example!: CodeExample;

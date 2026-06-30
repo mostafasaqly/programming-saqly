@@ -23,6 +23,8 @@
         class="complete-btn"
         [class.done]="isCompleted()"
         (click)="toggleComplete()"
+        [attr.aria-label]="isCompleted() ? (lang.isArabic() ? 'إلغاء تحديد القسم كمكتمل' : 'Mark section as incomplete') : (lang.isArabic() ? 'تحديد القسم كمكتمل' : 'Mark section as complete')"
+        [attr.aria-pressed]="isCompleted()"
       >
         @if (isCompleted()) {
           ✓ {{ lang.isArabic() ? 'مكتمل' : 'Completed' }}
@@ -212,7 +214,7 @@
             class="conv-input"
             pattern="[01]*"
           />
-          <div class="conv-result" [class.show]="binaryResult()">{{ binaryResult() }}</div>
+          <div class="conv-result" [class.show]="binaryResult()" aria-live="polite" aria-atomic="true">{{ binaryResult() }}</div>
         </div>
         <div class="conv-divider"></div>
         <div class="conv-group">
@@ -224,8 +226,9 @@
             (input)="onDecimalInput($any($event.target).value)"
             class="conv-input"
             min="0"
+            [attr.aria-label]="lang.isArabic() ? 'أدخل رقماً عشرياً للتحويل إلى ثنائي' : 'Enter a decimal number to convert to binary'"
           />
-          <div class="conv-result" [class.show]="decimalResult()">{{ decimalResult() }}</div>
+          <div class="conv-result" [class.show]="decimalResult()" aria-live="polite" aria-atomic="true">{{ decimalResult() }}</div>
         </div>
       </div>
     </div>
@@ -454,10 +457,14 @@
           </div>
           <p class="challenge-task">{{ lang.isArabic() ? ch.taskAr : ch.taskEn }}</p>
           <div class="challenge-actions">
-            <button class="hint-btn" (click)="toggleHint(ci)">
+            <button class="hint-btn" (click)="toggleHint(ci)"
+              [attr.aria-expanded]="hintVisible(ci)"
+              [attr.aria-label]="lang.isArabic() ? 'تلميح للتحدي ' + (ci+1) : 'Hint for challenge ' + (ci+1)">
               {{ hintVisible(ci) ? (lang.isArabic() ? '▲ إخفاء التلميح' : '▲ Hide hint') : (lang.isArabic() ? '💡 إظهار التلميح' : '💡 Show hint') }}
             </button>
-            <button class="solution-btn" (click)="toggleSolution(ci)">
+            <button class="solution-btn" (click)="toggleSolution(ci)"
+              [attr.aria-expanded]="solutionVisible(ci)"
+              [attr.aria-label]="lang.isArabic() ? 'حل التحدي ' + (ci+1) : 'Solution for challenge ' + (ci+1)">
               {{ solutionVisible(ci) ? (lang.isArabic() ? '▲ إخفاء الحل' : '▲ Hide solution') : (lang.isArabic() ? '✅ إظهار الحل' : '✅ Show solution') }}
             </button>
           </div>
@@ -514,7 +521,7 @@
         </div>
       }
       @if (allQuizAnswered()) {
-        <div class="quiz-score">
+        <div class="quiz-score" role="status" aria-live="polite">
           {{ lang.isArabic() ? 'نتيجتك:' : 'Your score:' }}
           <strong>{{ quizScore() }} / {{ sec.quiz!.length }}</strong>
           @if (quizScore() === sec.quiz!.length) {

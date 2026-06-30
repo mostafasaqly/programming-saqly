@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, signal } from '@angular/core';
+import { Component, Input, OnChanges, signal, ChangeDetectionStrategy } from '@angular/core';
 import { inject } from '@angular/core';
 import { LanguageService } from '../../services/language.service';
 
@@ -33,6 +33,7 @@ const LANG_META: Record<string, { label: string; icon: string }> = {
   imports: [],
   templateUrl: './code-tabs.html',
   styleUrl: './code-tabs.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CodeTabsComponent implements OnChanges {
   @Input() tabs: LangTab[] = [];
